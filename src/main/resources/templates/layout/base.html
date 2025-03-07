@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>농업 정보 시스템</title>
+    <link rel="stylesheet" href="/css/deulmaru.css">
+    <script src="/js/deulmaru.js" defer></script>
+</head>
+<body>
+
+    <!-- 공통 헤더 -->
+    <header th:replace="layout/header :: header"></header>
+
+    <!-- 본문 내용 -->
+    <main>
+        <section th:replace="${content}"></section>
+    </main>
+
+</body>
+</html>

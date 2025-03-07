@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="/css/deulmaru_const.css">
+</head>
+<body>
+
+<header th:replace="layout/header :: header"></header>
+
+<main>
+    <h1>로그인</h1>
+
+    <form th:action="@{/auth/login}" method="post">
+        <label>아이디</label>
+        <input type="text" name="username" required>
+
+        <label>비밀번호</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">로그인</button>
+    </form>
+
+    <th:block th:if="${error}">
+        <div style="color: red;" th:text="${error}"></div>
+    </th:block>
+</main>
+
+</body>
+</html>

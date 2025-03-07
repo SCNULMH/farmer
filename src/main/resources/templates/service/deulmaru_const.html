@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 상담</title>
+
+    <link rel="stylesheet" href="/css/deulmaru_const.css">
+    <script src="/js/deulmaru_const.js" defer></script>
+
+</head>
+<body>
+
+<header th:replace="layout/header :: header"></header>
+
+<div class="tabs">
+    <button onclick="showTab('search')">병해충 검색</button>
+    <button onclick="showTab('consult')">병해충 상담</button>
+</div>
+
+<!-- 챗봇 버튼 -->
+<button class="btn btn-secondary" onclick="showChatbot()">💬 챗봇에게 질문하기</button>
+
+<!-- 챗봇 팝업 -->
+<div id="chatbot" class="chatbot-container" style="display: none;">
+    <div class="chatbot-popup">
+        <button class="close-chatbot" onclick="closeChatbot()">×</button>
+        <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
+    </div>
+</div>
+
+<!-- 병해충 검색 -->
+<div id="searchTab" class="tab-content">
+    <h3>병해충 검색</h3>
+    <input type="text" id="searchQuery" placeholder="검색어를 입력하세요">
+    <button onclick="fetchSearchData()">검색</button>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>작물명</th>
+                <th>병해충명</th>
+                <th>영문명</th>
+                <th>중국명</th>
+                <th>이미지</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- 병해충 상담 -->
+<div id="consultTab" class="tab-content">
+    <h3>병해충 상담</h3>
+    <input type="text" id="consultQuery" placeholder="상담 내용을 입력하세요">
+    <button onclick="fetchConsultData()">검색</button>
+
+    <table id="consultResultTable">
+        <thead>
+            <tr>
+                <th>상담 제목</th>
+                <th>상담 번호</th>
+                <th>상담 요청 날짜</th>
+                <th>상담 세부 정보</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- 병해충 상세보기 모달 -->
+<div id="sickDetailModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSickDetailModal()">&times;</span>
+        <div id="sickDetailContainer"></div>
+    </div>
+</div>
+
+<!-- 병해충 상담 상세보기 모달 -->
+<div id="consultDetailModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="consultDetailContainer"></div>
+    </div>
+</div>
+
+</body>
+</html>

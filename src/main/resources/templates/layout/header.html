@@ -1,0 +1,25 @@
+<header>
+    <h1>농업 정보 시스템</h1>
+
+    <nav>
+        <ul>
+            <li><a href="/">홈</a></li>
+            <li><a href="/service/deulmaru_const">병해충 검색</a></li>
+
+            <!-- ✅ 로그인 상태 확인 후 버튼 표시 -->
+            <th:block th:if="${session.user_id}">
+                <li><a href="/auth/mypage">마이페이지</a></li>
+                <li>
+                    <form action="/auth/logout" method="post">
+                        <button type="submit">로그아웃</button>
+                    </form>
+                </li>
+            </th:block>
+
+            <th:block th:unless="${session.user_id}">
+                <li><a href="/auth/login">로그인</a></li>
+                <li><a href="/auth/register">회원가입</a></li>
+            </th:block>
+        </ul>
+    </nav>
+</header>
