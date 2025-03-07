@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String home() {
-        return "forward:/index.html";  // ✅ 정적 리소스 서빙
+        return "forward:/deulmaru_const.html";  // ✅ 정적 리소스 서빙
     }
 }
