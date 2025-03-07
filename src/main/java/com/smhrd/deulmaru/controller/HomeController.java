@@ -9,6 +9,6 @@ public class HomeController {
     // ✅ 기본 경로("/")를 로그인 페이지로 리다이렉트
     @GetMapping("/")
     public String redirectToLogin() {
-        return "redirect:/auth/login";
+        return "home/index";
     }
 }

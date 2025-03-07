@@ -19,18 +19,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // ✅ 로그인 페이지
-    @GetMapping("/mypage")
-    public String mypage(HttpSession session, Model model) {
-    	  UserEntity user = (UserEntity) session.getAttribute("user");
-
-          if (user == null) {
-              return "redirect:/auth/login"; // 🔹 로그인 안 했으면 로그인 페이지로 이동
-          }
-
-          model.addAttribute("user", user);
-          return "auth/mypage"; // ✅ templates/auth/mypage.html
-    }
     
     // ✅ 로그인 페이지
     @GetMapping("/login")

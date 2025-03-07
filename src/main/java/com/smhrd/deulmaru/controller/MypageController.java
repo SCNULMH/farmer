@@ -1,26 +1,55 @@
 package com.smhrd.deulmaru.controller;
 
 import com.smhrd.deulmaru.entity.UserEntity;
+import com.smhrd.deulmaru.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/mypage")
 public class MypageController {
 
-    // ✅ 마이페이지 접근 시 로그인 여부 확인
+    private final UserRepository userRepository;
+
+    public MypageController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // ✅ 마이페이지 이동
     @GetMapping("")
     public String myPage(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("user");
-
         if (user == null) {
-            return "redirect:/auth/login"; // 🔹 로그인 안 했으면 로그인 페이지로 이동
+            return "redirect:/auth/login";
+        }
+        model.addAttribute("user", user);
+        return "auth/mypage";
+    }
+
+    // ✅ 회원정보 수정
+    @PostMapping("/update-profile")
+    public String updateProfile(@RequestParam String nickname,
+                                @RequestParam(required = false) String password,
+                                HttpSession session) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/auth/login";
         }
 
-        model.addAttribute("user", user);
-        return "auth/mypage"; // ✅ templates/auth/mypage.html
+        // 닉네임 변경
+        user.setNickname(nickname);
+        
+        // 비밀번호 변경이 입력되었을 경우에만 적용
+        if (password != null && !password.isEmpty()) {
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+        session.setAttribute("user", user);
+        return "redirect:/auth/mypage";
     }
 }

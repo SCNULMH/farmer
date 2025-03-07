@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 검색</title>
+    <link rel="stylesheet" href="/static/css/deulmaru_const.css">
+</head>
+<body>
+
+    <header th:replace="layout/header :: header"></header>
+
+    <h2>병해충 검색</h2>
+
+    <div class="search-container">
+        <label><input type="radio" name="searchType" value="sick" checked> 병해충명</label>
+        <label><input type="radio" name="searchType" value="crop"> 작물명</label>
+        <input type="text" id="searchQuery" placeholder="검색어를 입력하세요">
+        <button onclick="fetchSearchData()">검색</button>
+    </div>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>작물명</th>
+                <th>병해충명</th>
+                <th>영문명</th>
+                <th>중국명</th>
+                <th>이미지</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script src="/static/js/deulmaru_const.js"></script>
+
+</body>
+</html>

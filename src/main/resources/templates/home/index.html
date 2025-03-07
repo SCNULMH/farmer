@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 검색 시스템</title>
+    <link rel="stylesheet" href="/css/deulmaru_const.css">
+    <script src="/js/deulmaru_const.js" defer></script>
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header th:replace="layout/header :: header"></header>
+
+    <div class="container">
+        <h1>병해충 검색 시스템</h1>
+
+        <!-- 로그인 여부에 따른 UI 변경 -->
+        <div class="auth-section">
+            <div th:if="${session.user != null}">
+                <p>환영합니다, <span th:text="${session.user.nickname}"></span> 님!</p>
+                <a href="/auth/mypage" class="btn">마이페이지</a>
+                <a href="/auth/logout" class="btn btn-danger">로그아웃</a>
+            </div>
+            <div th:if="${session.user == null}">
+                <a href="/auth/login" class="btn">로그인</a>
+                <a href="/auth/register-options" class="btn btn-primary">회원가입</a>
+            </div>
+        </div>
+
+        <!-- 🟢 탭 UI -->
+        <div class="tabs">
+            <button onclick="showTab('search')">병해충 검색</button>
+            <button onclick="showTab('consult')">병해충 상담</button>
+        </div>
+
+        <!-- 🟢 병해충 검색 탭 -->
+        <div id="searchTab" class="tab-content">
+            <h3>병해충 검색</h3>
+            <label><input type="radio" name="searchType" value="sick" checked> 병해충명</label>
+            <label><input type="radio" name="searchType" value="crop"> 작물명</label>
+            
+            <input type="text" id="searchQuery" placeholder="검색어를 입력하세요">
+            <button onclick="fetchSearchData()">검색</button>
+
+            <table id="resultTable">
+                <thead>
+                    <tr>
+                        <th>작물명</th>
+                        <th>병해충명</th>
+                        <th>이미지</th>
+                        <th>상세보기</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- 🟢 병해충 상담 탭 -->
+        <div id="consultTab" class="tab-content" style="display: none;">
+            <h3>병해충 상담</h3>
+            <input type="text" id="consultQuery" placeholder="상담 내용을 입력하세요">
+            <button onclick="fetchConsultData()">검색</button>
+        
+            <table id="consultResultTable">
+                <thead>
+                    <tr>
+                        <th>상담 제목</th>
+                        <th>상담 번호</th>
+                        <th>상담 요청 날짜</th>
+                        <th>상세보기</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        
+            <div id="paging">
+                <span id="pageInfo"></span>
+                <div id="pageNumbers"></div>  
+            </div>
+            <button id="prevBtn" onclick="changePage(-1)">◀ 이전</button>
+            <button id="nextBtn" onclick="changePage(1)">다음 ▶</button>
+        </div>
+    </div>
+
+</body>
+</html>

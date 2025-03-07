@@ -1,32 +1,15 @@
 <header>
-    <h1>농업정보시스템</h1>
-
-    <div th:if="${session.user}">
-        <p>환영합니다, <span th:text="${session.user.username}"></span>님!</p>
+    <div class="header-container">
+        <h1><a href="/">병해충 검색 시스템</a></h1>
         <nav>
-            <ul>
-                <li><a href="/">홈</a></li>
-                <li><a href="/auth/mypage">마이페이지</a></li>
-                <li>
-                    <form action="/auth/logout" method="post">
-                        <button type="submit">로그아웃</button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <div th:unless="${session.user}">
-        <nav>
-            <ul>
-                <li><a href="/auth/login">로그인</a></li>
-                <li><a href="/auth/register-options">회원가입</a></li>
-                <li>
-                    <a href="/auth/kakao/login">
-                        <img src="https://developers.kakao.com/assets/img/about/logos/kakaologin/kr/kakaologin_medium_wide.png" alt="카카오 로그인">
-                    </a>
-                </li>
-            </ul>
+            <div th:if="${session.user == null}">
+                <a href="/auth/login">로그인</a>
+                <a href="/auth/register-options">회원가입</a>
+            </div>
+            <div th:if="${session.user != null}">
+                <a href="/mypage" class="btn">마이페이지</a>
+                <a href="/auth/logout">로그아웃</a>
+            </div>
         </nav>
     </div>
 </header>
