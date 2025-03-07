@@ -1,25 +1,32 @@
 <header>
-    <h1>농업 정보 시스템</h1>
+    <h1>농업정보시스템</h1>
 
-    <nav>
-        <ul>
-            <li><a href="/">홈</a></li>
-            <li><a href="/service/deulmaru_const">병해충 검색</a></li>
-
-            <!-- ✅ 로그인 상태 확인 후 버튼 표시 -->
-            <th:block th:if="${session.user_id}">
+    <div th:if="${session.user}">
+        <p>환영합니다, <span th:text="${session.user.username}"></span>님!</p>
+        <nav>
+            <ul>
+                <li><a href="/">홈</a></li>
                 <li><a href="/auth/mypage">마이페이지</a></li>
                 <li>
                     <form action="/auth/logout" method="post">
                         <button type="submit">로그아웃</button>
                     </form>
                 </li>
-            </th:block>
+            </ul>
+        </nav>
+    </div>
 
-            <th:block th:unless="${session.user_id}">
+    <div th:unless="${session.user}">
+        <nav>
+            <ul>
                 <li><a href="/auth/login">로그인</a></li>
-                <li><a href="/auth/register">회원가입</a></li>
-            </th:block>
-        </ul>
-    </nav>
+                <li><a href="/auth/register-options">회원가입</a></li>
+                <li>
+                    <a href="/auth/kakao/login">
+                        <img src="https://developers.kakao.com/assets/img/about/logos/kakaologin/kr/kakaologin_medium_wide.png" alt="카카오 로그인">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>

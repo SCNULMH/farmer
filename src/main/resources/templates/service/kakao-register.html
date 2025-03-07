@@ -4,34 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>카카오 회원가입</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <header>
-        <h1>카카오 회원가입</h1>
-    </header>
 
-    {% if session["kakaoUserInfo"] %}
-        <form action="/auth/kakao/register" method="post">
-            <label>아이디 (username)</label>
-            <input type="text" name="username" required>
+<header th:replace="~{layout/header :: header}"></header>
 
-            <label>비밀번호</label>
-            <input type="password" name="password" required>
+<main>
+    <h1>카카오 회원가입</h1>
 
-            <label>닉네임 (nickname)</label>
-            <input type="text" name="nickname" value="{{ session['kakaoUserInfo']['nickname'] }}" required>
+    <form th:action="@{/auth/kakao/register}" method="post">
+        <label>아이디</label>
+        <input type="text" name="username" required>
 
-            <label>프로필 이미지</label>
-            {% if session['kakaoUserInfo']['profileImage'] %}
-                <img src="{{ session['kakaoUserInfo']['profileImage'] }}" width="100">
-            {% endif %}
+        <label>비밀번호</label>
+        <input type="password" name="password" required>
 
-            <button type="submit">회원가입 완료</button>
-        </form>
-    {% else %}
-        <p>잘못된 접근입니다. 카카오 로그인 후 다시 시도해주세요.</p>
-        <a href="/">메인으로</a>
-    {% endif %}
+        <label>닉네임</label>
+        <input type="text" name="nickname" th:value="${session.kakaoUserInfo.nickname}" required>
+
+        <label>프로필 이미지</label>
+        <img th:if="${session.kakaoUserInfo.profileImage}" th:src="${session.kakaoUserInfo.profileImage}" width="100">
+
+        <button type="submit">회원가입 완료</button>
+    </form>
+
+    <th:block th:if="${error}">
+        <div style="color: red;" th:text="${error}"></div>
+    </th:block>
+</main>
+
 </body>
 </html>

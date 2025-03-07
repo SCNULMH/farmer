@@ -1,41 +1,32 @@
 package com.smhrd.deulmaru.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import jakarta.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class NcpmsService {
-    @Value("${ncpms.api.base-url}")
-    private String apiBaseUrl;
 
-    @Value("${ncpms.api.key}")
-    private String apiKey;
+    private final String BASE_URL = "http://ncpms.rda.go.kr/npmsAPI/service";
+    private final String API_KEY = "202527b8644da53e300b8e2584ea2839576d";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
-    public String search(String query, String type) {
-        String url = apiBaseUrl + "?apiKey=" + apiKey +
-                "&serviceCode=SVC01&serviceType=AA001&displayCount=10&startPoint=1" +
-                (type.equals("crop") ? "&cropName=" + query : "&sickNameKor=" + query);
-        return restTemplate.getForObject(url, String.class);
+    public NcpmsService() {
+        this.restTemplate = new RestTemplate();
     }
 
-    public String getSickDetail(String sickKey) {
-        String url = apiBaseUrl + "?apiKey=" + apiKey + "&serviceCode=SVC05&serviceType=AA001&sickKey=" + sickKey;
-        return restTemplate.getForObject(url, String.class);
+    // ✅ 병해충 검색 요청
+    public Map<String, Object> searchDisease(String query, String type) {
+        String url = BASE_URL + "/pestList?apiKey=" + API_KEY + "&searchWord=" + query + "&searchType=" + type;
+        return restTemplate.getForObject(url, HashMap.class);
     }
 
-    public String getConsult(String query, int page) {
-        String url = apiBaseUrl + "?apiKey=" + apiKey + "&serviceCode=SVC41&serviceType=AA001" +
-                "&dgnssReqSj=" + query + "&displayCount=10&startPoint=" + ((page - 1) * 10 + 1);
-        return restTemplate.getForObject(url, String.class);
-    }
-
-    public String getConsultDetail(String consultId) {
-        String url = apiBaseUrl + "?apiKey=" + apiKey + "&serviceCode=SVC42&serviceType=AA001&dgnssReqNo=" + consultId;
+    // ✅ 병해충 상세보기 요청
+    public String getDiseaseDetail(String sickKey) {
+        String url = BASE_URL + "/pestDetail?apiKey=" + API_KEY + "&sickKey=" + sickKey;
         return restTemplate.getForObject(url, String.class);
     }
 }

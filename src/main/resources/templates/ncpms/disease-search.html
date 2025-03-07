@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 검색</title>
+    <script src="/static/js/script.js"></script>
+</head>
+<body>
+
+    <h1>병해충 검색</h1>
+    <input type="text" id="searchQuery" placeholder="병해충 검색어 입력">
+    <select id="searchType">
+        <option value="sick">병해충명</option>
+        <option value="crop">작물명</option>
+    </select>
+    <button onclick="fetchSearchData()">검색</button>
+
+    <table id="resultTable">
+        <thead>
+            <tr>
+                <th>작물명</th>
+                <th>한글명</th>
+                <th>영문명</th>
+                <th>중문명</th>
+                <th>이미지</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 검색 결과 동적 삽입 -->
+        </tbody>
+    </table>
+
+</body>
+</html>

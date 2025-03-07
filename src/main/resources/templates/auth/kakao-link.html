@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 계정 연동</title>
+</head>
+<body>
+
+    <h1>카카오 계정 연동</h1>
+
+    <!-- ✅ 이미 연동된 경우 안내 메시지 표시 -->
+    <div th:if="${alreadyLinked}">
+        <p>이미 카카오 계정과 연동된 상태입니다.</p>
+        <p>연동된 카카오 ID: <span th:text="${linkedKakaoId}"></span></p>
+        <a href="/mypage">마이페이지로 이동</a>
+    </div>
+
+    <!-- ✅ 연동되지 않은 경우 연동 버튼 표시 -->
+    <div th:if="${!alreadyLinked}">
+        <p>카카오 계정을 연동하시겠습니까?</p>
+        <form action="/auth/kakao/link" method="post">
+            <button type="submit">카카오 계정 연동하기</button>
+        </form>
+        <a href="/mypage">취소</a>
+    </div>
+
+</body>
+</html>

@@ -1,12 +1,12 @@
 package com.smhrd.deulmaru.controller;
 
 import com.smhrd.deulmaru.service.NcpmsService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // CORS 허용
 public class NcpmsController {
 
     private final NcpmsService ncpmsService;
@@ -15,23 +15,15 @@ public class NcpmsController {
         this.ncpmsService = ncpmsService;
     }
 
-    @GetMapping(value = "/search", produces = "application/xml")
-    public ResponseEntity<String> search(@RequestParam String query, @RequestParam(defaultValue = "sick") String type) {
-        return ResponseEntity.ok(ncpmsService.search(query, type));
+    // ✅ 병해충 검색 API
+    @GetMapping("/search")
+    public Map<String, Object> searchDisease(@RequestParam String query, @RequestParam String type) {
+        return ncpmsService.searchDisease(query, type);
     }
 
-    @GetMapping(value = "/sick_detail", produces = "application/xml")
-    public ResponseEntity<String> sickDetail(@RequestParam String sick_key) {
-        return ResponseEntity.ok(ncpmsService.getSickDetail(sick_key));
-    }
-
-    @GetMapping("/consult")
-    public ResponseEntity<String> consult(@RequestParam String query, @RequestParam(defaultValue = "1") int page) {
-        return ResponseEntity.ok(ncpmsService.getConsult(query, page));
-    }
-
-    @GetMapping("/consult_detail")
-    public ResponseEntity<String> consultDetail(@RequestParam String consult_id) {
-        return ResponseEntity.ok(ncpmsService.getConsultDetail(consult_id));
+    // ✅ 병해충 상세보기 API
+    @GetMapping("/sick_detail")
+    public String getDiseaseDetail(@RequestParam String sick_key) {
+        return ncpmsService.getDiseaseDetail(sick_key);
     }
 }

@@ -1,36 +1,29 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
-    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <header>
-        <h1>마이페이지</h1>
-    </header>
 
-    <section>
-        <h2>내 정보</h2>
-        <p><strong>아이디:</strong> {{ session["user"].username }}</p>
-        <p><strong>닉네임:</strong> {{ session["user"].nickname }}</p>
-        {% if session["user"].profileImage %}
-            <img src="{{ session['user'].profileImage }}" width="100">
-        {% endif %}
+    <h1>마이페이지</h1>
 
-        <!-- 🔹 카카오 계정 연동 상태 확인 -->
-        {% if session["user"].kakaoId %}
-            <p>✅ 카카오 계정 연동 완료</p>
-            <form action="/auth/kakao/unlink" method="post">
-                <button type="submit">카카오 계정 연동 해제</button>
-            </form>
-        {% else %}
-            <p>❌ 카카오 계정 연동되지 않음</p>
-            <a href="/auth/kakao/login" class="btn btn-warning">카카오 계정 연동하기</a>
-        {% endif %}
-    </section>
+    <p>아이디: <span th:text="${user.username}"></span></p>
+    <p>닉네임: <span th:text="${user.nickname}"></span></p>
+	<p><strong>프로필 이미지:</strong></p>
+	       <img th:if="${user.profileImage != null}" th:src="${user.profileImage}" alt="프로필 이미지" width="100">
+		
+    <!-- ✅ 카카오 연동 여부 확인 후 버튼 표시 -->
+    <div>
+        <form th:if="${user.kakaoId == null}" action="/auth/kakao/link" method="post">
+            <button type="submit">카카오 계정 연동하기</button>
+        </form>
 
-    <a href="/">메인으로</a>
+        <form th:if="${user.kakaoId != null}" action="/auth/kakao/unlink" method="post">
+            <button type="submit">카카오 계정 연동 해제</button>
+        </form>
+    </div>
+
 </body>
 </html>

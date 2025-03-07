@@ -1,11 +1,7 @@
 package com.smhrd.deulmaru.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -21,10 +17,58 @@ public class UserEntity {
     private String password;
 
     private String nickname;
+    private String profileImage;
 
-    private String profileImage; // 프로필 이미지 저장
+    @Column(unique = true, nullable = true)
+    private Long kakaoId;
 
-    @Column(unique = true)  // ✅ `kakao_id`를 DB에 저장할 경우 UNIQUE 설정
-    private String kakaoId; // ✅ 기존 Long → String 변경
+    // ✅ Getter 메서드 직접 추가
+    public Long getId() {
+        return id;
+    }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public Long getKakaoId() {
+        return kakaoId;
+    }
+
+    // ✅ Setter 메서드 직접 추가
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void setKakaoId(Long kakaoId) {
+        this.kakaoId = kakaoId;
+    }
 }

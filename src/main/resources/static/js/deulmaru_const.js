@@ -26,8 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			return;
 		}
 
-		let url = `http://localhost:8082/api/search?query=${query}&type=${searchType}`;  // type 파라미터 추가
-		console.log("🔍 병해충 검색 요청 URL:", url); // 요청 URL 확인
+		let url = `http://localhost:8082/api/search?query=${query}&type=${searchType}`;		console.log("🔍 병해충 검색 요청 URL:", url); // 요청 URL 확인
 
 		fetch(url)
 			.then(response => {
@@ -108,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			return;
 		}
 
+		// ✅ 병해충 상세보기 요청 URL 수정
 		let url = `http://localhost:8082/api/sick_detail?sick_key=${sickKey}`;
 		console.log("🔍 병해충 상세보기 요청 URL:", url); // 요청 URL 확인
 
@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			alert("검색어를 입력하세요!");
 			return;
 		}
+
 
 		let url = `http://localhost:8082/api/consult?query=${query}&page=${currentPage}`;
 		console.log("🔍 병해충 상담 요청 URL:", url); // 요청 URL 확인
@@ -255,7 +256,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	        return;
 	    }
 
-	    let url = `http://localhost:8082/api/consult_detail?consult_id=${consultId}`;
+
+		let url = `http://localhost:8082/api/consult_detail?consult_id=${consultId}`;
 	    console.log("🔍 병해충 상담 상세보기 요청 URL:", url);
 
 	    fetch(url)
@@ -316,4 +318,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	window.closeChatbot = function() {
 		document.getElementById('chatbot').style.display = 'none';
 	};
+	
+	
+	// 카카오 연동 해제
+	document.getElementById("unlinkKakaoBtn").addEventListener("click", function() {
+	    fetch("/auth/kakao/unlink", {
+	        method: "POST"
+	    }).then(response => {
+	        if (response.redirected) {
+	            window.location.href = response.url;
+	        }
+	    }).catch(error => {
+	        console.error("🔴 카카오 연동 해제 에러:", error);
+	    });
+	});
+
 });
