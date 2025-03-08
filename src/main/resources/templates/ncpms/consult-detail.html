@@ -1,1 +1,111 @@
-// 상담 검색
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 상담 상세보기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+        .consult-images img {
+            max-width: 100%;
+            height: auto;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .back-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="consultTitle">병해충 상담 상세 정보</h1>
+    <p><strong>상담 요청 내용:</strong> <span id="consultContent">불러오는 중...</span></p>
+    <p><strong>전문가 의견:</strong> <span id="consultOpinion">불러오는 중...</span></p>
+    <div class="consult-images" id="consultImages"></div>
+    <a href="javascript:history.back()" class="back-button">이전 페이지로 돌아가기</a>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let params = new URLSearchParams(window.location.search);
+    let consultId = params.get("consult_id");
+
+    if (consultId) {
+        let apiUrl = `http://localhost:8082/api/consult_detail?consult_id=${consultId}`;
+        console.log("🔍 병해충 상담 상세 요청:", apiUrl);
+
+        fetch(apiUrl)
+            .then(response => response.text())
+            .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+            .then(data => {
+                let title = data.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
+                let content = data.getElementsByTagName("reqestCn")[0]?.textContent || "설명 없음";
+                let opinion = data.getElementsByTagName("dgnssOpin")[0]?.textContent || "전문가 의견 없음";
+
+                document.getElementById("consultTitle").innerText = title;
+                document.getElementById("consultContent").innerText = content;
+                document.getElementById("consultOpinion").innerText = opinion;
+
+                // ✅ 이미지 리스트 가져오기
+                let imageContainer = document.getElementById("consultImages");
+                let imageItems = data.getElementsByTagName("imageList")[0]?.getElementsByTagName("item");
+                let imageHtml = "";
+
+                if (imageItems && imageItems.length > 0) {
+                    for (let i = 0; i < imageItems.length; i++) {
+                        let imageUrl = imageItems[i].getElementsByTagName("image")[0]?.textContent || "";
+                        if (imageUrl) {
+                            imageHtml += `<img src="${imageUrl}" alt="상담 이미지">`;
+                        }
+                    }
+                } else {
+                    imageHtml = "<p>이미지가 없습니다.</p>";
+                }
+                imageContainer.innerHTML = imageHtml;
+            })
+            .catch(error => {
+                console.error("🔴 병해충 상담 상세보기 에러:", error);
+                document.getElementById("consultContent").innerText = "상세 정보를 불러오는 중 오류가 발생했습니다.";
+            });
+    } else {
+        document.getElementById("consultContent").innerText = "잘못된 접근입니다.";
+    }
+});
+</script>
+
+</body>
+</html>

@@ -23,4 +23,24 @@
     <a href="/disease/search">← 검색으로 돌아가기</a>
 
 </body>
+	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+	    let params = new URLSearchParams(window.location.search);
+	    let sickKey = params.get("sick_key");
+
+	    if (sickKey) {
+	        fetch(`http://localhost:8082/api/sick_detail?sick_key=${sickKey}`)
+	            .then(response => response.text())
+	            .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+	            .then(data => {
+	                let title = data.getElementsByTagName("sickNameKor")[0]?.textContent || "정보 없음";
+	                let description = data.getElementsByTagName("symptoms")[0]?.textContent || "설명 없음";
+
+	                document.getElementById("sickTitle").innerText = title;
+	                document.getElementById("sickDescription").innerText = description;
+	            });
+	    }
+	});
+	</script>
+
 </html>
