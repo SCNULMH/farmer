@@ -1,1 +1,195 @@
-// 상담 상세보기
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>병해충 상담 검색</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .search-box button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-box button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th, td {
+            padding: 10px;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>병해충 상담 검색</h1>
+
+    <!-- 검색 입력 창 -->
+    <div class="search-box">
+        <input type="text" id="consultQuery" placeholder="검색어를 입력하세요">
+        <button onclick="fetchConsultData()">검색</button>
+    </div>
+
+    <!-- 결과 테이블 -->
+    <table>
+        <thead>
+            <tr>
+                <th>상담 제목</th>
+                <th>상담 ID</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody id="consultResultTable"></tbody>
+    </table>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        <button id="prevBtn" onclick="changePage(-1)">이전</button>
+        <span id="pageInfo">페이지: 1</span>
+        <button id="nextBtn" onclick="changePage(1)">다음</button>
+    </div>
+</div>
+
+<script>
+let currentPage = 1;
+let totalPages = 1;
+
+// ✅ 병해충 상담 검색 함수
+function fetchConsultData() {
+    let query = document.getElementById("consultQuery").value;
+    if (!query) {
+        alert("검색어를 입력하세요!");
+        return;
+    }
+
+    let url = `http://localhost:8082/api/consult?query=${query}&page=${currentPage}`;
+    console.log("🔍 병해충 상담 요청 URL:", url);
+
+    fetch(url)
+        .then(response => response.text())
+        .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+        .then(data => {
+            let items = data.getElementsByTagName("item");
+            let tableBody = document.getElementById("consultResultTable");
+            tableBody.innerHTML = ""; // 기존 결과 삭제
+
+            if (items.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='3'>검색 결과가 없습니다.</td></tr>";
+                return;
+            }
+
+            for (let item of items) {
+                let title = item.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
+                let consultId = item.getElementsByTagName("dgnssReqNo")[0]?.textContent || "";
+                let requestDate = item.getElementsByTagName("registDatetm")[0]?.textContent || "정보 없음";
+
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${title}</td>
+                    <td>${consultId}</td>
+                    <td>${requestDate}</td>
+                `;
+
+                // ✅ 상담 상세 페이지로 이동
+                row.onclick = function() {
+                    window.location.href = `consult-detail.html?consult_id=${consultId}`;
+                };
+
+                tableBody.appendChild(row);
+            }
+
+            // ✅ 총 페이지 수 업데이트
+            totalPages = Math.ceil(parseInt(data.getElementsByTagName("totalCount")[0]?.textContent || "1") / 10);
+            updatePageInfo();
+        })
+        .catch(error => {
+            console.error("🔴 병해충 상담 검색 에러:", error);
+        });
+}
+
+// ✅ 페이지 정보 업데이트
+function updatePageInfo() {
+    document.getElementById("pageInfo").innerText = `페이지: ${currentPage}`;
+    document.getElementById("prevBtn").disabled = currentPage <= 1;
+    document.getElementById("nextBtn").disabled = currentPage >= totalPages;
+}
+
+// ✅ 페이지 변경 함수
+function changePage(direction) {
+    if (direction === -1 && currentPage > 1) {
+        currentPage--;
+    } else if (direction === 1 && currentPage < totalPages) {
+        currentPage++;
+    }
+    fetchConsultData();
+}
+</script>
+
+</body>
+</html>

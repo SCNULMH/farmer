@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         
         // disease-detail.html로 이동하며 sickKey 전달
-        window.location.href = `disease-detail.html?sick_key=${sickKey}`;
+        window.location.href = `disease-detail?sick_key=${sickKey}`;
     };
 
     // ✅ 병해충 상담 검색 요청 함수
@@ -123,6 +123,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         // consult-detail.html로 이동하며 consultId 전달
-        window.location.href = `consult-detail.html?consult_id=${consultId}`;
+        window.location.href = `consult-detail?consult_id=${consultId}`;
     };
 });

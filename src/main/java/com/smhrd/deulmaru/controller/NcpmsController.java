@@ -14,7 +14,9 @@ public class NcpmsController {
     public NcpmsController(NcpmsService ncpmsService) {
         this.ncpmsService = ncpmsService;
     }
+    
 
+    
     @GetMapping(value = "/search", produces = "application/xml")
     public ResponseEntity<String> search(@RequestParam String query, @RequestParam(defaultValue = "sick") String type) {
         return ResponseEntity.ok(ncpmsService.search(query, type));
