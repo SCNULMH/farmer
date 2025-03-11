@@ -23,7 +23,7 @@ public class AuthController {
     // ✅ 로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
-        return "deulmaru_Login";
+        return "/auth/deulmaru_Login";
     }
 
     // ✅ 로그인 처리 (일반 로그인)
