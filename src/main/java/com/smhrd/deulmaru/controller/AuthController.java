@@ -84,7 +84,10 @@ public class AuthController {
         return "auth/deulmaru_SignIn_Main"; // ✅ 이 경로가 templates 내부에 존재하는지 확인
     }
     
+
+    @GetMapping("/deulmaru_SignIn")
+    public String deulmaruSignIn() {
+        return "auth/deulmaru_SignIn"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
     
-    
-   
 }

@@ -23,7 +23,7 @@ public class KakaoController {
     private UserRepository userRepository;
     
  // ✅ 카카오 로그인 페이지 (로그인 버튼 제공)
-    @GetMapping("/login")
+    @GetMapping("-login")
     public String kakaoLoginPage() {
         return "auth/kakao-login"; // 🔹 templates/auth/kakao-login.html 렌더링
     }
@@ -60,34 +60,34 @@ public class KakaoController {
         
         if (normalUser.isPresent()) {
             session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-            return "redirect:/auth/kakao/link"; // ✅ 연동 페이지로 이동
+            return "redirect:/auth/kakao-link"; // ✅ 연동 페이지로 이동
         } else {
             session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-            return "redirect:/auth/kakao/register"; // ✅ 신규 회원 가입 페이지로 이동
+            return "redirect:/auth/kakao/kakao-register"; // ✅ 신규 회원 가입 페이지로 이동
         }
     }
 
  // ✅ 카카오 계정 연동 페이지
-    @GetMapping("/link")
+    @GetMapping("-link")
     public String showKakaoLinkPage(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
 
         // ✅ 로그인한 사용자 없으면 로그인 페이지로 이동
         if (user == null) {
-            return "redirect:/auth/login";
+            return "redirect:/auth/deulmaru_Login";
         }
 
         // ✅ 이미 카카오 계정과 연동된 경우
         if (user.getKakaoId() != null) {
             model.addAttribute("alreadyLinked", true);
             model.addAttribute("linkedKakaoId", user.getKakaoId());
-            return "auth/kakao-link";
+            return "/";
         }
 
         // ✅ 카카오 로그인 정보가 없는 경우
         if (kakaoUserInfo == null || !kakaoUserInfo.containsKey("kakaoId")) {
-            return "redirect:/auth/kakao/login";
+            return "redirect:/auth/kakao-login";
         }
 
         model.addAttribute("alreadyLinked", false);
@@ -103,7 +103,7 @@ public class KakaoController {
         Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
 
         if (user == null || kakaoUserInfo == null) {
-            return "redirect:/auth/kakao/login"; // ✅ 로그인 안 한 상태면 로그인 페이지로 이동
+            return "redirect:/auth/kakao-login"; // ✅ 로그인 안 한 상태면 로그인 페이지로 이동
         }
 
         Long kakaoId = (Long) kakaoUserInfo.get("kakaoId");
@@ -121,7 +121,7 @@ public class KakaoController {
     public String unlinkKakao(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/auth/login"; // ✅ 로그인 안 한 상태면 로그인 페이지로 이동
+            return "redirect:/auth/deulmaru_Login"; // ✅ 로그인 안 한 상태면 로그인 페이지로 이동
         }
 
         user.setKakaoId(null); // ✅ 카카오 ID 제거
@@ -133,7 +133,7 @@ public class KakaoController {
         return "redirect:/mypage"; // ✅ 연동 해제 후 마이페이지로 이동
     }
  // ✅ 카카오 회원가입 페이지 (세션 확인 후 이동)
-    @GetMapping("/register")
+    @GetMapping("-register")
     public String kakaoRegisterPage(HttpSession session, Model model) {
         Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
 
