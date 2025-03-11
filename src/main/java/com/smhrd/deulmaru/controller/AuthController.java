@@ -23,7 +23,7 @@ public class AuthController {
     // ✅ 로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
-        return "auth/deulmaru_Login";
+        return "deulmaru_Login";
     }
 
     // ✅ 로그인 처리 (일반 로그인)
@@ -36,7 +36,7 @@ public class AuthController {
             return "redirect:/";
         } else {
             model.addAttribute("error", "로그인 실패: 아이디 또는 비밀번호가 틀립니다.");
-            return "auth/login";
+            return "login";
         }
     }
 
@@ -50,13 +50,13 @@ public class AuthController {
     // ✅ 회원가입 선택 페이지
     @GetMapping("/register-options")
     public String showRegisterOptions() {
-        return "auth/register-options"; // ✅ templates/auth/register-options.html
+        return "auth/deulmaru_SignIn_Main"; // ✅ templates/auth/register-options.html
     }
 
     // ✅ 일반 회원가입 페이지
     @GetMapping("/register")
     public String registerPage() {
-        return "auth/register";
+        return "auth/deulmaru_SignIn";
     }
 
     // ✅ 일반 회원가입 처리
