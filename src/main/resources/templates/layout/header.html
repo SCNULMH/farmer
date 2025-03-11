@@ -1,15 +1,19 @@
 <header>
     <div class="header-container">
-        <h1><a href="/">병해충 검색 시스템</a></h1>
-        <nav>
-            <div th:if="${session.user == null}">
-                <a href="/auth/login">로그인</a>
-                <a href="/auth/register-options">회원가입</a>
-            </div>
-            <div th:if="${session.user != null}">
-                <a href="/mypage" class="btn">마이페이지</a>
-                <a href="/auth/logout">로그아웃</a>
-            </div>
-        </nav>
+		<div class="container">
+		    <h1>병해충 검색 시스템</h1>
+
+		    <!-- 로그인 여부에 따른 UI 변경 -->
+		    <div class="auth-section">
+		        <div th:if="${session.user != null}">
+		            <p>환영합니다, <span th:text="${session.user.nickname}"></span> 님!</p>
+		            <a href="/auth/mypage" class="btn">마이페이지</a>
+		            <a href="/auth/logout" class="btn btn-danger">로그아웃</a>
+		        </div>
+		        <div th:if="${session.user == null}">
+		            <a href="/auth/login" class="btn">로그인</a>
+		            <a href="/auth/register-options" class="btn btn-primary">회원가입</a>
+		        </div>
+		    </div>
     </div>
 </header>

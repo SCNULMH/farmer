@@ -1,11 +1,28 @@
 package com.smhrd.deulmaru.entity;
 
 import jakarta.persistence.*;
-
+import lombok.*;
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
+	private String nickname;
+	private String profileImage;
+	
+	@Column(unique = true, nullable = true)
+	private Long kakaoId;
+	
+	public UserEntity(String username, String password, String nickname, Long kakaoId, String profileImage) {
+		this.username = username;
+		this.password = password;
+		this.nickname = nickname;
+		this.kakaoId = kakaoId;
+		this.profileImage = profileImage;
+	}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,59 +33,56 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private String nickname;
-    private String profileImage;
-
-    @Column(unique = true, nullable = true)
-    private Long kakaoId;
-
-    // ✅ Getter 메서드 직접 추가
+    public UserEntity() {
+    	
+    }
     public Long getId() {
-        return id;
-    }
+		return id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getNickname() {
-        return nickname;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getProfileImage() {
-        return profileImage;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public Long getKakaoId() {
-        return kakaoId;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    // ✅ Setter 메서드 직접 추가
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getNickname() {
+		return nickname;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getProfileImage() {
+		return profileImage;
+	}
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
+	public Long getKakaoId() {
+		return kakaoId;
+	}
 
-    public void setKakaoId(Long kakaoId) {
-        this.kakaoId = kakaoId;
-    }
+	public void setKakaoId(Long kakaoId) {
+		this.kakaoId = kakaoId;
+	}
+
+
 }
