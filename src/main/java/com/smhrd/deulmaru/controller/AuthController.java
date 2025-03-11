@@ -73,4 +73,18 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/deulmaru_Login")
+    public String deulmaru_Login() {
+        return "auth/deulmaru_Login"; // ✅ 이 경로가 templates 내부에 존재하는지 확인
+    }
+    
+    
+    @GetMapping("/signin")
+    public String signInPage() {
+        return "auth/deulmaru_SignIn_Main"; // ✅ 이 경로가 templates 내부에 존재하는지 확인
+    }
+    
+    
+    
+   
 }
