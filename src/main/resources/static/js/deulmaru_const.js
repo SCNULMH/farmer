@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        let url = `http://localhost:8082/api/search?query=${query}&type=${searchType}`;
+        let url = `http://localhost:8082/ncpms/search?query=${query}&type=${searchType}`;
         console.log("🔍 병해충 검색 요청 URL:", url);
 
         fetch(url)
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        let url = `http://localhost:8082/api/consult?query=${query}`;
+        let url = `http://localhost:8082/ncpms/consult?query=${query}`;
         console.log("🔍 병해충 상담 요청 URL:", url);
 
         fetch(url)

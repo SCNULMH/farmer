@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let consultId = params.get("consult_id");
 
     if (consultId) {
-        let apiUrl = `http://localhost:8082/api/consult_detail?consult_id=${consultId}`;
+        let apiUrl = `http://localhost:8082/ncpms/consult_detail?consult_id=${consultId}`;
         console.log("🔍 병해충 상담 상세 요청:", apiUrl);
 
         fetch(apiUrl)

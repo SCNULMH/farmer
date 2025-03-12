@@ -128,7 +128,7 @@ function fetchConsultData() {
         return;
     }
 
-    let url = `http://localhost:8082/api/consult?query=${query}&page=${currentPage}`;
+    let url = `http://localhost:8082/ncpms/consult?query=${query}&page=${currentPage}`;
     console.log("🔍 병해충 상담 요청 URL:", url);
 
     fetch(url)

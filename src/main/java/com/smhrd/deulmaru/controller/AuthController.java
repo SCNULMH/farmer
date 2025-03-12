@@ -26,6 +26,12 @@ public class AuthController {
         return "/auth/deulmaru_Login";
     }
 
+    // 마이페이지
+    @GetMapping("/mypage")
+    public String mypage() {
+        return "/auth/mypage";
+    }
+
     // ✅ 로그인 처리 (일반 로그인)
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {

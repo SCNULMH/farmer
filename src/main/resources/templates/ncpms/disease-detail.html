@@ -27,7 +27,7 @@
             let sickKey = document.getElementById("sickKey").textContent; // HTML에 전달된 sickKey 가져오기
 
             if (sickKey) {
-                fetch(`/api/sick_detail?sick_key=${sickKey}`)
+                fetch(`/ncpms/sick_detail?sick_key=${sickKey}`)
                     .then(response => response.text()) // XML 응답을 처리
                     .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
                     .then(data => {

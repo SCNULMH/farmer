@@ -33,9 +33,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    public UserEntity() {
-    	
-    }
     public Long getId() {
 		return id;
 	}
