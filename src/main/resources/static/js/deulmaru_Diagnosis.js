@@ -12,10 +12,6 @@ function toggleGuide() {
     }
 }
 
-
-
-
-
 // 파일 업로드
 document.addEventListener("DOMContentLoaded", function () {
     const dropZone = document.getElementById("drop-file");
@@ -70,6 +66,3 @@ document.addEventListener("DOMContentLoaded", function () {
         updateFileList(files);
     });
 });
-
-
-

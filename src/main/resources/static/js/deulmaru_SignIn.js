@@ -1,4 +1,3 @@
-// DOM이 로드된 후 실행
 document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#birthdateInput", {
         dateFormat: "Y/m/d", // YYYY/MM/DD 형식 적용
