@@ -97,6 +97,20 @@ public class AuthController {
     }
     
     
+    @GetMapping("/deulmaru_dictionary")
+    public String deulmaru_dictionary() {
+        return "ncpms/deulmaru_dictionary"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
+    
+    @GetMapping("/deulmaru_QnA")
+    public String deulmaru_QnA() {
+        return "ncpms/deulmaru_QnA"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
+    
+    @GetMapping("/deulmaru_Diagnosis")
+    public String deulmaru_Diagnosis() {
+        return "ncpms/deulmaru_Diagnosis"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
     
     
     
