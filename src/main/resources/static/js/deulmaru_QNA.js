@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	                for (let i = 0; i < imageItems.length; i++) {
 	                    let imageUrl = imageItems[i].getElementsByTagName("image")[0]?.textContent || "";
 	                    if (imageUrl) {
-	                        imageHtml += `<img src="${imageUrl}" alt="상담 이미지" width="150" style="margin:5px;">`;
+	                        imageHtml += `<img src="${imageUrl}" alt="상담 이미지" width="150" style="margin:5px;" onclick="showImageModal('${imageUrl}')">`;
 	                    }
 	                }
 	            }
@@ -106,9 +106,25 @@ document.addEventListener("DOMContentLoaded", function() {
 	            console.error("🔴 병해충 상담 상세보기 에러:", error);
 	        });
 	};
+	
+});
+
+// 이미지 클릭 시 모달로 확대보기
+	function showImageModal(imageSrc) {
+	    var modal = document.getElementById("imageModal");
+	    var modalImage = document.getElementById("modalImage");
+
+	    modalImage.src = imageSrc; // 클릭한 이미지의 src를 모달 이미지에 설정
+	    modal.style.display = "block"; // 모달 표시
+	}
+
+	// 모달 닫기
+	function closeImageModal() {
+	    document.getElementById("imageModal").style.display = "none"; // 모달 숨김
+	}
+
 
     // 모달 닫기 함수
     window.closeModal = function() {
         document.getElementById('consultDetailModal').style.display = 'none';
     };
-});

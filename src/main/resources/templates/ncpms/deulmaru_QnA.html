@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/deulmaru_QnA.css">
   </head>
   <body>
+ 
     <div th:replace="layout/header :: header"></div>
     
     <!-- 메뉴 선택 바 -->
@@ -76,6 +77,15 @@
         <div id="consultDetailContainer"></div>
       </div>
     </div>
+    
+    <!-- 모달 -->
+	<div id="imageModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close" onclick="closeImageModal()">&times;</span>
+	        <img class="modal-image" id="modalImage" src="" alt="Image">
+	    </div>
+	</div>
+    
     
     <!-- 이삭이 버튼 -->
     <div class="button-isac mb-5">
