@@ -96,4 +96,10 @@ public class AuthController {
         return "auth/deulmaru_SignIn"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
     }
     
+    
+    
+    
+    
+    
+    
 }

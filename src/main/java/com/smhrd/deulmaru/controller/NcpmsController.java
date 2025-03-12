@@ -31,6 +31,21 @@ public class NcpmsController {
     }
 
     
+    @GetMapping("/deulmaru_dictionary")
+    public String deulmaru_dictionary() {
+        return "/deulmaru_dictionary"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
+    
+    @GetMapping("/deulmaru_QnA")
+    public String deulmaru_QnA() {
+        return "/deulmaru_QnA"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
+    
+    @GetMapping("/deulmaru_Diagnosis")
+    public String deulmaru_Diagnosis() {
+        return "/deulmaru_Diagnosis"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+    }
+    
     @GetMapping(value = "/search", produces = "application/xml")
     public ResponseEntity<String> search(@RequestParam String query, @RequestParam(defaultValue = "sick") String type) {
         return ResponseEntity.ok(ncpmsService.search(query, type));

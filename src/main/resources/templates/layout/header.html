@@ -1,19 +1,100 @@
-<header>
-    <div class="header-container">
-		<div class="container">
-		    <h1>병해충 검색 시스템</h1>
+<div th:fragment="header">
+    <style>
+        /* 네비게이션 바 스타일 */
+        .navbar {
+            background-color: #fff;
+        }
 
-		    <!-- 로그인 여부에 따른 UI 변경 -->
-		    <div class="auth-section">
-		        <div th:if="${session.user != null}">
-		            <p>환영합니다, <span th:text="${session.user.nickname}"></span> 님!</p>
-		            <a href="/auth/mypage" class="btn">마이페이지</a>
-		            <a href="/auth/logout" class="btn btn-danger">로그아웃</a>
-		        </div>
-		        <div th:if="${session.user == null}">
-		            <a href="/auth/login" class="btn">로그인</a>
-		            <a href="/auth/register-options" class="btn btn-primary">회원가입</a>
-		        </div>
-		    </div>
-    </div>
-</header>
+        /* 로고 스타일 */
+        .navbar-brand {
+            font-family: "Noto Sans KR", sans-serif;
+            font-weight: 500;
+            font-size: 25px;
+            color: #497C60;
+        }
+
+        /* 로그인/회원가입 버튼 스타일 */
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            padding: 5px 10px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3e3e3e;
+            font-size: 15px;
+        }
+
+        /* 버튼 스타일 */
+        .btn {
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* 헤더 컨테이너 */
+        .header-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+
+    </style>
+
+
+
+
+
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <!-- 왼쪽 메뉴 -->
+            <div class="d-flex">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <!-- 로고 중앙 정렬 -->
+            <a class="navbar-brand position-absolute start-50 translate-middle-x" href="/">
+                <img src="image/들마루로고.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
+                들마루
+            </a>
+
+            <!-- 오른쪽 메뉴 -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- 로그인 여부에 따라 표시 -->
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <span class="nav-link">환영합니다, <span th:text="${session.user.nickname}"></span> 님!</span>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-danger" href="/auth/logout">로그아웃</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-outline-primary" href="/auth/login">로그인</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-primary" href="/auth/register-options">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
