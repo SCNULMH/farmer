@@ -29,7 +29,7 @@ public class AuthController {
     // 마이페이지
     @GetMapping("/mypage")
     public String mypage() {
-        return "/auth/mypage";
+        return "/auth/deulmaru_Mypage";
     }
 
     // ✅ 로그인 처리 (일반 로그인)
