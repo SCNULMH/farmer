@@ -1,17 +1,16 @@
 <!doctype html>
 <html lang="ko">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>들마루 로그인</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="/css/deulmaru_Login.css">
 </head>
-  <body>
+<body>
 
     <!-- 네비게이션 바 -->
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand position-absolute start-50 translate-middle-x" href="/">
                 <img src="/image/들마루로고.png" alt="Logo" width="40" height="40">
@@ -40,12 +39,12 @@
         <!-- 로그인 폼 -->
         <form th:action="@{/auth/login}" method="post">
             <div class="form-floating mb-3 w-50 mx-auto">
-                <input type="text" class="form-control" id="floatingInput" name="username" placeholder="ID" required>
-                <label for="floatingInput">아이디를 입력하세요</label>
+                <input type="text" class="form-control" id="userId" name="userId" placeholder="아이디" required>
+                <label for="userId">아이디를 입력하세요</label>
             </div>
             <div class="form-floating w-50 mx-auto mt-2">
-                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" required>
-                <label for="floatingPassword">비밀번호를 입력하세요</label>
+                <input type="password" class="form-control" id="userPw" name="userPw" placeholder="비밀번호" required>
+                <label for="userPw">비밀번호를 입력하세요</label>
             </div>
 
             <div class="form-check form-switch d-flex align-items-left justify-content-left mt-2">
@@ -76,9 +75,9 @@
             <img src="/image/kakao_login_medium_wide.png" class="kakao-login-btn align-items-center mt-5" alt="카카오 로그인 버튼">
         </a>   
         <p id="token-result" class="text-center"></p>
-        <img src="/image/풀.gif" alt="배경 GI F" class="background-gif w-75">
+        <img src="/image/풀.gif" alt="배경 GIF" class="background-gif w-75">
     </div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
