@@ -30,6 +30,7 @@
     <div class="tab-content-container container-sm w-75">
         <!-- 내 프로필 탭 -->
         <div class="tab-content" id="profileTab"> 
+            <!-- 업데이트 폼 -->
             <form action="/mypage/update-profile" method="post">
                 <div class="input-group mb-3">
                     <span class="input-group-text">닉네임</span>
@@ -56,25 +57,27 @@
                     <textarea class="form-control" name="userLocate" th:text="${session.user.userLocate}"></textarea>
                 </div>
 
-                <!-- ✅ 카카오 연동 확인 및 버튼 -->
-                <h3 class="mt-4">카카오 계정 연동</h3>
-                <div th:if="${session.user != null and session.user.kakaoId != null}">
-                    <p>현재 카카오 계정과 연동되어 있습니다.</p>
-                    <form action="/auth/kakao/unlink" method="post">
-                        <button type="submit" class="btn btn-danger">카카오 연동 해제</button>
-                    </form>
-                </div>
-                <div th:if="${session.user != null and session.user.kakaoId == null}">
-                    <p>카카오 계정이 연동되지 않았습니다.</p>
-                    <a href="/auth/kakao/link" class="btn btn-primary">카카오 계정 연동하기</a>
-                </div>
-
                 <div class="button-group text-end mt-4">
                     <button type="button" class="btn btn-outline-secondary me-2">취소</button>
                     <button class="btn btn-primary" type="submit">수정</button>
                 </div>
             </form>
-        </div>
+
+			<!-- 카카오 계정이 연동된 경우 -->
+			<div th:if="${session.user != null and session.user.kakaoId != null}" class="mt-4">
+			    <p>현재 카카오 계정과 연동되어 있습니다.</p>
+			    <form action="/auth/kakao/unlink" method="post">
+			        <button type="submit" class="btn btn-danger">카카오 연동 해제</button>
+			    </form>
+			</div>
+
+			<!-- 카카오 계정이 연동되지 않은 경우 -->
+			<div th:if="${session.user != null and session.user.kakaoId == null}" class="mt-4">
+			    <p>카카오 계정이 연동되지 않았습니다.</p>
+			    <a href="/auth/kakao/link" class="btn btn-primary">카카오 계정 연동하기</a>
+			</div>
+
+
 
         <!-- AI 진단 이력 탭 -->
         <div class="tab-content hidden" id="diagHistoryTab">
