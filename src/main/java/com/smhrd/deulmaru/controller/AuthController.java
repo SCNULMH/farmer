@@ -19,14 +19,13 @@ public class AuthController {
         this.userService = userService;
     }
 
-    
     // ✅ 로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
         return "/auth/deulmaru_Login";
     }
 
-    // 마이페이지
+    // ✅ 마이페이지
     @GetMapping("/mypage")
     public String mypage() {
         return "/auth/deulmaru_Mypage";
@@ -34,20 +33,20 @@ public class AuthController {
 
     // ✅ 로그인 처리 (일반 로그인)
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
-        Optional<UserEntity> user = userService.loginUser(username, password, session);
+    public String login(@RequestParam String userId, @RequestParam String userPw, HttpSession session, Model model) {
+        Optional<UserEntity> user = userService.loginUser(userId, userPw, session);
         if (user.isPresent()) {
             session.setAttribute("user", user.get());
             model.addAttribute("user", user.get());
             return "redirect:/";
         } else {
             model.addAttribute("error", "로그인 실패: 아이디 또는 비밀번호가 틀립니다.");
-            return "login";
+            return "auth/deulmaru_Login";
         }
     }
 
     // ✅ 로그아웃 처리
-    @GetMapping("logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -56,7 +55,7 @@ public class AuthController {
     // ✅ 회원가입 선택 페이지
     @GetMapping("/register-options")
     public String showRegisterOptions() {
-        return "auth/deulmaru_SignIn_Main"; // ✅ templates/auth/register-options.html
+        return "auth/deulmaru_SignIn_Main";
     }
 
     // ✅ 일반 회원가입 페이지
@@ -67,53 +66,64 @@ public class AuthController {
 
     // ✅ 일반 회원가입 처리
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password, @RequestParam String nickname, HttpSession session, Model model) {
+    public String register(@RequestParam String userId, 
+                           @RequestParam String userPw, 
+                           @RequestParam String userNickname, 
+                           @RequestParam String userEmail,
+                           @RequestParam String userLocate,
+                           @RequestParam String userBirth,
+                           @RequestParam String userGender,
+                           HttpSession session, Model model) {
         try {
-            UserEntity user = userService.registerUser(username, password, nickname, session);
+            // 회원가입 요청이 올바르게 들어오는지 로그 확인
+            System.out.println("회원가입 요청 수신: " + userId + ", " + userEmail);
+
+            UserEntity user = userService.registerUser(userId, userPw, userNickname, userEmail, userLocate, userBirth, userGender);
             session.setAttribute("user", user);
             model.addAttribute("user", user);
-            return "redirect:/";
+
+            // 회원가입 성공 로그
+            System.out.println("회원가입 성공: " + user.getUserId());
+
+            return "redirect:/"; // 회원가입 후 마이페이지로 이동
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
-            return "auth/register";
+
+            // 회원가입 실패 로그
+            System.out.println("회원가입 실패: " + e.getMessage());
+
+            return "auth/deulmaru_SignIn";
         }
     }
 
+
     @GetMapping("/deulmaru_Login")
     public String deulmaru_Login() {
-        return "auth/deulmaru_Login"; // ✅ 이 경로가 templates 내부에 존재하는지 확인
+        return "auth/deulmaru_Login";
     }
-    
-    
+
     @GetMapping("/signin")
     public String signInPage() {
-        return "auth/deulmaru_SignIn_Main"; // ✅ 이 경로가 templates 내부에 존재하는지 확인
+        return "auth/deulmaru_SignIn_Main";
     }
-    
 
     @GetMapping("/deulmaru_SignIn")
     public String deulmaruSignIn() {
-        return "auth/deulmaru_SignIn"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+        return "auth/deulmaru_SignIn";
     }
-    
-    
+
     @GetMapping("/deulmaru_dictionary")
     public String deulmaru_dictionary() {
-        return "ncpms/deulmaru_dictionary"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+        return "ncpms/deulmaru_dictionary";
     }
-    
+
     @GetMapping("/deulmaru_QnA")
     public String deulmaru_QnA() {
-        return "ncpms/deulmaru_QnA"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+        return "ncpms/deulmaru_QnA";
     }
-    
+
     @GetMapping("/deulmaru_Diagnosis")
     public String deulmaru_Diagnosis() {
-        return "ncpms/deulmaru_Diagnosis"; // ✅ templates/auth/kakao-register.html을 찾도록 변경
+        return "ncpms/deulmaru_Diagnosis";
     }
-    
-    
-    
-    
-    
 }

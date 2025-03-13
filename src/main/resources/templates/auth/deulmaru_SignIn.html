@@ -1,144 +1,128 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>들마루 회원가입</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/deulmaru_SignIn.css">
 </head>
-  <body>
+<body>
 
-    <!-- 네비게이션 바-->
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
-        
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <!-- 왼쪽 메뉴 -->
             <div class="d-flex">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-    
-            <!-- 로고 중앙 정렬 -->
+
             <a class="navbar-brand position-absolute start-50 translate-middle-x" href="/">
-                <img src="/image/들마루로고.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
+                <img src="/image/들마루로고.png" alt="Logo" width="40" height="40">
                 들마루
             </a>
-    
-            <!-- 오른쪽 메뉴 -->
+
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav : hover">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/auth/signin">회원가입</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/auth/deulmaru_Login.html">로그인</a>
-                    </li>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="/auth/signin">회원가입</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/auth/deulmaru_Login.html">로그인</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-
-
-    <!-- 회원가입 정보 입력 -->
-    <div class="userInfo container-sm text-center">
+    <!-- 회원가입 폼 시작 -->
+    <form action="/auth/register" method="post" class="userInfo container-sm text-center">
         <div class="signIn_txt">
-            <h1> 회원가입 </h1> 
+            <h1>회원가입</h1>
         </div>
 
         <div>
-            <h3> 기본 입력 정보 </h3>
+            <h3>기본 입력 정보</h3>
         </div>
 
+        <!-- 아이디 입력 -->
         <div class="form-floating mb-3 w-50 mx-auto">
-            <input type="id" class="form-control" id="floatingInput" placeholder="ID">
-            <label for="floatingInput">아이디를 입력하세요</label>
-        </div>
-        <div class="form-floating w-50 mx-auto mt-2">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">비밀번호를 입력하세요</label>
-            <span id="passwordHelpInline" class="form-text">
-            8글자 이상 입력
-            </span>
+            <input type="text" class="form-control" id="userId" name="userId" placeholder="ID" required>
+            <label for="userId">아이디를 입력하세요</label>
         </div>
 
-        <!-- email 입력 -->
+        <!-- 비밀번호 입력 -->
+        <div class="form-floating w-50 mx-auto mt-2">
+            <input type="password" class="form-control" id="userPw" name="userPw" placeholder="Password" required>
+            <label for="userPw">비밀번호를 입력하세요</label>
+            <span id="passwordHelpInline" class="form-text">8글자 이상 입력</span>
+        </div>
+
+        <!-- 비밀번호 입력 -->
+		<div class="form-floating w-50 mx-auto mt-2">
+		      <input type="text" class="form-control" id="userNickname" name="userNickname" placeholder="Nickname" required>
+		      <label for="userNickname">닉네임을 입력하세요</label>
+		  </div>
+
+        <!-- 이메일 입력 -->
         <div class="row g-2 mt-2 justify-content-center">
             <div class="col-sm-8 d-flex justify-content-center align-items-center gap-2">
-            <div class="form-floating w-50">
-                <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="">
-                <label for="floatingInputGrid">이메일</label>
-            </div>
-            <div class="form-floating w-25">
-                <select class="form-select" id="floatingSelectGrid">
-                <option selected>@naver.com</option>
-                <option value="1">@gmail.com</option>
-                <option value="2">@daum.net</option>
-                <option value="3">@hanmail.com</option>
-                </select>
-                <label for="floatingSelectGrid">선택입력</label>
-            </div>
+                <div class="form-floating w-50">
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="이메일" required>
+                    <label for="userEmail">이메일</label>
+                </div>
+                <div class="form-floating w-25">
+                    <select class="form-select" id="emailDomain" name="emailDomain">
+                        <option selected>@naver.com</option>
+                        <option value="@gmail.com">@gmail.com</option>
+                        <option value="@daum.net">@daum.net</option>
+                        <option value="@hanmail.com">@hanmail.com</option>
+                    </select>
+                    <label for="emailDomain">선택입력</label>
+                </div>
             </div>
         </div>
 
-        <!-------------------------------------------- 구분선---------------------------------------------------------->
         <hr class="my-4 w-50 mx-auto mt-5">
-        <!-------------------------------------------- 구분선---------------------------------------------------------->
 
         <div>
-            <h3> 추가 입력 정보 </h3>
+            <h3>추가 입력 정보</h3>
         </div>
-        
-        <!-- 주거지 입력 ==>>>>  api 사용 ??-->
-        <div class="form-floating mb-3 w-50 mx-auto">
-            <input type="address" class="form-control" id="floatingInput" placeholder="Address">
-            <label for="floatingInput">주소지를 입력하세요</label>
-        </div> 
 
-        <!-- 나이 입력 -->
+        <!-- 주소 입력 -->
+        <div class="form-floating mb-3 w-50 mx-auto">
+            <input type="text" class="form-control" id="userLocate" name="userLocate" placeholder="주소" required>
+            <label for="userLocate">주소지를 입력하세요</label>
+        </div>
+
+        <!-- 생년월일 입력 -->
         <div class="d-flex justify-content-center">
             <div class="form-floating w-50">
-            <input type="text" class="form-control" min="1900-01-01" max="2005-12-31" id="birthdateInput" placeholder="연도/월/일">
-            <label for="birthdateInput">생년월일</label>
+                <input type="date" class="form-control" id="userBirth" name="userBirth" required>
+                <label for="userBirth">생년월일</label>
             </div>
         </div>
-  
-        <!-- 성별 입력 -->         
+
+        <!-- 성별 선택 -->
         <div class="personal-info mt-4 d-flex justify-content-center align-items-center gap-2">
-            <select class="form-select form-select-lg mb-3 w-50" aria-label="Large select example">
-                <option selected>성별 선택</option>
-                <option value="1">남성</option>
-                <option value="2">여성</option>
-              </select>       
+            <select class="form-select form-select-lg mb-3 w-50" id="userGender" name="userGender" required>
+                <option selected value="">성별 선택</option>
+                <option value="M">남성</option>
+                <option value="F">여성</option>
+            </select>
         </div>
-        
+
         <div class="instruction">
-            <p> 🌱 추가 정보는 추후 사용자의 재배 작물 일정에 반영됩니다. </p>
+            <p>🌱 추가 정보는 추후 사용자의 재배 작물 일정에 반영됩니다.</p>
         </div>
-        
-        <button type="button" class="btn btn-primary btn-lg w-50 mx-auto mt-4 mb-3"
+
+        <!-- 가입하기 버튼 -->
+        <button type="submit" class="btn btn-primary btn-lg w-50 mx-auto mt-4 mb-3"
         style="background-color: #37a269ee; border-color: #37a269e2; color: white;">가입하기</button>
 
         <!-- grass_gif -->
         <img src="/image/풀.gif" alt="배경 GIF" class="background-gif w-75">
+    </form>
+    <!-- 회원가입 폼 끝 -->
 
-    </div>
-
-
-
-
-
-
-
-
-    <!-- Flatpickr CSS & JS 추가 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Flatpickr 설정 스크립트 연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/deulmaru_SignIn.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
-</html>    
+</html>

@@ -78,7 +78,7 @@
                 <ul class="navbar-nav">
                     <!-- 로그인 여부에 따라 표시 -->
                     <li class="nav-item" th:if="${session.user != null}">
-                        <span class="nav-link">환영합니다, <span th:text="${session.user.nickname}"></span> 님!</span>
+                        <span class="nav-link">환영합니다, <span th:text="${session.user.userNickname}"></span> 님!</span>
                     </li>
                     <li class="nav-item" th:if="${session.user != null}">
                         <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
