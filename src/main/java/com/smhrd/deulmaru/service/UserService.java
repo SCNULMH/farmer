@@ -16,14 +16,15 @@ public class UserService {
     }
 
     // ✅ 회원가입 (세션 설정 추가)
-    public UserEntity registerUser(String username, String password, String nickname, HttpSession session) {
-        if (userRepository.findByUsername(username).isPresent()) {
+    public UserEntity registerUser(String userId, String userPw, String userNickname, HttpSession session) {
+        if (userRepository.findById(userId).isPresent()) {
             throw new RuntimeException("이미 존재하는 아이디입니다.");
         }
+
         UserEntity user = new UserEntity();
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setNickname(nickname);
+        user.setUserId(userId);
+        user.setUserPw(userPw);
+        user.setUserNickname(userNickname);
         userRepository.save(user);
 
         session.setAttribute("user", user); // ✅ 세션에 user 정보 저장
@@ -31,30 +32,30 @@ public class UserService {
     }
 
     // ✅ 로그인 (세션 설정 추가)
-    public Optional<UserEntity> loginUser(String username, String password, HttpSession session) {
-        Optional<UserEntity> user = userRepository.findByUsername(username);
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
+    public Optional<UserEntity> loginUser(String userId, String userPw, HttpSession session) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if (user.isPresent() && user.get().getUserPw().equals(userPw)) {
             session.setAttribute("user", user.get()); // ✅ 세션에 user 정보 저장
             return user;
         }
         return Optional.empty();
     }
-   // ✅ 프로필 업데이트 (비밀번호 암호화 제거)
-    public void updateUserProfile(Long userId, String password, String nickname) {
+
+    // ✅ 프로필 업데이트 (비밀번호 암호화 제거)
+    public void updateUserProfile(String userId, String userPw, String userNickname) {
         Optional<UserEntity> userOpt = userRepository.findById(userId);
         if (userOpt.isPresent()) {
             UserEntity user = userOpt.get();
-            if (!password.isEmpty()) {
-                user.setPassword(password);  // 🔹 일반 텍스트 저장
+            if (!userPw.isEmpty()) {
+                user.setUserPw(userPw);  // 🔹 일반 텍스트 저장
             }
-            user.setNickname(nickname);
+            user.setUserNickname(userNickname);
             userRepository.save(user);
         }
     }
 
-    
- // ✅ 카카오 회원가입 처리 메서드 추가
-    public UserEntity registerKakaoUser(String kakaoId, String nickname, HttpSession session) {
+    // ✅ 카카오 회원가입 처리 메서드 추가
+    public UserEntity registerKakaoUser(String kakaoId, String userNickname, HttpSession session) {
         Optional<UserEntity> existingUser = userRepository.findByKakaoId(Long.parseLong(kakaoId));
 
         if (existingUser.isPresent()) {
@@ -63,12 +64,10 @@ public class UserService {
 
         UserEntity user = new UserEntity();
         user.setKakaoId(Long.parseLong(kakaoId));
-        user.setNickname(nickname);
+        user.setUserNickname(userNickname);
         userRepository.save(user);
 
         session.setAttribute("user", user); // ✅ 세션 저장
         return user;
     }
-
-
 }

@@ -60,7 +60,7 @@ public class KakaoController {
 
         String email = kakaoUserInfo.containsKey("email") ? (String) kakaoUserInfo.get("email") : null;
         if (email != null) {
-            Optional<UserEntity> normalUser = userRepository.findByUsername(email);
+            Optional<UserEntity> normalUser = userRepository.findByUserId(email);
             if (normalUser.isPresent()) {
                 session.setAttribute("kakaoUserInfo", kakaoUserInfo);
                 return "redirect:/auth/kakao/link";
@@ -152,7 +152,7 @@ public class KakaoController {
         }
         Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
 
-        if (userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUserId(username).isPresent()) {
             model.addAttribute("error", "이미 존재하는 아이디입니다.");
             return "auth/kakao-register";
         }

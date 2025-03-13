@@ -32,8 +32,8 @@ public class MypageController {
 
     // ✅ 회원정보 수정
     @PostMapping("/update-profile")
-    public String updateProfile(@RequestParam String nickname,
-                                @RequestParam(required = false) String password,
+    public String updateProfile(@RequestParam String userNickname,
+                                @RequestParam(required = false) String userPw,
                                 HttpSession session) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
@@ -41,11 +41,11 @@ public class MypageController {
         }
 
         // 닉네임 변경
-        user.setNickname(nickname);
-        
+        user.setUserNickname(userNickname);
+
         // 비밀번호 변경이 입력되었을 경우에만 적용
-        if (password != null && !password.isEmpty()) {
-            user.setPassword(password);
+        if (userPw != null && !userPw.isEmpty()) {
+            user.setUserPw(userPw);
         }
 
         userRepository.save(user);
