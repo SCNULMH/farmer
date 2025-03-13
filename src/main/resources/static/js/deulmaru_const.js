@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
 // 들마루 마이페이지에서의 탭 메뉴 활성화 함수
 document.addEventListener("DOMContentLoaded", function () {
     const buttons = document.querySelectorAll(".tab-button");

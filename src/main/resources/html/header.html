@@ -1,0 +1,210 @@
+<div th:fragment="header">
+    <style>
+        /* 네비게이션 바 스타일 */
+        .navbar {
+            background-color: #fff;
+        }
+
+        /* 로고 스타일 */
+        .navbar-brand {
+            font-family: "Noto Sans KR", sans-serif;
+            font-weight: 500;
+            font-size: 25px;
+            color: #497C60;
+        }
+
+        /* 로그인/회원가입 버튼 스타일 */
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            padding: 5px 10px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #3e3e3e;
+            font-size: 15px;
+        }
+
+        /* 버튼 스타일 */
+        .btn {
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* 헤더 컨테이너 */
+        .header-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+
+
+        /*  ✅ 이삭이 버튼 (챗봇 토글)  */
+        .button-isac {
+            position: fixed;  /* 화면에 고정 */
+            bottom: 0px;      /* 화면 하단에서 20px 떨어진 위치 */
+            right: 20px;       /* 화면 오른쪽에서 20px 떨어진 위치 */
+            z-index: 1000;     /* 다른 요소 위에 표시되도록 설정 */
+            
+        }
+        .image-btn-isac {
+            width: 150px;
+            height: 110px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            
+        }
+        .image-btn-isac img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .image-btn-isac span {
+            font-size: 17px;
+            font-weight: 900;
+            color: rgb(10, 128, 6);
+            font-family: '클로버체';
+        }
+
+        .image-btn-isac:hover {
+            transform: scale(1.1);
+            
+        }
+
+        /* <!-- ✅ 챗봇 팝업 UI --> */
+        /* ✅ 챗봇 팝업 컨테이너 스타일 */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px; /* 화면 하단에서 20px 위 */
+            right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+            width: 30%; /* 챗봇 팝업 너비 */
+            display: none;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+            overflow: hidden;
+        }
+
+        /* ✅ 챗봇 팝업 스타일 */
+        .chatbot-popup {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 100%;
+            height: 90%;
+            border: 1px solid #ddd;
+        }
+
+        /* ✅ 닫기 버튼 스타일 */
+        .close-chatbot {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+    </style>
+
+
+
+
+
+    <!-- 네비게이션 바 -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <!-- 왼쪽 메뉴 -->
+            <div class="d-flex">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <!-- 로고 중앙 정렬 -->
+            <a class="navbar-brand position-absolute start-50 translate-middle-x" href="/">
+                <img src="/image/들마루로고.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
+                들마루
+            </a>
+
+            <!-- 오른쪽 메뉴 -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- 로그인 여부에 따라 표시 -->
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <span class="nav-link">환영합니다, <span th:text="${session.user.nickname}"></span> 님!</span>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-danger" href="/auth/logout">로그아웃</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-outline-primary" href="/auth/login">로그인</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-primary" href="/auth/register-options">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+     <!-- ✅ 이삭이 버튼 (챗봇 토글) -->
+     <div class="button-isac mb-5">
+        <button class="image-btn-isac" onclick="toggleChatbot()">
+            <span>AI 이삭이</span>
+            <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
+        </button>
+    </div>
+
+    <!-- ✅ 챗봇 팝업 UI -->
+    <div id="chatbot" class="chatbot-container">
+        <div class="chatbot-popup">
+            <button class="close-chatbot" onclick="toggleChatbot()">×</button>
+            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+         // AI 챗봇 토글 JS 함수
+         function toggleChatbot() {
+        var chatbot = document.getElementById("chatbot");
+
+        // 챗봇 창이 열려있으면 숨기고, 닫혀있으면 표시
+        if (chatbot.style.display === "none" || chatbot.style.display === "") {
+            chatbot.style.display = "block";
+        } else {
+            chatbot.style.display = "none";
+        }
+    }
+    </script>
+
+
+
+</div>
