@@ -21,41 +21,32 @@ public class UserEntity {
     @Column(name = "USER_NICKNAME", length = 255, nullable = false)
     private String userNickname;
 
-    @Column(name = "USER_BIRTH", nullable = false)
+    @Column(name = "USER_BIRTH", nullable = true) // ✅ null 허용 (카카오 회원가입 시 선택 가능)
     private LocalDate userBirth;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "USER_GENDER", nullable = false)
+    @Column(name = "USER_GENDER", nullable = true) // ✅ null 허용
     private Gender userGender;
 
-    @Column(name = "USER_LOCATE", length = 255, nullable = false)
+    @Column(name = "USER_LOCATE", length = 255, nullable = true) // ✅ null 허용 (카카오 회원가입 시 선택 가능)
     private String userLocate;
 
-    @Column(name = "KAKAO_ID", nullable = true)
+    @Column(name = "KAKAO_ID", nullable = true, unique = true)
     private Long kakaoId;
 
-    @Column(name = "USER_CROP", length = 255, nullable = true)
+    @Column(name = "USER_CROP", length = 255, nullable = true) // ✅ null 허용
     private String userCrop;
 
     @Column(name = "JOINED_AT", nullable = false, updatable = false, insertable = false)
     private LocalDateTime joinedAt;
 
-    // ✅ 기본 생성자
+    // ✅ 기본 생성자 (JPA용)
     public UserEntity() {}
 
-    // ✅ 카카오 회원가입용 생성자
-    public UserEntity(String userId, String userPw, String userNickname, Long kakaoId, String profileImage) {
-        this.userId = userId;
-        this.userPw = userPw;
-        this.userNickname = userNickname;
-        this.kakaoId = kakaoId;
-        this.userCrop = profileImage;
-    }
-
-    // ✅ 전체 필드 포함 생성자
-    public UserEntity(String userId, String userPw, String userEmail, String userNickname, 
+    // ✅ 카카오 회원가입용 생성자 (추가 필드 포함)
+    public UserEntity(String userId, String userPw, String userEmail, String userNickname,
                       LocalDate userBirth, Gender userGender, String userLocate, 
-                      Long kakaoId, String userCrop, LocalDateTime joinedAt) {
+                      Long kakaoId, String userCrop) {
         this.userId = userId;
         this.userPw = userPw;
         this.userEmail = userEmail;
@@ -65,89 +56,38 @@ public class UserEntity {
         this.userLocate = userLocate;
         this.kakaoId = kakaoId;
         this.userCrop = userCrop;
-        this.joinedAt = joinedAt;
     }
 
-    // ✅ 정확한 Getter & Setter 추가
-    public String getUserId() {
-        return userId;
-    }
+    // ✅ Getter & Setter
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+    public String getUserPw() { return userPw; }
+    public void setUserPw(String userPw) { this.userPw = userPw; }
 
-    public String getUserPw() {
-        return userPw;
-    }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
-    public void setUserPw(String userPw) {
-        this.userPw = userPw;
-    }
+    public String getUserNickname() { return userNickname; }
+    public void setUserNickname(String userNickname) { this.userNickname = userNickname; }
 
-    public String getUserEmail() {
-        return userEmail;
-    }
+    public LocalDate getUserBirth() { return userBirth; }
+    public void setUserBirth(LocalDate userBirth) { this.userBirth = userBirth; }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
+    public Gender getUserGender() { return userGender; }
+    public void setUserGender(Gender userGender) { this.userGender = userGender; }
 
-    public String getUserNickname() {
-        return userNickname;
-    }
+    public String getUserLocate() { return userLocate; }
+    public void setUserLocate(String userLocate) { this.userLocate = userLocate; }
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
-    }
+    public Long getKakaoId() { return kakaoId; }
+    public void setKakaoId(Long kakaoId) { this.kakaoId = kakaoId; }
 
-    public LocalDate getUserBirth() {
-        return userBirth;
-    }
+    public String getUserCrop() { return userCrop; }
+    public void setUserCrop(String userCrop) { this.userCrop = userCrop; }
 
-    public void setUserBirth(LocalDate userBirth) {
-        this.userBirth = userBirth;
-    }
-
-    public Gender getUserGender() {
-        return userGender;
-    }
-
-    public void setUserGender(Gender userGender) {
-        this.userGender = userGender;
-    }
-
-    public String getUserLocate() {
-        return userLocate;
-    }
-
-    public void setUserLocate(String userLocate) {
-        this.userLocate = userLocate;
-    }
-
-    public Long getKakaoId() {
-        return kakaoId;
-    }
-
-    public void setKakaoId(Long kakaoId) {
-        this.kakaoId = kakaoId;
-    }
-
-    public String getUserCrop() {
-        return userCrop;
-    }
-
-    public void setUserCrop(String userCrop) {
-        this.userCrop = userCrop;
-    }
-
-    public LocalDateTime getJoinedAt() {
-        return joinedAt;
-    }
-
-    public void setJoinedAt(LocalDateTime joinedAt) {
-        this.joinedAt = joinedAt;
-    }
+    public LocalDateTime getJoinedAt() { return joinedAt; }
+    public void setJoinedAt(LocalDateTime joinedAt) { this.joinedAt = joinedAt; }
 
     // ✅ 성별 ENUM 클래스 정의
     public enum Gender {

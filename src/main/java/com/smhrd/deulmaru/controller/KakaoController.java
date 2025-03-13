@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -50,7 +51,10 @@ public class KakaoController {
         }
 
         Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
+        String email = (String) kakaoUserInfo.getOrDefault("email", "");
+        String nickname = (String) kakaoUserInfo.getOrDefault("nickname", "카카오사용자");
 
+        // ✅ 1. 카카오 ID가 이미 등록된 경우 -> 자동 로그인
         Optional<UserEntity> existingUser = userRepository.findByKakaoId(kakaoId);
         if (existingUser.isPresent()) {
             session.setAttribute("user", existingUser.get());
@@ -58,75 +62,20 @@ public class KakaoController {
             return "redirect:/mypage";
         }
 
-        String email = kakaoUserInfo.containsKey("email") ? (String) kakaoUserInfo.get("email") : null;
-        if (email != null) {
-            Optional<UserEntity> normalUser = userRepository.findByUserId(email);
-            if (normalUser.isPresent()) {
-                session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-                return "redirect:/auth/kakao/link";
-            }
-        }
-        
-        session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-        return "redirect:/auth/kakao/register";
-    }
+        // ✅ 2. 일반 회원가입한 이메일과 동일한 경우 -> 자동 연동
+        Optional<UserEntity> normalUser = userRepository.findByUserId(email);
+        if (normalUser.isPresent()) {
+            UserEntity user = normalUser.get();
+            user.setKakaoId(kakaoId);
+            userRepository.save(user);
 
-    // ✅ 카카오 계정 연동 페이지
-    @GetMapping("/link")
-    public String showKakaoLinkPage(HttpSession session, Model model) {
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
-
-        if (user == null) {
-            return "redirect:/auth/login"; // 일반 로그인 페이지로 리디렉트
-        }
-
-        if (user.getKakaoId() != null) {
-            model.addAttribute("alreadyLinked", true);
-            model.addAttribute("linkedKakaoId", user.getKakaoId());
+            session.setAttribute("user", user);
             return "redirect:/mypage";
         }
 
-        model.addAttribute("alreadyLinked", false);
-        model.addAttribute("kakaoUserInfo", kakaoUserInfo);
-        return "auth/kakao-link";
-    }
-
-    // ✅ 카카오 계정 연동 처리
-    @PostMapping("/link")
-    public String linkKakaoAccount(HttpSession session, Model model) {
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
-
-        if (user == null || kakaoUserInfo == null) {
-            return "redirect:/auth/kakao/login";
-        }
-
-        Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
-        user.setKakaoId(kakaoId);
-        userRepository.save(user);
-        
-        session.setAttribute("user", user);
-        model.addAttribute("user", user);
-
-        return "redirect:/mypage";
-    }
-
-    // ✅ 카카오 계정 연동 해제
-    @PostMapping("/unlink")
-    public String unlinkKakao(HttpSession session, Model model) {
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/auth/login";
-        }
-
-        user.setKakaoId(null);
-        userRepository.save(user);
-
-        session.setAttribute("user", user);
-        model.addAttribute("user", user);
-
-        return "redirect:/mypage";
+        // ✅ 3. 새로운 회원이면 카카오 정보 세션에 저장 후 회원가입 페이지로 이동
+        session.setAttribute("kakaoUserInfo", kakaoUserInfo);
+        return "auth/kakao-register";
     }
 
     // ✅ 카카오 회원가입 페이지
@@ -142,22 +91,52 @@ public class KakaoController {
 
     // ✅ 카카오 회원가입 처리
     @PostMapping("/register")
-    public String kakaoRegister(@RequestParam String username,
-                                @RequestParam String password,
-                                @RequestParam String nickname,
-                                HttpSession session, Model model) {
+    public String kakaoRegister(
+            @RequestParam String userId,
+            @RequestParam String userPw,
+            @RequestParam String userNickname,
+            @RequestParam(required = false) String userLocate,
+            @RequestParam(required = false) String userBirth,
+            @RequestParam(required = false) String userGender,
+            HttpSession session, Model model) {
+
         Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
         if (kakaoUserInfo == null || !kakaoUserInfo.containsKey("kakaoId")) {
             return "redirect:/auth/kakao/login";
         }
-        Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
 
-        if (userRepository.findByUserId(username).isPresent()) {
+        Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
+        String email = (String) kakaoUserInfo.getOrDefault("email", "");
+
+        if (userRepository.findByUserId(userId).isPresent()) {
             model.addAttribute("error", "이미 존재하는 아이디입니다.");
             return "auth/kakao-register";
         }
 
-        UserEntity newUser = new UserEntity(username, password, nickname, kakaoId, (String) kakaoUserInfo.get("profileImage"));
+        // ✅ 회원 정보 생성
+        UserEntity newUser = new UserEntity();
+        newUser.setUserId(userId);
+        newUser.setUserPw(userPw);
+        newUser.setUserNickname(userNickname);
+        newUser.setUserEmail(email);
+        newUser.setKakaoId(kakaoId);
+        newUser.setUserLocate(userLocate != null ? userLocate : "");
+
+        // ✅ 생년월일 변환 (YYYY-MM-DD 형식)
+        if (userBirth != null && !userBirth.isEmpty()) {
+            newUser.setUserBirth(LocalDate.parse(userBirth));
+        } else {
+            newUser.setUserBirth(LocalDate.of(2000, 1, 1)); // 기본 생년월일 설정
+        }
+
+        // ✅ 성별 변환
+        if (userGender != null) {
+            newUser.setUserGender(UserEntity.Gender.valueOf(userGender.toUpperCase()));
+        } else {
+            newUser.setUserGender(UserEntity.Gender.M);
+        }
+
+        // ✅ DB 저장 및 세션 반영
         userRepository.save(newUser);
         session.setAttribute("user", newUser);
         model.addAttribute("user", newUser);

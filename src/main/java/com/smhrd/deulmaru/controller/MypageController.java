@@ -24,10 +24,10 @@ public class MypageController {
     public String myPage(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/auth/login";
+            return "redirect:/auth/deulmaru_Login";
         }
         model.addAttribute("user", user);
-        return "/auth/mypage";
+        return "/auth/deulmaru_Mypage";
     }
 
     // ✅ 회원정보 수정
