@@ -1,7 +1,7 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>들마루 AI 병해충 판별</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,7 +55,8 @@
         <div class="col-md-6">
           <div class="container-sm mt-4">
             <h4>판별 결과</h4>
-            <p id="result-text">이미지를 업로드하면 결과가 표시됩니다.</p>
+            <p id="result-text" th:text="${prediction != null ? prediction : '이미지를 업로드하면 결과가 표시됩니다.'}"></p>
+            <img th:src="@{${imageUrl}}" alt="업로드된 이미지" class="img-fluid" th:if="${imageUrl != null}">
           </div>
         </div>
       </div>
@@ -63,7 +64,7 @@
     
     <!-- 이삭이 버튼 -->
     <div class="button-isac mb-5">
-      <button class="image-btn-isac" onclick="">
+      <button class="image-btn-isac" onclick="toggleGuide()">
         <span>AI 이삭이</span>
         <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
       </button>
