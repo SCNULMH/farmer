@@ -27,7 +27,7 @@ public class MypageController {
             return "redirect:/auth/login";
         }
         model.addAttribute("user", user);
-        return "auth/mypage";
+        return "/auth/mypage";
     }
 
     // ✅ 회원정보 수정

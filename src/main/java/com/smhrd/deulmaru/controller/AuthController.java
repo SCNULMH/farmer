@@ -22,13 +22,13 @@ public class AuthController {
     // ✅ 로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
-        return "/auth/deulmaru_Login";
+        return "auth/deulmaru_Login";
     }
 
     // ✅ 마이페이지
     @GetMapping("/mypage")
     public String mypage() {
-        return "/auth/deulmaru_Mypage";
+        return "auth/deulmaru_Mypage";
     }
 
     // ✅ 로그인 처리 (일반 로그인)
