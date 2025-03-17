@@ -34,6 +34,7 @@ public class MypageController {
     @PostMapping("/update-profile")
     public String updateProfile(@RequestParam String userNickname,
                                 @RequestParam(required = false) String userPw,
+                                @RequestParam String userLocate,
                                 HttpSession session) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
@@ -42,7 +43,10 @@ public class MypageController {
 
         // 닉네임 변경
         user.setUserNickname(userNickname);
-
+        
+        // 주소지 변경
+        user.setUserLocate(userLocate);
+        
         // 비밀번호 변경이 입력되었을 경우에만 적용
         if (userPw != null && !userPw.isEmpty()) {
             user.setUserPw(userPw);
