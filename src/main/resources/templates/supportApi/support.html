@@ -154,7 +154,7 @@ function renderGrantList(grants) {
                     <p><strong>대상:</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
                     <p><strong>신청 기간:</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
                     <p><strong>진행 상태:</strong> <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span></p>
-                    <p><a href="/grants/detail/${grant.seq}">상세보기</a></p>
+                    <p><a href="/supportApi/detail/${grant.seq}">상세보기</a></p>
                 </div>
             `;
         });

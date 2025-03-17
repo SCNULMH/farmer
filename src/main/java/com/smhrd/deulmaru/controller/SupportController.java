@@ -6,18 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller  // ✅ @RestController → @Controller 변경
-@RequestMapping("/support")  
+@Controller  // ✅ @RestController → @Controller로 변경
+@RequestMapping("/supportApi")  
 public class SupportController {
 
-    @GetMapping("/list")
+    @GetMapping("/support")
     public String grantsPage() {
-        return "supportApi/support";
+        return "supportApi/support";  // ✅ templates/support.html 반환
     }
     
     @GetMapping("/detail/{seq}")
     public String grantDetailPage(@PathVariable String seq, Model model) {
         model.addAttribute("seq", seq);
-        return "supportApi/support-detail";
+        return "supportApi/support-detail";  // ✅ templates/support-detail.html 반환
     }
 }
