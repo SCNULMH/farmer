@@ -142,23 +142,54 @@
     });
     </script>
     
-    <script>
-    $(document).ready(function() {
-        let userId = "testUser"; // ★ 로그인한 유저 ID (임시 값)
-        let grantId = "[[${seq}]]";
+<script>
+$(document).ready(function() {
+    let seq = "[[${seq}]]";  // 지원금 ID
+    let userId = "[[${session.user?.userId}]]";  // Thymeleaf 사용
+
+    if (!userId || userId === "null") {
+        alert("로그인이 필요합니다.");
+        $("#interestBtn").text("로그인 필요").addClass("disabled").prop("disabled", true);
+        return;
+    }
+
+    // ✅ 페이지 로드 시, 관심 등록 여부 확인
+    $.ajax({
+        url: "/api/interest/check",
+        type: "GET",
+        data: { grantId: seq },
+        success: function(response) {
+            if (response.exists) {
+                $("#interestBtn").text("이미 등록됨").addClass("disabled").prop("disabled", true);
+            }
+        },
+        error: function() {
+            console.log("관심 등록 여부 확인 실패");
+        }
+    });
+
+    // ✅ 관심 등록 버튼 클릭 이벤트
+    $("#interestBtn").click(function() {
         let applEdDt = $("#grantPeriod").text().split("~")[1].trim(); // 마감일
 
-        $("#interestBtn").click(function() {
-            $.post("/api/interest/add", { userId, grantId, applEdDt })
-                .done(function(response) {
-                    alert(response);
-                })
-                .fail(function() {
-                    alert("관심 등록 실패!");
-                });
+        $.ajax({
+            url: "/api/interest/add",
+            type: "POST",
+            data: { grantId: seq, applEdDt: applEdDt },
+            success: function(response) {
+                alert(response);
+                $("#interestBtn").text("이미 등록됨").addClass("disabled").prop("disabled", true);
+            },
+            error: function(xhr) {
+                alert("관심 등록 실패! (" + xhr.responseText + ")");
+            }
         });
     });
+});
 </script>
+
+
+
 
 </body>
 </html>
