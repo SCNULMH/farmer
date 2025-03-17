@@ -23,6 +23,18 @@ function updateFileList(files) {
     }
 }
 
+// 안내 가이드를 토글하는 함수
+function toggleGuide() {
+    const guideContent = document.getElementById("aiGuide");
+    
+    if (guideContent.classList.contains("show")) {
+        guideContent.classList.remove("show");
+    } else {
+        guideContent.classList.add("show");
+    }
+}
+
+
 // 드래그 앤 드롭 기능 추가
 function setUpDragAndDrop() {
     const dropZone = document.getElementById("drop-file");
