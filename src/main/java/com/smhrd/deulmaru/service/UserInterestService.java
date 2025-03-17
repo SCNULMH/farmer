@@ -38,13 +38,14 @@ public class UserInterestService {
         return userInterestRepository.findByUserId(userId);
     }
 
-    // ✅ 관심 지원금 삭제 (이제 interestIdx 기준)
+    // ✅ 관심 지원금 삭제
     @Transactional
-    public String removeInterest(Long interestIdx) {
-        if (!userInterestRepository.existsById(interestIdx)) {
-            return "해당 관심 등록 데이터가 존재하지 않습니다.";
+    public String cancelInterest(String userId, String grantId) {
+        if (!userInterestRepository.existsByUserIdAndGrantId(userId, grantId)) {
+            return "관심 등록된 지원금이 없습니다.";
         }
-        userInterestRepository.deleteById(interestIdx);
-        return "관심 지원금이 삭제되었습니다.";
+        userInterestRepository.deleteByUserIdAndGrantId(userId, grantId);
+        return "관심 등록이 취소되었습니다.";
     }
+
 }
