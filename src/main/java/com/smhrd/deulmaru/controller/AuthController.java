@@ -106,7 +106,7 @@ public class AuthController {
     public String signInPage() {
         return "auth/deulmaru_SignIn_Main";
     }
-
+ 
     @GetMapping("/deulmaru_SignIn")
     public String deulmaruSignIn() {
         return "auth/deulmaru_SignIn";
@@ -126,4 +126,7 @@ public class AuthController {
     public String deulmaru_Diagnosis() {
         return "ncpms/deulmaru_Diagnosis";
     }
+    
+    
+    
 }
