@@ -13,4 +13,6 @@ public interface UserInterestRepository extends JpaRepository<UserInterest, Long
     
     
     boolean existsByUserIdAndGrantId(String userId, String grantId); // ✅ 중복 체크
+    
+    void deleteByUserIdAndGrantId(String userId, String grantId); // 삭제 메서드
 }

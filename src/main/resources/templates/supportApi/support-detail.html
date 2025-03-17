@@ -145,7 +145,7 @@
 <script>
 $(document).ready(function() {
     let seq = "[[${seq}]]";  // 지원금 ID
-    let userId = "[[${session.user?.userId}]]";  // Thymeleaf 사용
+    let userId = "[[${session.user?.userId}]]";  // 세션에서 로그인한 유저 정보
 
     if (!userId || userId === "null") {
         alert("로그인이 필요합니다.");
@@ -160,7 +160,8 @@ $(document).ready(function() {
         data: { grantId: seq },
         success: function(response) {
             if (response.exists) {
-                $("#interestBtn").text("이미 등록됨").addClass("disabled").prop("disabled", true);
+                // 이미 등록되어 있다면, 취소 버튼으로 표시
+                $("#interestBtn").text("관심 취소").removeClass("disabled").prop("disabled", false);
             }
         },
         error: function() {
@@ -168,25 +169,45 @@ $(document).ready(function() {
         }
     });
 
-    // ✅ 관심 등록 버튼 클릭 이벤트
+    // ✅ 관심 등록 / 취소 버튼 클릭 이벤트
     $("#interestBtn").click(function() {
+        let btn = $(this);
         let applEdDt = $("#grantPeriod").text().split("~")[1].trim(); // 마감일
 
-        $.ajax({
-            url: "/api/interest/add",
-            type: "POST",
-            data: { grantId: seq, applEdDt: applEdDt },
-            success: function(response) {
-                alert(response);
-                $("#interestBtn").text("이미 등록됨").addClass("disabled").prop("disabled", true);
-            },
-            error: function(xhr) {
-                alert("관심 등록 실패! (" + xhr.responseText + ")");
-            }
-        });
+        // 버튼 텍스트에 따라 등록 또는 취소 처리
+        if (btn.text() === "관심 등록") {
+            // 등록 처리
+            $.ajax({
+                url: "/api/interest/add",
+                type: "POST",
+                data: { grantId: seq, applEdDt: applEdDt },
+                success: function(response) {
+                    alert(response);
+                    btn.text("관심 취소");
+                },
+                error: function(xhr) {
+                    alert("관심 등록 실패! (" + xhr.responseText + ")");
+                }
+            });
+        } else if (btn.text() === "관심 취소") {
+            // 취소 처리
+            $.ajax({
+                url: "/api/interest/cancel",
+                type: "DELETE",
+                data: { grantId: seq },
+                success: function(response) {
+                    alert(response);
+                    btn.text("관심 등록");
+                },
+                error: function(xhr) {
+                    alert("관심 취소 실패! (" + xhr.responseText + ")");
+                }
+            });
+        }
     });
 });
 </script>
+
 
 
 
