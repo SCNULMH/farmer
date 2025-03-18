@@ -9,26 +9,41 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
   <body>
-  <!-- 헤더 삽입 (Thymeleaf로 헤더 템플릿 포함) -->
+<!-- 헤더 삽입 -->
     <div th:replace="layout/header :: header"></div>
-
+    
     <div class="container my-4">
       <!-- 추천 영역 -->
       <section id="recommendationSection">
-        <h2 th:text="${session.user != null} ? '내 맞춤 추천 지원금' : '전체 추천 지원금 Top3'">추천 지원금</h2>
+        <h2 id="recommendationTitle">추천 지원금</h2>
         <ul class="benefit-list d-flex flex-wrap">
-          <!-- 동적으로 카드가 삽입됩니다 -->
+          <!-- 동적 카드와 추천 기준 헤더가 삽입됩니다 -->
         </ul>
       </section>
     </div>
-
-    <!-- Thymeleaf를 통해 로그인 여부 플래그 전달 -->
+    
+    <!-- Thymeleaf를 통해 로그인 여부 및 사용자 정보 전달 -->
     <script th:inline="javascript">
       var isLoggedIn = /*[[${session.user != null}]]*/ false;
+      // 로그인한 경우 사용자 정보를 가져오고, 로그인하지 않았다면 기본값 사용
+      var userGender = /*[[${session.user != null ? (session.user.userGender.name() == 'M' ? '남성' : '여성') : '남성'}]]*/ "남성";
+      var userBirthYear = /*[[${session.user != null ? session.user.userBirth.year : 2000}]]*/ 2000;
+      var currentYear = new Date().getFullYear();
+      var userAge = currentYear - userBirthYear;
+      var minAge = Math.floor(userAge / 10) * 10;
+      var userAgeGroupText = minAge + "대";
+      var userRegion = /*[[${session.user != null ? session.user.userLocate : '전국'}]]*/ "전국";
     </script>
-
+    
     <script>
-      // 헬퍼 함수: 지원금의 진행 상태를 계산합니다.
+      // 각 추천 타입에 따른 타이틀 생성
+      var recommendationTitles = {
+        overall: userAgeGroupText + " " + userGender + " " + userRegion + " 거주자를 위한 추천",
+        ageGender: userAgeGroupText + " " + userGender + "을 위한 추천",
+        region: userRegion + " 거주자를 위한 추천"
+      };
+      
+      // 헬퍼 함수: 지원금의 진행 상태 계산
       function getStatus(applEdDt) {
           if (!applEdDt) return "정보 없음";
           var today = new Date();
@@ -36,14 +51,65 @@
           if (isNaN(endDate.getTime())) return "정보 없음";
           return today <= endDate ? "진행중" : "마감";
       }
-
-      // 추천 API에서 받은 grantId 목록을 바탕으로 외부 지원금 상세 정보를 불러와 카드 생성
-      function loadRecommendations(endpoint) {
+      
+      // 카드 생성 함수: 외부 API 응답의 지원금 상세 정보(grant)를 기반으로 카드 HTML 생성
+      // 추가로 recommendationType (예: "ageGender")를 받아 해당 타이틀을 함께 표시
+      function createCard(grant, recommendationType) {
+          var status = getStatus(grant.applEdDt);
+          // 추천 기준 타이틀 (추천 영역 헤더처럼 카드 위에 소제목으로 표시)
+          var criteriaTitle = "";
+          if (recommendationType && recommendationTitles[recommendationType]) {
+              criteriaTitle = "<h4 class='recommendation-criteria'>" + recommendationTitles[recommendationType] + "</h4>";
+          }
+          return `
+            <li class="card benefit-card">
+              <div class="card-body">
+                ${criteriaTitle}
+                <h3 class="card-title">${grant.title || "제목 없음"}</h3>
+                <p class="card-text"><strong>대상 :</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
+                <p class="date-range"><strong>신청기간 :</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
+                <p class="card-ongoing">
+                  <strong>진행 상태 :</strong>
+                  <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span>
+                </p>
+                <button class="show-more" onclick="window.location.href='/supportApi/detail/${grant.seq}'">상세보기</button>
+              </div>
+            </li>
+          `;
+      }
+      
+      // 함수: 외부 공공 API 호출하여 지원금 상세 정보를 가져옴
+      function fetchGrantDetail(grantId, recommendationType, callback) {
+          $.ajax({
+              url: "https://apis.data.go.kr/1390000/youngV2/policyViewV2",
+              type: "GET",
+              dataType: "json",
+              data: {
+                  typeDv: "json",
+                  serviceKey: "lwFN+9DgtdnDkUuQpxCaemhEBXNKBw/EIeII2WsOlInuroAHa9InabfXhyR365jieyuEEzrb2QYAHP3b3AlrFA==",
+                  seq: grantId
+              },
+              success: function(response) {
+                  if (response && response.policy_result) {
+                      callback(response.policy_result, recommendationType);
+                  } else {
+                      console.error("지원금 상세 정보가 비어있습니다. (grantId: " + grantId + ")");
+                  }
+              },
+              error: function() {
+                  console.error("지원금 상세 정보를 불러오지 못했습니다. (grantId: " + grantId + ")");
+              }
+          });
+      }
+      
+      // 로그인하지 않은 경우: 전체 추천 Top3 호출
+      function loadOverallRecommendations() {
           var $ul = $("#recommendationSection ul.benefit-list");
+          $("#recommendationTitle").text("전체 추천 지원금 Top3");
           $ul.html("<p>추천 지원금을 불러오는 중...</p>");
           
           $.ajax({
-              url: endpoint,
+              url: "/api/recommendation/overall",
               type: "GET",
               dataType: "json",
               success: function(recommendations) {
@@ -52,42 +118,9 @@
                       return;
                   }
                   $ul.empty();
-                  // 각 추천 결과에는 grantId와 interestCount가 포함되어 있다고 가정
                   recommendations.forEach(function(item) {
-                      var grantId = item.grantId;
-                      // 외부 API 호출: 공공데이터포털 지원금 상세 API
-                      $.ajax({
-                          url: "https://apis.data.go.kr/1390000/youngV2/policyViewV2",
-                          type: "GET",
-                          dataType: "json",
-                          data: {
-                              typeDv: "json",
-                              serviceKey: "lwFN+9DgtdnDkUuQpxCaemhEBXNKBw/EIeII2WsOlInuroAHa9InabfXhyR365jieyuEEzrb2QYAHP3b3AlrFA==",  // raw 키 사용
-                              seq: grantId
-                          },
-                          success: function(response) {
-                              var grant = response.policy_result;
-                              var status = getStatus(grant.applEdDt);
-                              // 카드 HTML 생성: 기존 CSS 클래스 재사용
-                              var cardHtml = `
-                                  <li class="card benefit-card">
-                                      <div class="card-body">
-                                          <h3 class="card-title">${grant.title || "제목 없음"}</h3>
-                                          <p class="card-text"><strong>대상 :</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
-                                          <p class="date-range"><strong>신청기간 :</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
-                                          <p class="card-ongoing">
-                                              <strong>진행 상태 :</strong>
-                                              <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span>
-                                          </p>
-                                          <button class="show-more" onclick="window.location.href='/supportApi/detail/${grant.seq}'">상세보기</button>
-                                      </div>
-                                  </li>
-                              `;
-                              $ul.append(cardHtml);
-                          },
-                          error: function() {
-                              console.error("지원금 상세 정보를 불러오지 못했습니다. (grantId: " + grantId + ")");
-                          }
+                      fetchGrantDetail(item.grantId, null, function(grant) {
+                          $ul.append(createCard(grant, null));
                       });
                   });
               },
@@ -96,17 +129,50 @@
               }
           });
       }
-
-      // 문서 로드 시 로그인 여부에 따라 적절한 추천 API 호출
+      
+      // 로그인한 경우: 개인 맞춤 추천을 호출. API는 Map 형태로 { overall: {...}, ageGender: {...}, region: {...} } 반환.
+      function loadPersonalRecommendations() {
+          var $ul = $("#recommendationSection ul.benefit-list");
+          $("#recommendationTitle").text("내 맞춤 추천 지원금");
+          $ul.html("<p>추천 지원금을 불러오는 중...</p>");
+          
+          $.ajax({
+              url: "/api/recommendation/personal",
+              type: "GET",
+              dataType: "json",
+              success: function(recommendations) {
+                  if (!recommendations || Object.keys(recommendations).length === 0) {
+                      $ul.html("<p>추천 지원금이 없습니다.</p>");
+                      return;
+                  }
+                  $ul.empty();
+                  // 각 추천 영역을 처리합니다.
+                  // keys: overall, ageGender, region
+                  ["overall", "ageGender", "region"].forEach(function(key) {
+                      var rec = recommendations[key];
+                      if (rec && rec.grantId) {
+                          fetchGrantDetail(rec.grantId, key, function(grant, recType) {
+                              $ul.append(createCard(grant, recType));
+                          });
+                      }
+                  });
+              },
+              error: function() {
+                  $ul.html("<p>추천 지원금을 불러오는 데 실패했습니다.</p>");
+              }
+          });
+      }
+      
+      // 문서 로드 시, 로그인 여부에 따라 추천 API 호출
       $(document).ready(function() {
           if (isLoggedIn) {
-              loadRecommendations("/api/recommendation/personal");
+              loadPersonalRecommendations();
           } else {
-              loadRecommendations("/api/recommendation/overall");
+              loadOverallRecommendations();
           }
       });
     </script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
