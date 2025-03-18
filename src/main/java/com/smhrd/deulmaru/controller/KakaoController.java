@@ -49,7 +49,7 @@ public class KakaoController {
         }
         session.setAttribute("kakaoAccessToken", accessToken);
 
-        // 1) 카카오 사용자 정보 요청
+        // ✅ 카카오 사용자 정보 가져오기
         Map<String, Object> kakaoUserInfo = kakaoAuthService.getKakaoUserInfo(accessToken);
         if (kakaoUserInfo == null || !kakaoUserInfo.containsKey("kakaoId")) {
             return "redirect:/error";
@@ -59,45 +59,30 @@ public class KakaoController {
         String email = (String) kakaoUserInfo.getOrDefault("email", "");
         String nickname = (String) kakaoUserInfo.getOrDefault("nickname", "카카오사용자");
 
-        // 2) linking 플래그 확인 (일반 회원이 카카오 계정 연동을 시도한 경우)
-        Boolean linking = (Boolean) session.getAttribute("linking");
-        if (linking != null && linking) {
-            // linking 모드 해제
-            session.removeAttribute("linking");
-
-            // 로그인된 사용자 가져오기
-            UserEntity loggedUser = (UserEntity) session.getAttribute("user");
-            if (loggedUser == null) {
-                // 세션 만료 등으로 인해 user가 없으면 로그인 페이지로
-                return "redirect:/auth/login";
-            }
-            // 이미 카카오 계정이 연동된 경우
+        // ✅ 1️⃣ 기존 회원이 로그인한 상태에서 카카오 연동을 시도한 경우 → 자동 연동
+        UserEntity loggedUser = (UserEntity) session.getAttribute("user");
+        if (loggedUser != null) {
+            // 이미 카카오 연동된 경우 예외 처리
             if (loggedUser.getKakaoId() != null) {
                 return "redirect:/mypage";
             }
-            // 카카오 ID만 등록 후 저장
+            // 카카오 ID 등록 후 저장
             loggedUser.setKakaoId(kakaoId);
             userRepository.save(loggedUser);
 
-            // 세션 업데이트
+            // 세션 업데이트 후 마이페이지 이동
             session.setAttribute("user", loggedUser);
-            model.addAttribute("user", loggedUser);
-
-            // 연동 완료 후 마이페이지로 이동
             return "redirect:/mypage";
         }
 
-        // ✅ 기존 로직: 신규 가입 or 자동 로그인/연동
-
-        // 3) 카카오 ID가 이미 등록된 경우 → 자동 로그인
+        // ✅ 2️⃣ 기존 회원 여부 확인: 카카오 ID로 기존 계정 찾기
         Optional<UserEntity> existingUser = userRepository.findByKakaoId(kakaoId);
         if (existingUser.isPresent()) {
             session.setAttribute("user", existingUser.get());
-            model.addAttribute("user", existingUser.get());
             return "redirect:/mypage";
         }
 
-        // 4) 일반 회원가입한 이메일과 동일한 경우 → 자동 연동
+        // ✅ 3️⃣ 기존 회원 여부 확인: 이메일 기반 자동 연동
         Optional<UserEntity> normalUser = userRepository.findByUserId(email);
         if (normalUser.isPresent()) {
             UserEntity user = normalUser.get();
@@ -107,27 +92,37 @@ public class KakaoController {
             return "redirect:/mypage";
         }
 
-        // 5) 새로운 회원이면 카카오 정보 세션에 저장 후 회원가입 페이지로 이동
+        // ✅ 4️⃣ 기존 회원이 아니면 → 카카오 회원가입 페이지로 이동
         session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-        return "auth/kakao-register";
+        return "redirect:/auth/kakao/register";
     }
 
+
     // ✅ 카카오 회원가입 페이지
+ // ✅ 카카오 회원가입 페이지
     @GetMapping("/register")
     public String kakaoRegisterPage(HttpSession session, Model model) {
         Map<String, Object> kakaoUserInfo = (Map<String, Object>) session.getAttribute("kakaoUserInfo");
+
+        // 🔴 디버깅 로그 추가 (카카오 정보 확인)
+        System.out.println("세션에서 가져온 kakaoUserInfo: " + kakaoUserInfo);
+
+        // 🔴 예외 처리: 세션에 정보가 없으면 로그인 페이지로 리디렉트
         if (kakaoUserInfo == null || !kakaoUserInfo.containsKey("kakaoId")) {
+            System.out.println("🔴 kakaoUserInfo가 존재하지 않음. 로그인 페이지로 리디렉트");
             return "redirect:/auth/kakao/login";
         }
+
         model.addAttribute("kakaoUserInfo", kakaoUserInfo);
         return "auth/kakao-register";
     }
 
+
     // ✅ 카카오 회원가입 처리
     @PostMapping("/register")
     public String kakaoRegister(
-            @RequestParam String userId,          // 사용자가 입력한 로그인용 아이디
-            @RequestParam String userEmail,       // 사용자가 입력한 이메일
+            @RequestParam String userId,
+            @RequestParam String userEmail,
             @RequestParam String userPw,
             @RequestParam String userNickname,
             @RequestParam(required = false) String userLocate,
@@ -142,7 +137,7 @@ public class KakaoController {
 
         Long kakaoId = ((Number) kakaoUserInfo.get("kakaoId")).longValue();
 
-        // 중복 체크: userId(로그인용 아이디)가 이미 존재하면 오류 처리
+        // ✅ 중복 체크: userId(로그인용 아이디)가 이미 존재하면 오류 처리
         if (userRepository.findByUserId(userId).isPresent()) {
             model.addAttribute("error", "이미 존재하는 아이디입니다.");
             return "auth/kakao-register";
@@ -175,21 +170,17 @@ public class KakaoController {
         return "redirect:/mypage";
     }
 
-
-    // ★★ 카카오 연동 (일반 회원용) ★★
-    
-    // ✅ 카카오 연동 페이지 : 로그인한 사용자가 카카오 연동을 원할 때 → 바로 카카오 OAuth URL로 리다이렉트
+    // ✅ 카카오 연동 (일반 회원용)
     @GetMapping("/link")
     public String linkKakaoRedirect(HttpSession session) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
             return "redirect:/auth/login";
         }
-        // 이미 연동되었다면 마이페이지로
         if (user.getKakaoId() != null) {
             return "redirect:/mypage";
         }
-        // 연동 의도를 세션에 저장 (콜백에서 linking 플래그 확인)
+
         session.setAttribute("linking", true);
 
         // 카카오 OAuth URL 구성
@@ -198,7 +189,6 @@ public class KakaoController {
                 + "&redirect_uri=" + kakaoConfig.getRedirectUri()
                 + "&response_type=code";
 
-        // → 카카오 로그인 화면으로 리다이렉트
         return "redirect:" + oauthUrl;
     }
 

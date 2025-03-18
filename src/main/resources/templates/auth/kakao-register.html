@@ -17,12 +17,6 @@
         <input type="text" id="userId" class="form-control" name="userId" placeholder="원하는 아이디를 입력하세요" required>
       </div>
       
-      <!-- 이메일 -->
-      <div class="mb-3">
-        <label for="userEmail">이메일</label>
-        <input type="text" id="userEmail" class="form-control" name="userEmail"
-          th:value="${(kakaoUserInfo['email'] != null) ? kakaoUserInfo['email'] : ''}" required>
-      </div>
       
       <!-- 비밀번호 -->
       <div class="mb-3">
@@ -30,12 +24,20 @@
         <input type="password" id="userPw" class="form-control" name="userPw" placeholder="비밀번호 입력" required>
       </div>
       
-      <!-- 닉네임 -->
-      <div class="mb-3">
-        <label for="userNickname">닉네임</label>
-        <input type="text" id="userNickname" class="form-control" name="userNickname"
-          th:value="${(kakaoUserInfo['nickname'] != null) ? kakaoUserInfo['nickname'] : ''}" required>
-      </div>
+	  <!-- 이메일 입력 -->
+	  <div class="mb-3">
+	      <label for="userEmail">이메일</label>
+	      <input type="text" id="userEmail" class="form-control" name="userEmail"
+	        th:value="${(kakaoUserInfo != null and kakaoUserInfo['email'] != null) ? kakaoUserInfo['email'] : ''}" required>
+	  </div>
+
+	  <!-- 닉네임 입력 -->
+	  <div class="mb-3">
+	      <label for="userNickname">닉네임</label>
+	      <input type="text" id="userNickname" class="form-control" name="userNickname"
+	        th:value="${(kakaoUserInfo != null and kakaoUserInfo['nickname'] != null) ? kakaoUserInfo['nickname'] : ''}" required>
+	  </div>
+
       
       <!-- 생년월일 -->
       <div class="mb-3">
