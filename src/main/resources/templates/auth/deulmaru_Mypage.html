@@ -125,10 +125,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
- 	// (1) 관심 지원금 목록을 불러와 각 지원금 상세 정보를 호출하고 카드 생성하는 함수
+ // (1) 관심 지원금 목록을 불러와 각 지원금 상세 정보를 호출하고 카드 생성하는 함수
     function loadInterestGrants() {
-        // benefitTab 컨테이너 초기화 (로딩 메시지 표시)
-        $("#benefitTab").html("<p>관심 지원금을 불러오는 중...</p>");
+        // 우선 benefitTab 내의 기존 UL을 찾거나 없으면 새로 생성
+        var $ulContainer = $("#benefitTab ul.benefit-list");
+        if ($ulContainer.length === 0) {
+            $("#benefitTab").html('<ul class="benefit-list d-flex flex-wrap"></ul>');
+            $ulContainer = $("#benefitTab ul.benefit-list");
+        }
+        
+        // 로딩 메시지 표시 (UL 내부 내용 초기화)
+        $ulContainer.html("<p>관심 지원금을 불러오는 중...</p>");
         
         // ① 관심 지원금 목록 API 호출
         $.ajax({
@@ -138,11 +145,11 @@
             success: function(interests) {
                 // 관심 등록한 항목이 없으면 메시지 출력
                 if (!interests || interests.length === 0) {
-                    $("#benefitTab").html("<p>관심 등록된 지원금이 없습니다.</p>");
+                    $ulContainer.html("<p>관심 등록된 지원금이 없습니다.</p>");
                     return;
                 }
                 // 컨테이너 초기화
-                $("#benefitTab").empty();
+                $ulContainer.empty();
                 
                 // ② 각 관심 항목에 대해 지원금 상세 정보를 호출
                 interests.forEach(function(interest) {
@@ -163,18 +170,20 @@
                             // 진행 상태 계산 (applEdDt를 기준으로 진행중/마감 판단)
                             var status = getStatus(grant.applEdDt);
                             
-                            // 카드 템플릿 생성 (필요한 데이터 필드만 삽입)
+                            // 카드 템플릿 생성 (기존 HTML 구조와 동일하게 <li> 요소로 생성)
                             var cardHtml = `
-                                <div class="card">
-                                    <h3>${grant.title || "제목 없음"}</h3>
-                                    <p><strong>대상:</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
-                                    <p><strong>신청 기간:</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
-                                    <p><strong>진행 상태:</strong> <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span></p>
-                                    <p><a href="/supportApi/detail/${grant.seq}">상세보기</a></p>
-                                </div>
+                                <li class="card benefit-card">
+                                    <div class="card-body">
+                                        <h3 class="card-title">${grant.title || "제목 없음"}</h3>
+                                        <p class="card-text"><strong>대상 :</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
+                                        <p class="date-range"><strong>신청기간 :</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
+                                        <p class="card-ongoing"><strong>진행 상태 :</strong> <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span></p>
+                                        <button class="show-more" onclick="window.location.href='/supportApi/detail/${grant.seq}'">상세보기</button>
+                                    </div>
+                                </li>
                             `;
-                            // benefitTab 컨테이너에 카드 추가
-                            $("#benefitTab").append(cardHtml);
+                            // UL 컨테이너에 카드 추가
+                            $ulContainer.append(cardHtml);
                         },
                         error: function() {
                             console.error("지원금 상세 정보를 불러오지 못했습니다. (grantId: " + grantId + ")");
@@ -183,7 +192,7 @@
                 });
             },
             error: function() {
-                $("#benefitTab").html("<p>관심 지원금 목록을 불러오는 데 실패했습니다.</p>");
+                $ulContainer.html("<p>관심 지원금 목록을 불러오는 데 실패했습니다.</p>");
             }
         });
     }
@@ -196,6 +205,7 @@
         if (isNaN(endDate.getTime())) return "정보 없음";
         return today <= endDate ? "진행중" : "마감";
     }
+
 
     </script>
     
