@@ -6,15 +6,17 @@ document.addEventListener("DOMContentLoaded", function() {
         let targetTab = document.getElementById(tabName);
         if (targetTab) {
             targetTab.style.display = "block";
+            // benefit 탭 선택 시 관심 지원금 목록 로드
+            if (tabName === "benefitTab") {
+                loadInterestGrants();
+            }
         }
     }
 
     window.showTab = showTab;
 
-    // ✅ 기본 탭을 "내 프로필"로 설정
+    // 기본 탭을 "내 프로필"로 설정
     if(document.getElementById("profileTab")) {
         showTab('profileTab');
     }
 });
-
-

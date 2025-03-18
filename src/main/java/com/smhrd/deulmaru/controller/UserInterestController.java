@@ -2,6 +2,7 @@ package com.smhrd.deulmaru.controller;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smhrd.deulmaru.entity.UserEntity;
+import com.smhrd.deulmaru.entity.UserInterest;
 import com.smhrd.deulmaru.service.UserInterestService;
 
 import jakarta.servlet.http.HttpSession;
@@ -71,6 +73,18 @@ public class UserInterestController {
         String result = userInterestService.cancelInterest(userId, grantId);
         return ResponseEntity.ok(result);
     }
+    
+    // 관심 목록 조회
+    @GetMapping("/list")
+    public ResponseEntity<?> getInterestList(HttpSession session) {
+        UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
+        if (loggedInUser == null) {
+            return ResponseEntity.badRequest().body("로그인이 필요합니다.");
+        }
+        List<UserInterest> interests = userInterestService.getUserInterests(loggedInUser.getUserId());
+        return ResponseEntity.ok(interests);
+    }
+    
     
 }
 
