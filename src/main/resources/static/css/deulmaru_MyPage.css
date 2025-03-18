@@ -239,6 +239,22 @@
 
 }
 
+.benefit-card .cancel-interest-btn{
+    border: none;
+    background-color: transparent;
+    font-weight: 900;
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+    margin-top: 30px;
+}
+.benefit-card .cancel-interest-btn:hover {
+    color: #000000;
+    text-decoration: underline; /* 밑줄 효과 */
+
+}
+
+
 
 
 

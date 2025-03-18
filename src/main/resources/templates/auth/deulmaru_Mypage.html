@@ -171,17 +171,22 @@
                             var status = getStatus(grant.applEdDt);
                             
                             // 카드 템플릿 생성 (기존 HTML 구조와 동일하게 <li> 요소로 생성)
-                            var cardHtml = `
-                                <li class="card benefit-card">
-                                    <div class="card-body">
-                                        <h3 class="card-title">${grant.title || "제목 없음"}</h3>
-                                        <p class="card-text"><strong>대상 :</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
-                                        <p class="date-range"><strong>신청기간 :</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
-                                        <p class="card-ongoing"><strong>진행 상태 :</strong> <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span></p>
-                                        <button class="show-more" onclick="window.location.href='/supportApi/detail/${grant.seq}'">상세보기</button>
-                                    </div>
-                                </li>
-                            `;
+							var cardHtml = `
+							    <li class="card benefit-card">
+							        <div class="card-body">
+							            <h3 class="card-title">${grant.title || "제목 없음"}</h3>
+							            <p class="card-text"><strong>대상 :</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
+							            <p class="date-range"><strong>신청기간 :</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
+							            <p class="card-ongoing">
+							                <strong>진행 상태 :</strong>
+							                <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span>
+							            </p>
+							            <button class="show-more" onclick="window.location.href='/supportApi/detail/${grant.seq}'">상세보기</button>
+							            <button class="cancel-interest-btn" data-grant-id="${grant.seq}">관심 취소</button>
+							        </div>
+							    </li>
+							`;
+
                             // UL 컨테이너에 카드 추가
                             $ulContainer.append(cardHtml);
                         },
@@ -197,7 +202,7 @@
         });
     }
 
-    // (2) 진행 상태를 계산하는 헬퍼 함수
+    // 진행 상태를 계산하는 헬퍼 함수
     function getStatus(applEdDt) {
         if (!applEdDt) return "정보 없음";
         var today = new Date();
@@ -205,7 +210,29 @@
         if (isNaN(endDate.getTime())) return "정보 없음";
         return today <= endDate ? "진행중" : "마감";
     }
+	
+    
+    // 관심등록 취소 버튼 이벤트
+    $(document).on("click", ".cancel-interest-btn", function() {
+    var grantId = $(this).data("grant-id");
+    var $btn = $(this);
+    
+    $.ajax({
+        url: "/api/interest/cancel",
+        type: "DELETE",
+        data: { grantId: grantId },
+        success: function(response) {
+            alert(response); // 해제 성공 메시지 출력
+            // 해당 카드 제거 또는 목록 재로딩
+            $btn.closest("li.card").remove();
+        },
+        error: function(xhr) {
+            alert("관심 취소 실패! (" + xhr.responseText + ")");
+        }
+    });
+});
 
+    
 
     </script>
     
