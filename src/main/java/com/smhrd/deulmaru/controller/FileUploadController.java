@@ -17,65 +17,73 @@ import java.util.Map;
 @Controller
 public class FileUploadController {
 
-	@Value("${upload.path}") // application.properties에서 업로드 경로 설정
-	private String uploadDir;
+    @Value("${upload.path}")
+    private String uploadDir;
 
-	@PostMapping("/upload")
-	@ResponseBody
-	public Map<String, String> uploadImage(@RequestParam("file") MultipartFile file) {
-	    Map<String, String> response = new HashMap<>();
+    @Value("${predict.script.path}")
+    private String pythonScriptPath;
 
-	    if (file.isEmpty()) {
-	        response.put("message", "🚨 파일이 선택되지 않았습니다.");
-	        return response;
-	    }
+    @Value("${python.interpreter.path}")
+    private String pythonInterpreterPath;
 
-	    try {
-	        // 현재 작업 디렉토리와 설정된 업로드 폴더 결합 (예: 프로젝트 루트/uploads)
-	        Path path = Paths.get(System.getProperty("user.dir"), uploadDir);
-	        if (!Files.exists(path)) {
-	            Files.createDirectories(path);
-	        }
+    @PostMapping("/upload")
+    @ResponseBody
+    public Map<String, String> uploadImage(@RequestParam("file") MultipartFile file) {
+        Map<String, String> response = new HashMap<>();
 
-	        // 업로드된 파일 저장 (파일 경로도 상대 경로로 생성)
-	        String filename = file.getOriginalFilename();
-	        Path filePath = Paths.get(System.getProperty("user.dir"), uploadDir, filename);
-	        Files.copy(file.getInputStream(), filePath);
+        if (file.isEmpty()) {
+            response.put("message", "🚨 파일이 선택되지 않았습니다.");
+            return response;
+        }
 
-	        // Python 스크립트 실행 및 결과 반환
-	        String pythonScriptPath = "C:/Users/smhrd/git/farmer/predict.py";
-	        String diseasePrediction = predictImage(pythonScriptPath, filePath.toString());
+        try {
+            // uploadDir가 절대경로가 아니라면 현재 사용자 홈 디렉터리를 기준으로 변환
+            Path path = Paths.get(uploadDir);
+            if (!path.isAbsolute()) {
+                path = Paths.get(System.getProperty("user.dir"), uploadDir);
+            }
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
 
-	        response.put("prediction", diseasePrediction);
-	        response.put("imageUrl", "/uploads/" + filename);
+            // 업로드된 파일 저장
+            String filename = file.getOriginalFilename();
+            Path filePath = path.resolve(filename);
+            Files.copy(file.getInputStream(), filePath);
 
-	    } catch (IOException e) {
-	        response.put("message", "🚨 파일 업로드 오류: " + e.getMessage());
-	    }
+            // Python 스크립트 실행 및 결과 반환
+            String diseasePrediction = predictImage(pythonScriptPath, filePath.toString());
 
-	    return response;
-	}
+            response.put("prediction", diseasePrediction);
+            response.put("imageUrl", "/uploads/" + filename);
 
-	private String predictImage(String scriptPath, String imagePath) {
-	    try {
-	        ProcessBuilder processBuilder = new ProcessBuilder(
-	                "C:/Users/smhrd/AppData/Local/Programs/Python/Python310/python.exe",
-	                scriptPath,
-	                imagePath
-	        );
+        } catch (IOException e) {
+            response.put("message", "🚨 파일 업로드 오류: " + e.getMessage());
+        }
 
-	        Process process = processBuilder.start();
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-	        StringBuilder output = new StringBuilder();
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            output.append(line).append("\n");
-	        }
+        return response;
+    }
 
-	        return output.toString().trim();
+    private String predictImage(String scriptPath, String imagePath) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(
+                    pythonInterpreterPath,
+                    scriptPath,
+                    imagePath
+            );
 
-	    } catch (IOException e) {
-	        return "예측 실패: " + e.getMessage();
-	    }
-	}
-	}
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+
+            return output.toString().trim();
+
+        } catch (IOException e) {
+            return "예측 실패: " + e.getMessage();
+        }
+    }
+}

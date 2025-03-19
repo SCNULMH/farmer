@@ -39,10 +39,14 @@ def predict(image_path):
         output = model(image)
         probabilities = F.softmax(output, dim=1)
         confidence, predicted = torch.max(probabilities, 1)
+        confidence_percent = confidence.item() * 100  # 신뢰도 백분율 계산
 
-        # ✅ 신뢰도가 60% 이하이면 "작물이 아님"으로 반환
+        # 신뢰도가 60% 이하이면 "작물이 아님"으로 반환
         if confidence.item() < 0.6:
-            return "\n🦠 병해충 진단 결과:\n✅ 모델 로드 성공\n✅ 이미지 파일이 전달됨\n✅ 예측 결과: 작물이 아닙니다."
+            return (f"\n🦠 병해충 진단 결과:\n"
+                    f"✅ 모델 로드 성공\n"
+                    f"✅ 이미지 파일이 전달됨\n"
+                    f"✅ 예측 결과: 작물이 아닙니다. (신뢰도: {confidence_percent:.1f}%)")
 
         disease_mapping = {
             0: "정상", 1: "고추점무늬병", 2: "고추마일드모틀바이러스병",
@@ -52,10 +56,14 @@ def predict(image_path):
         }
 
         result = disease_mapping.get(predicted.item(), "알 수 없음")
-        return f"\n🦠 병해충 진단 결과:\n✅ 모델 로드 성공\n✅ 이미지 파일이 전달됨\n✅ 예측 결과: {result}"
+        return (f"\n🦠 병해충 진단 결과:\n"
+                f"✅ 모델 로드 성공\n"
+                f"✅ 이미지 파일이 전달됨\n"
+                f"✅ 예측 결과: {result} (신뢰도: {confidence_percent:.1f}%)")
 
     except Exception as e:
         return f"\n❌ 예측 오류: {str(e)}"
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
