@@ -110,27 +110,25 @@ body {
 
 /* ✅ 작물별 병해충(Dictionary) 카드 스타일 */
 #dictionary {
-    display: flex;
-    justify-content: center; /* 전체 컨테이너 가운데 정렬 */
-    align-items: center;
-    width: 100%;
+    display: flex !important;
+    justify-content: center !important ; /* 전체 컨테이너 가운데 정렬 */
+    align-items: center !important;
+    width: 100% !important;
     padding: 0;
-    
 }
 
 
 /* ✅ 개별 카드 스타일 (한 줄에 3개씩) */
 #dictionary #resultTable a {
     display: block;
-    width: calc(33.33% - 16px); /* 3개씩 배치되도록 설정 */
-    max-width: 380px; /* 카드 크기 제한 */
-    text-decoration: none; /* 기본 링크 스타일 제거 */
-
+	width: calc(30% - 12px); /* 카드 크기 축소 */
+    max-width: 300px !important; /* 카드 최대 크기 조정 */
+    text-decoration: none !important; /* 기본 링크 스타일 제거 */
 }
 
 
 #dictionary #resultTable .dictionary-card {
-    width: 100%; /* 부모 요소(a 태그)의 크기를 100% 차지 */
+    width: 80%; /* 부모 요소(a 태그)의 크기를 100% 차지 */
     height: 100%; /* 내부 요소가 늘어날 경우 대응 */
     display: flex;
     justify-content: space-between;
@@ -140,16 +138,30 @@ body {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     padding: 0; /* 내부 여백 제거 */
     box-sizing: border-box;
-    border-radius: 30px 30px; 
+    border-radius: 30px ; 
 }
 
 /* 카드 이미지 크기 조정 */
 #dictionary #resultTable .dictionary-card img {
     width: 100%; /* 부모 요소(dictionary-card)의 전체 너비 차지 */
-    height: 250px; /* 이미지 높이 고정 */
+    height: 200px; /* 이미지 높이 줄임 */
 	border-radius:0;
 }
 
+
+
+/* ✅ 반응형 설정 (작은 화면일 때 한 줄에 2개, 모바일에서는 1개) */
+@media (max-width: 1024px) {
+    #dictionary #resultTable a {
+        width: calc(50% - 16px); /* 2개씩 배치 */
+    }
+}
+
+@media (max-width: 600px) {
+    #dictionary #resultTable a {
+        width: 100%; /* 모바일에서는 한 줄에 1개 */
+    }
+}
 
 
 
