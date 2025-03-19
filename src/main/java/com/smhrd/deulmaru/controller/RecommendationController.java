@@ -37,6 +37,7 @@ public class RecommendationController {
     @GetMapping("/personal")
     public ResponseEntity<?> getPersonalRecommendations() {
         UserEntity user = (UserEntity) httpSession.getAttribute("user");
+        
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
