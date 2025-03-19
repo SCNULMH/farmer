@@ -3,7 +3,6 @@ let diagnosisStarted = false; // 진단이 시작되었는지 여부
 
 // 파일 업로드 이벤트 핸들러
 function handleFileUpload(files) {
-    const fileInput = document.getElementById("chooseFile");
     const resultText = document.getElementById("result-text");
     const diagnosisButton = document.getElementById("diagnosis-button");
 
@@ -62,9 +61,18 @@ function startDiagnosis() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("서버 오류 발생");
+        }
+        return response.json();
+    })
     .then(data => {
-        resultText.textContent = `🦠 병해충 진단 결과: ${data.prediction}`;
+        if (data.prediction) {
+            resultText.textContent = `🦠 병해충 진단 결과: ${data.prediction}`;
+        } else {
+            resultText.textContent = "❌ 예측 실패: 서버에서 데이터를 받지 못했습니다.";
+        }
     })
     .catch(error => {
         resultText.textContent = "❌ 진단 실패! 다시 시도해주세요.";
