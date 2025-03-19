@@ -5,6 +5,18 @@
     font-weight: 700;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+@font-face {
+    font-family: '최애체';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/YOnepickTTF-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
 
 /* 기본 스타일 */
 .body {
@@ -142,7 +154,11 @@
 }
 
 .contents .upload-box .drag-file .image {
-    width: 40px;
+	width: auto;         /* 가로 크기를 고정하지 않고 자동으로 */
+	   max-width: 80%;      /* 드래그 영역의 80%까지만 확장 */
+	   height: auto;        /* 세로 비율 자동 유지 */
+	   max-height: 80%;     /* 드래그 영역의 80%까지만 확장 */
+	   object-fit: contain;  /* 이미지 비율 유지하며 영역 내에 맞추기 */
 }
 
 .contents .upload-box .drag-file .message {

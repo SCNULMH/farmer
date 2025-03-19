@@ -1,35 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@700&display=swap');
 
 
-.navbar{
-    background-color: #fff;
-}
-
-.navbar-brand {
+body {
+    background-color: #ffffff; /* 배경색 설정 */
+    background-image: none; /* body 자체에 background-image는 사용하지 않음 */
+    margin: 0;
+    padding: 0;
     font-family: "Noto Sans KR", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-size: 25px;
-    font-style: normal;
-    color: #497c60;
 }
 
-
-.navbar-nav .nav-link {
-    font-family: "Noto Sans KR", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-}
-
-.navbar-nav .nav-link:hover {
-    color: #3e3e3e; /* 파란색 */
-    font-size: 15px;
-}
-.navbar-nav .nav-link {
-    transition: all 0.2s ease-in-out;
-}
-
+/* 일반 회원가입 섹션 */
 .title-section h2 {
     font-weight: 600 !important;
     font-size: 26px !important;
@@ -82,18 +62,16 @@
 
 
 
-.kakao-login-btn:hover {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 약간의 그림자 효과 */
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* 부드러운 애니메이션 효과 */
+/* 카카오 회원가입 세션 */
+.col-md-6 a img { /* 카카오 로그인 img */
+    margin-top: 7%;
 }
 
-body {
-    background-color: #ffffff; /* 배경색 설정 */
-    background-image: none; /* body 자체에 background-image는 사용하지 않음 */
-    margin: 0;
-    padding: 0;
-    font-family: "Noto Sans KR", sans-serif;
-}
+
+
+
+
+
 
 /* 하단에 고정된 GIF 배경 */
 .background-gif {
