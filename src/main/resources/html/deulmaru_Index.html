@@ -6,53 +6,198 @@
     <title>병해충 사전 페이지</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="deulmaru_dictionary.css">
+    <link rel="stylesheet" href="deulmaru_Index.css">
 </head>
   <body>
 
-    <!-- 네비게이션 바-->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+	
+	
+    <!-- 1. 메인페이지 배너 배경 영역 -->
+
+
+
+
+
+
+
+
+
+    <!-- 2. 맞춤 지원 보조금 슬라이드 swiper 탭 -->
+    <div class="container-sm">
+        <div class="main-benefit">
+            <div class="main-benefit-ttl text-left">
+                <h4>나를 위한 추천 지원 사업</h4>
+                <p>지역별, 연령별 나에게 맞는 지원 사업 정보를 확인하세요</p>
+            </div>
+
+
             
-        <div class="container-fluid">
-            <!-- 왼쪽 메뉴 -->
-            <div class="d-flex">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+
+            <!-- 슬라이드 탭 : 추천 지원 사업-->
+
+            <div class="row">
+                
+                <div class="swiper-btn d-flex justify-content: flex-end;">
+                    <div class="swiper-button-prev custom-button">
+                        <i class="fa-solid fa-chevron-left"></i> <!-- 왼쪽 화살표 -->
+                    </div>
+                    <div class="swiper-pause custom-button">
+                        <i class="fa-solid fa-pause"></i> <!-- 정지 버튼 -->
+                    </div>
+                    <div class="swiper-button-next custom-button">
+                        <i class="fa-solid fa-chevron-right"></i> <!-- 오른쪽 화살표 -->
+                    </div>
+                </div>
+
+                    <div class="benefit-content hidden" id="benefit">
+                            <ul class="benefit-list d-flex flex-wrap">
+                                <div class="plant-gif">
+                                    <img src="./image/지원금컨테이너.gif">
+                                </div>
+
+                                <li class="card benefit-card">
+                                    <div class="card-body">
+                                        <h3 class="card-title">귀농귀촌정책 | 농촌 정책 지원</h3>
+                                        
+                                        <div class="info-row d-flex">
+                                            <p class="card-text"><strong>대상 :</strong></p>
+                                            <p class="card-text card-text-content">
+                                                대상 정보
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="info-row d-flex">
+                                            <p class="date-range"><strong>신청기간 :</strong></p>
+                                            <p class="date-range-content"> 기간 정보 </p>
+                                        </div>
+                
+                                        <div class="info-row d-flex">
+                                            <p class="card-ongoing"><strong>진행 상태 :</strong></p>
+                                            <p class="card-ongoing-info"> 마감 / 진행중</p>
+                                        </div>
+                
+                                        <button class="show-more">상세보기</button>
+                                    </div>
+                                </li>     
+                                <li class="card benefit-card">
+                                    <div class="card-body">
+                                        <h3 class="card-title">귀농귀촌정책 | 농촌 정책 지원</h3>
+                                        
+                                        <div class="info-row d-flex">
+                                            <p class="card-text"><strong>대상 :</strong></p>
+                                            <p class="card-text card-text-content">
+                                                대상 정보
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="info-row d-flex">
+                                            <p class="date-range"><strong>신청기간 :</strong></p>
+                                            <p class="date-range-content"> 기간 정보 </p>
+                                        </div>
+                
+                                        <div class="info-row d-flex">
+                                            <p class="card-ongoing"><strong>진행 상태 :</strong></p>
+                                            <p class="card-ongoing-info"> 마감 / 진행중</p>
+                                        </div>
+                
+                                        <button class="show-more">상세보기</button>
+                                    </div>
+                                </li>     
+                            </ul>     
+                    </div>
+
+
+                <!-- 자세히 보기 버튼 -->
+                <div class="more-link">
+                    <a href="./deulmaru_Benefit.html">자세히 보기 →</a>
+                </div>
             </div>
 
-            <!-- 로고 중앙 정렬 -->
-            <a class="navbar-brand position-absolute start-50 translate-middle-x" href="#">
-                <img src="image/들마루로고.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
-                들마루
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- 3. 메인 서비스 기능 탭 -->
+    <div class="main-svc container-sm mt-4">
+        <div class="main-svc-ttl text-center mb-2">
+            <h4>들마루 서비스</h4>
+        </div>
+        
+        <div class="main-svc-box d-flex align-items-center mb-5">
+            <a href="/deulmaru_Diagnosis.html">
+                <div class="svc-box-1 svc-box">
+                    <p class="svc-box-ttl">AI 병해충 진단</p>
+                    <p class="svc-box-content">작물의 병해충을 진단할 수 있습니다</p>
+                    <img src="/image/freepik_diag_icon.png" alt="img">
+                </div>
             </a>
-
-            <!-- 오른쪽 메뉴 -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav : hover">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./들마루_회원가입.html">회원가입</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./들마루login.html">로그인</a>
-                    </li>
-                </ul>
-            </div>
+            <a href="/deulmaru_const.html">
+                <div class="svc-box-2 svc-box">
+                    <p class="svc-box-ttl">병해충 사전</p>
+                    <p class="svc-box-content">병해충에 관한 궁금증을 해결하세요</p>
+                    <img src="/image/freepik_const_icon.png" alt="img">
+                </div>  
+            </a>
+            <a href="/deulmaru_Benefit.html">
+                <div class="svc-box-3 svc-box">
+                    <p class="svc-box-ttl">지원금 정보</p>
+                    <p class="svc-box-content">농촌정착 지원금 정보를 확인하세요</p>
+                    <img src="/image/freepik_benefit_icon.png" alt="img">
+                </div>
+            </a>
         </div>
-    </nav>
+    </div>
+
+    
+
+
+    <!-- 푸터 삽입 -->
+    <div th:replace="layout/footer :: footer"></div>
+
+    
+    
 
 
 
 
 
-        <!-- 메뉴 선택 바 -->
-        <div class="menu-bar">
-            <ul class="menu-list">
-                <li><a href="./deulmaru_dictionary.html">병해충 상담</a></li>
-                <li><a href="./deulmaru_QnA.html">AI 병해충 진단</a></li>
-                <li><a href="./deulmaru_Diagnosis.html">농촌정착지원금</a></li>
-            </ul>
-        </div>
+
+
+
+
+
+    
+
+
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const pauseButton = document.querySelector(".swiper-pause i");
+            let isPaused = false;
+        
+            pauseButton.addEventListener("click", function () {
+                if (isPaused) {
+                    pauseButton.classList.remove("fa-play");
+                    pauseButton.classList.add("fa-pause"); // 정지 아이콘
+                    console.log("슬라이드 재생");
+                } else {
+                    pauseButton.classList.remove("fa-pause");
+                    pauseButton.classList.add("fa-play"); // 재생 아이콘
+                    console.log("슬라이드 정지");
+                }
+                isPaused = !isPaused;
+            });
+        });
+    </script>
+
+	
 
 
 

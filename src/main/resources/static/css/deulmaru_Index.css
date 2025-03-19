@@ -5,33 +5,16 @@
     font-weight: 700;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
 
 /* 기본 스타일 */
 .body {
     font-family: "Noto Sans KR", sans-serif;
-}
-
-/* 네비게이션 바 */
-.navbar {
-    background-color: #fff;
-
-}
-
-.navbar-brand {
-    font-family: "Noto Sans KR", sans-serif;
-    font-weight: 500;
-    font-size: 25px;
-    color: #497c60;
-}
-
-.navbar-nav .nav-link {
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-}
-
-.navbar-nav .nav-link:hover {
-    color: #3e3e3e;
-    font-size: 15px;
 }
 
 
@@ -50,7 +33,7 @@
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: right;
+    justify-content: center;
     gap: 40px; /* 메뉴 간격 */
 }
 
@@ -63,7 +46,7 @@
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 600;
     font-size: 18px;
-    color: #1a1a1a;
+    color: #497c60;
     padding: 10px 15px;
     transition: all 0.2s ease-in-out;
 }
@@ -74,3 +57,453 @@
 }
 
 
+
+
+
+
+
+
+
+
+
+/* <!-- 2. 맞춤 지원 보조금 슬라이드 swiper 탭 --> */
+.main-benefit {
+    background-color: #eefbe587;
+    border-radius: 10px;
+    padding: 5%;
+    margin-bottom: 11%;
+    margin-top: 8%;
+}
+
+.main-benefit-ttl h4 {
+    font-weight: bold;
+    color: #000000;
+    font-size: 25px;
+    font-family: 'Paperlogy-8ExtraBold';
+    margin-bottom: 12px;
+}
+.main-benefit-ttl p {
+    font-size: 18px;
+    font-family: 'Paperlogy-8ExtraBold';
+    color: #04290cb4;
+    margin-bottom: 3%;
+}
+
+
+
+/* gif 컨테이너 */
+/* GIF 컨테이너를 왼쪽에 정렬 */
+.plant-gif {
+    display: flex; 
+    justify-content: flex-start; /* 가로 정렬: 왼쪽 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 30%; /* GIF 컨테이너 크기 */
+    max-height: 200px; /* 너무 커지지 않도록 제한 */
+    margin-top: 10px;
+    margin-right: auto; /* 왼쪽 정렬 유지 */
+}
+
+/* GIF 이미지 크기 조정 */
+.plant-gif img {
+    width: 90%; /* 컨테이너 크기에 맞춤 */
+    height: auto; /* 비율 유지 */
+    object-fit: contain; /* 이미지 비율 유지하면서 크기 맞춤 */
+    margin-left: 20px;
+}
+
+
+
+
+
+/* 지원금 항목 컨테이너 */
+.benefit-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: flex-end;
+    padding: 0;
+    list-style: none;
+    margin-bottom: 1%;
+}
+/* ✅ 개별 카드 스타일 */
+.benefit-card {
+    width: calc((100% - 90px) / 3); /* 한 줄 최대 3개 */
+    max-width: 350px; /* 카드 최대 너비 설정 */
+    flex: 1 1 auto;
+    height: 250px;
+    background-color: rgba(255, 255, 255, 0.841);
+    border: transparent;
+    border-radius: 10px;
+    padding: 13px;
+    box-shadow: 0 3px 5px rgba(59, 59, 59, 0.089);
+    transition: all 0.3s ease-in-out;
+}
+
+/* ✅ 호버 효과 */
+.benefit-card:hover {
+    box-shadow: 0 15px 17px rgba(59, 59, 59, 0.089);
+}
+
+/* ✅ 카드 제목 스타일 */
+.benefit-card .card-title {
+    font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px;
+    font-weight: bold;
+    color: #8a4a00;
+    margin-bottom: 15px;
+    margin-right: 5px;
+    text-align: left;
+}
+
+/* ✅ '대상'과 내용이 같은 높이로 정렬되도록 설정 */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* ✅ '대상' 텍스트는 고정된 크기로 유지 */
+.card-text {
+    font-size: 16px;
+    color: #262626;
+    font-weight: bold;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* ✅ 내용 부분만 말줄임표 적용 */
+.card-text-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    max-width: 230px;
+    margin: 0;
+}
+
+/* ✅ 📌 반응형 미디어 쿼리 추가 */
+/* 📌 화면 너비 1024px 이하 → 카드 2개씩 */
+@media (max-width: 1024px) {
+    .benefit-card {
+        width: calc((100% - 30px) / 2); /* 2개씩 배치 */
+    }
+
+    .benefit-list {
+        justify-content: center; /* 중앙 정렬 */
+    }
+}
+
+/* 📌 화면 너비 768px 이하 → 카드 1개씩 */
+@media (max-width: 768px) {
+    .benefit-card {
+        width: 100%; /* 한 줄에 한 개 */
+        max-width: 350px;
+    }
+
+    .benefit-list {
+        justify-content: center; /* 중앙 정렬 */
+    }
+}
+
+.benefit-card .date-range, .card-ongoing {
+    font-size: 16px;
+    color: #262626;
+    line-height: 1.5;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.benefit-card .show-more{
+    border: none;
+    background-color: transparent;
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    margin-top: 30px;
+}
+.benefit-card .show-more:hover {
+    color: #8a4a00;
+    text-decoration: underline; /* 밑줄 효과 */
+
+}    
+
+
+.more-link {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.more-link a {
+    text-decoration: none;
+    color: #0e5714;
+    font-weight: bold;
+}
+.more-link :hover {
+    text-decoration: underline;
+}
+
+
+
+/* 버튼 컨테이너 - 내부에서 오른쪽 끝 정렬 */
+.row .swiper-btn {
+    display: flex;
+    justify-content: flex-end; /* 컨테이너 내부에서 오른쪽 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    width: 100%; /* 전체 너비 확보 */
+    gap: 10px; /* 버튼 간 간격 */
+    padding-right: 20px; /* 오른쪽 여백 추가 */
+    margin-bottom: 10px;
+}
+
+
+/* 개별 버튼 스타일 */
+.row .swiper-button-prev,
+.row .swiper-button-next,
+.row .swiper-pause {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* 버튼 크기 */
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* 버튼 호버 효과 */
+.row .swiper-button-prev:hover,
+.row .swiper-button-next:hover,
+.row .swiper-pause:hover {
+    background-color: #03290e;
+}
+
+
+/* 버튼 배경색 */
+.row .swiper-button-prev,
+.row .swiper-button-next,
+.row .swiper-pause {
+    background-color: #21492bb4; /* 초록색 */
+}
+
+/* 아이콘 스타일 */
+.row .swiper-button-prev i,
+.row .swiper-button-next i,
+.row .swiper-pause i {
+    font-size: 20px; /* 아이콘 크기 */
+    color: white;
+}
+
+
+
+
+
+
+/* <!-- 3. 메인 서비스 기능 탭 --> */
+.main-svc {
+    margin-bottom: 15%;
+}
+
+.main-svc-ttl h4 {
+    font-family: 'Paperlogy-8ExtraBold';
+    color: #000000e3;
+    margin-bottom: 2%;
+}
+
+.main-svc-box {
+    display: flex;
+    justify-content: center;
+    gap: 8%;
+}
+
+.main-svc-box a{
+    text-decoration: none;
+}
+
+.svc-box {  /* 서비스 박스 리스트 */
+    width: 350px; /* 고정된 가로 크기 */
+    height: 230px; /* 고정된 세로 크기 */
+    min-width: 350px;
+    margin-top: 3%;
+    text-align: center;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #f9f9f9; 
+    box-shadow: 0 3px 6px rgba(41, 41, 41, 0.096);
+    transition: all 0.2s ease-in-out;
+    justify-content: center; /* 세로 중앙 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    
+}
+
+
+.svc-box:hover {
+    box-shadow: 0 5px 10px rgba(75, 75, 75, 0.174);
+    transition: all 0.2s ease-in-out;
+}
+
+.svc-box img {
+    width: 40%;
+    max-height: 110px; 
+    margin-left: 5px;
+}
+
+
+.svc-box-ttl {
+    font-weight: bold;
+    font-size: 24px;
+    color: #000000;
+    font-family: 'Paperlogy-8ExtraBold';
+    margin-bottom: 0%;
+}
+.svc-box-content {
+    font-size: 15px;
+    font-family: 'Paperlogy-8ExtraBold';
+    color: #000000be;
+}
+
+.svc-box-1 {
+    background-color: #fbe5f262;
+}
+
+.svc-box-2 {
+    background-color: #fbede561;
+}
+
+.svc-box-3 {
+    background-color: #e5f1fb5f;  
+}
+.svc-box-3 img {
+    width: 35%;
+}
+
+
+
+/* 화면 크기가 768px 이하일 때 세로 정렬 */
+@media (max-width: 768px) {
+    .main-svc-box {
+        flex-direction: column; /* 세로 정렬 */
+        align-items: center; /* 중앙 정렬 */
+        gap: 20px; /* 박스 간격 추가 */
+    }
+}
+
+
+
+
+
+/* ✅ 슬라이드 컨트롤 버튼 스타일 */
+.swiper-controls {
+    position: relative; /* 부모 기준 위치 설정 */
+    width: 100%;
+    height: 0;
+}
+
+.custom-button {
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+
+.custom-button .arrow {
+    font-size: 40px;
+    font-weight: lighter;
+    color: black;
+    justify-content: center;
+}
+
+.swiper-button-prev,
+.swiper-button-next,
+.swiper-button-play {
+    position: static !important; /* Swiper의 기본 위치를 무효화 */
+    transform: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 푸터 스타일 */
+.site-footer {
+    background-color: #497c49; 
+    color: rgba(255, 255, 255, 0.867); /* 텍스트 색상 */
+    padding: 2%;
+    padding-bottom: 10px;
+    text-align: left;
+    border-radius: 110px 0 0 0;
+}
+
+/* 푸터 컨테이너 */
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    padding-left: 4%;
+}
+
+/* 이미지와 h1을 나란히 정렬 */
+.footer-header {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 10px; /* 이미지와 텍스트 사이 간격 */
+}
+
+/* 로고 이미지 */
+.footer-header img {
+    width: 50px;
+    height: 50px;
+}
+
+/* 제목 스타일 */
+.footer-header h1 {
+    font-weight: bold;
+    font-size: 28px;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+/* 푸터 내용 */
+.footer-content p {
+    margin-bottom: 3px;
+}
+
+/* 저작권 텍스트 */
+.footer-text {
+    margin-top: 10px;
+    font-size: 14px;
+    opacity: 0.8; /* 살짝 투명하게 */
+}
+
+/* 푸터 네비게이션 */
+.footer-nav {
+    display: flex;
+    gap: 15px; /* 링크 간 간격 */
+}
+
+/* 푸터 네비게이션 링크 */
+.footer-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease-in-out;
+}
+
+/* 푸터 네비게이션 링크 호버 효과 */
+.footer-nav a:hover {
+    color: #1abc9c; /* 연한 민트색 */
+}
