@@ -154,7 +154,11 @@
 }
 
 .contents .upload-box .drag-file .image {
-    width: 40px;
+	width: auto;         /* 가로 크기를 고정하지 않고 자동으로 */
+	   max-width: 80%;      /* 드래그 영역의 80%까지만 확장 */
+	   height: auto;        /* 세로 비율 자동 유지 */
+	   max-height: 80%;     /* 드래그 영역의 80%까지만 확장 */
+	   object-fit: contain;  /* 이미지 비율 유지하며 영역 내에 맞추기 */
 }
 
 .contents .upload-box .drag-file .message {

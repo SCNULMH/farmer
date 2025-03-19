@@ -35,6 +35,7 @@ public class MypageController {
     public String updateProfile(@RequestParam String userNickname,
                                 @RequestParam(required = false) String userPw,
                                 @RequestParam String userLocate,
+                                @RequestParam(required = false) String userCrop, // 추가된 부분
                                 HttpSession session) {
         UserEntity user = (UserEntity) session.getAttribute("user");
         if (user == null) {
@@ -47,6 +48,11 @@ public class MypageController {
         // 주소지 변경
         user.setUserLocate(userLocate);
         
+        // 재배작물 변경 (userCrop가 null이 아니면 업데이트)
+        if (userCrop != null && !userCrop.isEmpty()) {
+            user.setUserCrop(userCrop);
+        }
+         
         // 비밀번호 변경이 입력되었을 경우에만 적용
         if (userPw != null && !userPw.isEmpty()) {
             user.setUserPw(userPw);

@@ -30,6 +30,20 @@ function handleFileUpload(files) {
 
     // 파일 이름 표시
     updateFileList(file);
+
+    // 업로드한 이미지의 썸네일로 대체
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const dropFile = document.getElementById("drop-file");
+        const imageElement = dropFile.querySelector("img");
+        imageElement.src = e.target.result;  // 썸네일 대체
+        // 기본 안내 메시지 숨김 처리
+        const messageElement = dropFile.querySelector(".message");
+        if (messageElement) {
+            messageElement.style.display = "none";
+        }
+    };
+    reader.readAsDataURL(file);
 }
 
 // 파일 목록 업데이트 함수
@@ -41,7 +55,7 @@ function updateFileList(file) {
     fileList.innerHTML = `<div class="file-item">📂 ${file.name}</div>`;
 
     // 버튼을 "진단하기"로 변경하고 색상 변경
-    fileLabel.textContent = "진단하기";
+    fileLabel.textContent = "업로드 완료";
     fileLabel.style.backgroundColor = "#ffba42"; // 버튼 색 변경
 }
 
@@ -82,8 +96,6 @@ function startDiagnosis() {
         console.error('Error:', error);
     });
 }
-
-
 
 // 안내 가이드를 토글하는 함수
 function toggleGuide() {
