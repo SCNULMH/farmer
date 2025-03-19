@@ -74,11 +74,43 @@ body {
 	font-size : 17px;
 }
 
+/* input이 focus 상태일 때 스타일 변경 */
+.input-group .form-control:focus {
+    outline: none !important; /* 기본 파란색 테두리 제거 */
+    border: 2px solid #ff7f50 !important; /* 테두리 색 변경 */
+    box-shadow: none !important;
+}    
+
+
+.input-group #searchTypeDropdown:hover,
+.input-group #searchTypeDropdown:active,
+.input-group #searchTypeDropdown:focus {
+	background-color: transparent !important;
+	color: inherit !important;
+}
+
+
 .input-group .btn-primary {
 	width:70px;
 	padding: 5px;
 	border-left:transparent;
 	font-size : 17px;
+}
+
+.input-group .btn-primary:hover {
+	background-color : transparent ;
+	color: black !important;
+	font-weight : bold !important;
+	box-shadow: none !important; /* 파란 빛 효과 제거 */
+}
+
+.input-group .btn-primary:focus,
+.input-group .btn-primary:active {
+    background-color: transparent !important;
+    color: black !important;
+    border-color: inherit !important;
+    outline: none !important; /* 기본 포커스 제거 */
+    box-shadow: none !important; /* 파란 빛 효과 제거 */
 }
 
 
@@ -105,9 +137,6 @@ body {
 
 
 
-
-
-
 /* ✅ 작물별 병해충(Dictionary) 카드 스타일 */
 #dictionary {
     display: flex !important;
@@ -115,20 +144,21 @@ body {
     align-items: center !important;
     width: 100% !important;
     padding: 0;
+    margin-bottom:10%;
 }
 
 
 /* ✅ 개별 카드 스타일 (한 줄에 3개씩) */
-#dictionary #resultTable a {
+#dictionary #resultTable .a {
     display: block;
-	width: calc(30% - 12px); /* 카드 크기 축소 */
-    max-width: 300px !important; /* 카드 최대 크기 조정 */
-    text-decoration: none !important; /* 기본 링크 스타일 제거 */
+    width: calc(33.33% - 16px); /* 3개씩 배치되도록 설정 */
+    max-width: 380px !important; /* 카드 크기 제한 */
+
 }
 
 
 #dictionary #resultTable .dictionary-card {
-    width: 80%; /* 부모 요소(a 태그)의 크기를 100% 차지 */
+    width: 85%; /* 부모 요소(a 태그)의 크기를 90% 차지 */
     height: 100%; /* 내부 요소가 늘어날 경우 대응 */
     display: flex;
     justify-content: space-between;
@@ -139,13 +169,30 @@ body {
     padding: 0; /* 내부 여백 제거 */
     box-sizing: border-box;
     border-radius: 30px ; 
+    margin: 0 auto ; /* 추가: 카드가 부모 내에서 가운데 정렬 */
 }
+
+#dictionary #resultTable .card-body .insect-ttl {
+	font-size : 23px;
+	font-family: 'Paperlogy-8ExtraBold';
+}
+
+#dictionary #resultTable .card-body .crop-type {
+	font-size : 18px;
+	font-weight: 600;
+}
+
+#dictionary #resultTable .card-body .insect-ttl-eng,
+#dictionary #resultTable .card-body .insect-ttl-chn {
+	font-size : 16px;
+}
+
 
 /* 카드 이미지 크기 조정 */
 #dictionary #resultTable .dictionary-card img {
     width: 100%; /* 부모 요소(dictionary-card)의 전체 너비 차지 */
-    height: 200px; /* 이미지 높이 줄임 */
-	border-radius:0;
+    height: 250px; /* 이미지 높이 고정 */
+	border-radius: 30px 30px 0 0;
 }
 
 
