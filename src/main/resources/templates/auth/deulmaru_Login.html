@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>들마루 로그인</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/deulmaru_Login.css">
 </head>
 <body>
@@ -12,22 +14,41 @@
     <!-- 네비게이션 바 -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
+            <!-- 왼쪽 메뉴 -->
+           
+
+            <!-- 로고 중앙 정렬 -->
             <a class="navbar-brand position-absolute start-50 translate-middle-x" href="/">
-                <img src="/image/들마루로고.png" alt="Logo" width="40" height="40">
+                <img src="/image/들마루로고.png" alt="Logo" width="40" height="40" class="d-inline-block align-text-center">
                 들마루
             </a>
+
+            <!-- 오른쪽 메뉴 -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/auth/register-options">회원가입</a>
+                    <!-- 로그인 여부에 따라 표시 -->
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <span class="nav-link">환영합니다, <span th:text="${session.user.userNickname}"></span> 님!</span>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/auth/login">로그인</a>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user != null}">
+                        <a class="nav-link btn btn-danger" href="/auth/logout">로그아웃</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-outline-primary" href="/auth/login">로그인</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.user == null}">
+                        <a class="nav-link btn btn-primary" href="/auth/register-options">회원가입</a>
                     </li>
                 </ul>
             </div>
-        </div>
+        
+			</div>
+			
     </nav>
+
 
     <!-- 로그인 -->
     <div class="container-sm text-center">
@@ -60,10 +81,6 @@
             <p th:text="${error}"></p>
         </div>
 
-        <div class="btn-find-ele">
-            <button type="button" class="btn-find-id border-right">아이디 찾기</button>
-            <button type="button" class="btn-find-pw">비밀번호 찾기</button>
-        </div>
     </div>
 
     <hr class="my-4 w-50 mx-auto">

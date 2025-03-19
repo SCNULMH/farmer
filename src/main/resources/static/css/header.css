@@ -6,6 +6,13 @@
     font-weight: 700;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
 
 	.body {
 	    font-family: "Noto Sans KR", sans-serif;
@@ -15,13 +22,14 @@
     /* 네비게이션 바 스타일 */
 	.navbar {
 	    background-color: #fff !important;
+	    height: 60px;
 	}
 
 	.navbar-brand {
 	    font-family: "Noto Sans KR", sans-serif !important;
 	    font-weight: 500 !important;
-	    font-size: 25px !important;
-	    color: #497C60 !important;
+	    font-size: 27px !important;
+	    color: #11512e !important;
 	}
 
 
@@ -32,59 +40,23 @@
         padding: 5px 10px !important;
         font-size:17px !important;
     }
+    
 
-
-    /* 버튼 스타일 */
-    .btn {
-        padding: 5px 15px;
-        font-size: 17px;
-    }
-
-    .btn-outline-primary {
-        border: transparent;
-        color: black;
-    }
-
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: white;
-    }
-
-    /* 헤더 컨테이너 */
-    .header-container {
-        text-align: center;
-        margin-top: 20px;
-        padding: 20px;
-        background-color: #f8f9fa;
-    }
-
-
-	/* 기본 스타일 */
-	.body {
-	    font-family: "Noto Sans KR", sans-serif;
+	.nav-link.btn.btn-secondary,
+	.nav-link.btn.btn-danger,
+	.nav-link.btn-outline-primary,
+	.nav-link.btn-primary {
+		color: #000 !important;
 	}
-
-	/* 네비게이션 바 */
-	.navbar {
-	    background-color: #fff;
-
-	}
-
-	.navbar-brand {
-	    font-family: "Noto Sans KR", sans-serif;
-	    font-weight: 500;
-	    font-size: 25px;
-	    color: #497c60;
-	}
-
-	.navbar-nav .nav-link {
-	    font-weight: 500;
-	    transition: all 0.2s ease-in-out;
-	}
-
-	.navbar-nav .nav-link:hover {
-	    color: #3e3e3e;
-	    font-size: 15px;
+	
+	
+	.nav-link.btn.btn-secondary:hover,
+	.nav-link.btn.btn-danger:hover,
+	.nav-link.btn-outline-primary:hover,
+	.nav-link.btn-primary:hover {
+		background-color: inherit !important;
+		font-size:18px !important;
+		transition: all 0.2s ease-in-out;
 	}
 
 
@@ -114,14 +86,17 @@
 	    text-decoration: none;
 	    font-family: "Noto Sans KR", sans-serif;
 	    font-weight: 500;
-	    font-size: 18px;
-	    color: #497c60;
+	    font-size: 20px;
+	    color: #11512e;
 	    padding: 10px 15px;
 	    transition: all 0.2s ease-in-out;
 	}
 
 	.menu-list a:hover {
-	    color: #3e3e3e;
-	    font-size: 16px;
+	    color: #000;
+	    transition: all 0.2s ease-in-out;
 	}
+
+
+
 
