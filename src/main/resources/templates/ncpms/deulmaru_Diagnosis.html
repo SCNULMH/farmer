@@ -1,78 +1,84 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>들마루 AI 병해충 판별</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/deulmaru_Diagnosis.css">
-  </head>
-  <body>
+</head>
+<body>
     <div th:replace="layout/header :: header"></div>
    
     <!-- AI 활용 안내 -->
     <div class="container-sm text-left mt-5">
-      <div class="box-part p-4">
-        <h3>🔍 AI 농작물 병해충 판별이란?</h3>
-        <p class="mt-4">농작물에 발생한 병의 피해 및 해충의 사진을 AI가 판독하여 병해충 진단을 제공하는 서비스 입니다.</p>
-        <div class="ai_inst mt-5">
-          <span class="ai_inst_ttl">📍 AI 농작물 병해충 판별 이용 GUIDE 
-            <button class="btn-show-more" onclick="toggleGuide()">▼</button>
-          </span>
-          <div id="aiGuide" class="ai_inst_content hidden">
-            <p class="ai_inst_dscrpt mt-4">📷 피해 부위 중심으로 사진을 촬영하세요.</p>
-            <p>✨ 어두운 사진은 판별이 어려울 수 있습니다.</p>
-            <p>📂 업로드 할 수 있는 사진의 유형은 .jpg 또는 .png 파일입니다.</p>
-          </div>
+        <div class="box-part p-4">
+            <h3>🔍 AI 농작물 병해충 판별이란?</h3>
+            <p class="mt-4">농작물에 발생한 병의 피해 및 해충의 사진을 AI가 판독하여 병해충 진단을 제공하는 서비스입니다.</p>
+            <div class="ai_inst mt-5">
+                <span class="ai_inst_ttl">
+                    📍 AI 농작물 병해충 판별 이용 GUIDE 
+                    <button class="btn-show-more" onclick="toggleGuide()">▼</button>
+                </span>
+                <div id="aiGuide" class="ai_inst_content hidden">
+                    <p class="ai_inst_dscrpt mt-4">📷 피해 부위 중심으로 사진을 촬영하세요.</p>
+                    <p>✨ 어두운 사진은 판별이 어려울 수 있습니다.</p>
+                    <p>📂 업로드할 수 있는 사진의 유형은 .jpg 또는 .png 파일입니다.</p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
         
     <!-- 파일 업로드 영역 -->
     <div class="container mt-4">
-      <div class="row">
-        <!-- 파일 업로드 박스 (왼쪽 50%) -->
-        <h2 class="title">AI 병해충 진단하기</h2>
-        <hr>
-        <div class="col-md-6 d-flex justify-content-center align-items-center text-center">
-          <div class="container-sm">
-            <div id="root">
-              <div class="contents">
-                <div class="upload-box">
-                  <div id="drop-file" class="drag-file">
-                    <img src="https://img.icons8.com/pastel-glyph/2x/image-file.png" alt="파일 아이콘" class="image">
-                    <p class="message">드래그하여 업로드</p>
-                  </div>
-                  <label class="file-label" for="chooseFile">파일 선택</label>
-                  <input class="file" id="chooseFile" type="file" multiple onchange="dropFile.handleFiles(this.files)">
+        <div class="row">
+            <h2 class="title">AI 병해충 진단하기</h2>
+            <hr>
+
+            <!-- 파일 업로드 박스 (왼쪽 50%) -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center text-center">
+                <div class="container-sm">
+                    <div id="root">
+                        <div class="contents">
+                            <div class="upload-box">
+                                <div id="drop-file" class="drag-file">
+                                    <img src="https://img.icons8.com/pastel-glyph/2x/image-file.png" alt="파일 아이콘" class="image">
+                                    <p class="message">드래그하여 업로드</p>
+                                </div>
+                                <label class="file-label" for="chooseFile">📂 파일 선택</label>
+                                <input class="file" id="chooseFile" type="file" accept=".jpg, .png" onchange="dropFile.handleFiles(this.files)">
+                            </div>
+                            <div id="file-list" class="mt-2"></div> <!-- 파일 이름 표시 -->
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>   
-          </div>   
+            </div>
+
+            <!-- 판별 결과 박스 (오른쪽 50%) -->
+            <div class="col-md-6">
+                <div class="container-sm mt-4">
+                    <h4>판별 결과</h4>
+                    <p id="result-text" th:text="${prediction != null ? prediction : '이미지를 업로드하면 결과가 표시됩니다.'}"></p>
+                    <img th:src="@{${imageUrl}}" alt="업로드된 이미지" class="img-fluid" th:if="${imageUrl != null}">
+                    
+                    <!-- 진단하기 버튼 추가 -->
+                    <button id="diagnosis-button" class="btn btn-warning mt-3" disabled>🦠 진단하기</button>
+                </div>
+            </div>
         </div>
-    
-        <!-- 판별 결과 박스 (오른쪽 50%) -->
-        <div class="col-md-6">
-          <div class="container-sm mt-4">
-            <h4>판별 결과</h4>
-            <p id="result-text" th:text="${prediction != null ? prediction : '이미지를 업로드하면 결과가 표시됩니다.'}"></p>
-            <img th:src="@{${imageUrl}}" alt="업로드된 이미지" class="img-fluid" th:if="${imageUrl != null}">
-          </div>
-        </div>
-      </div>
     </div>
-    
+
     <!-- 이삭이 버튼 -->
     <div class="button-isac mb-5">
-      <button class="image-btn-isac" onclick="toggleGuide()">
-        <span>AI 이삭이</span>
-        <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
-      </button>
+        <button class="image-btn-isac" onclick="toggleGuide()">
+            <span>AI 이삭이</span>
+            <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
+        </button>
     </div>
-    
+
     <!-- 스크립트 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/deulmaru_const.js"></script>
     <script src="/js/deulmaru_Diagnosis.js"></script>
-  </body>
+</body>
 </html>
