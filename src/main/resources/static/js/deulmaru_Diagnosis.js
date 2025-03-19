@@ -47,15 +47,16 @@ function updateFileList(file) {
 
 // 진단 버튼 클릭 시 실행될 함수
 function startDiagnosis() {
-    if (!uploadedFile || diagnosisStarted) {
+    if (!uploadedFile) {
+        alert("❌ 파일을 먼저 업로드하세요!");
         return;
     }
 
     const resultText = document.getElementById("result-text");
     const formData = new FormData();
-    formData.append("file", uploadedFile);
+    formData.append("file", uploadedFile);  // ✅ "file" 키로 전송
 
-    resultText.textContent = "🔍 분석 중...";
+    resultText.textContent = "🔍 분석 중... 잠시만 기다려주세요.";
 
     fetch('/predict', {
         method: 'POST',
@@ -63,13 +64,15 @@ function startDiagnosis() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("서버 오류 발생");
+            throw new Error(`🚨 서버 오류: ${response.status}`);
         }
-        return response.json();
+        return response.json();  // ✅ 응답을 JSON으로 변환
     })
     .then(data => {
         if (data.prediction) {
             resultText.textContent = `🦠 병해충 진단 결과: ${data.prediction}`;
+        } else if (data.error) {
+            resultText.textContent = `❌ 오류 발생: ${data.error}`;
         } else {
             resultText.textContent = "❌ 예측 실패: 서버에서 데이터를 받지 못했습니다.";
         }
@@ -78,9 +81,9 @@ function startDiagnosis() {
         resultText.textContent = "❌ 진단 실패! 다시 시도해주세요.";
         console.error('Error:', error);
     });
-
-    diagnosisStarted = true; // 진단 시작
 }
+
+
 
 // 안내 가이드를 토글하는 함수
 function toggleGuide() {

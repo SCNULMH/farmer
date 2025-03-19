@@ -1,39 +1,48 @@
 import sys
 import os
 import torch
+import torch.nn.functional as F
 from torchvision import models, transforms
 from PIL import Image
 
-# 프로젝트 루트 디렉토리 기준 model.pth 파일 경로 설정
-project_root = os.path.abspath(os.path.dirname(__file__))  # 현재 파일이 위치한 디렉토리
+sys.stdout.reconfigure(encoding='utf-8')
+
+project_root = os.path.abspath(os.path.dirname(__file__))
 model_path = os.path.join(project_root, "model.pth")
 
-# 모델 로드
 if not os.path.exists(model_path):
-    print(f"❌ 모델 파일을 찾을 수 없습니다: {model_path}")
+    print("\n❌ 모델 파일을 찾을 수 없습니다:", model_path, "\n")
     sys.exit(1)
 
-model = models.resnet50(weights=None)
-model.fc = torch.nn.Linear(model.fc.in_features, 10)  # 클래스 개수 (예: 10개)
-model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-model.eval()
+try:
+    model = models.resnet50(weights=None)
+    model.fc = torch.nn.Linear(model.fc.in_features, 10)
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    model.eval()
+except Exception as e:
+    print("\n❌ 모델 로드 실패:", e, "\n")
+    sys.exit(1)
 
-# 이미지 처리 및 예측
 def predict(image_path):
     try:
+        if not os.path.exists(image_path):
+            return "❌ 이미지 파일을 찾을 수 없습니다."
+
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
 
-        if not os.path.exists(image_path):
-            return f"❌ 이미지 파일을 찾을 수 없습니다: {image_path}"
-
         image = Image.open(image_path).convert("RGB")
         image = transform(image).unsqueeze(0)
         output = model(image)
-        _, predicted = torch.max(output, 1)
+        probabilities = F.softmax(output, dim=1)
+        confidence, predicted = torch.max(probabilities, 1)
+
+        # ✅ 신뢰도가 60% 이하이면 "작물이 아님"으로 반환
+        if confidence.item() < 0.6:
+            return "\n🦠 병해충 진단 결과:\n✅ 모델 로드 성공\n✅ 이미지 파일이 전달됨\n✅ 예측 결과: 작물이 아닙니다."
 
         disease_mapping = {
             0: "정상", 1: "고추점무늬병", 2: "고추마일드모틀바이러스병",
@@ -42,10 +51,11 @@ def predict(image_path):
             8: "토마토황화잎말이바이러스병", 9: "포도노균병"
         }
 
-        return disease_mapping.get(predicted.item(), "알 수 없음")
+        result = disease_mapping.get(predicted.item(), "알 수 없음")
+        return f"\n🦠 병해충 진단 결과:\n✅ 모델 로드 성공\n✅ 이미지 파일이 전달됨\n✅ 예측 결과: {result}"
 
     except Exception as e:
-        return f"❌ 예측 오류: {str(e)}"
+        return f"\n❌ 예측 오류: {str(e)}"
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
