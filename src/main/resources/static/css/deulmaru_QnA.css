@@ -17,40 +17,6 @@ body {
     font-family: "Noto Sans KR", sans-serif;
 }
 
-/* 메뉴 선택 바 */
-.menu-bar {
-    background-color: #fff;
-    padding: 17px 0;
-    text-align: center;
-    border-bottom: 2px solid #eaeaea;
-}
-
-.menu-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-}
-
-.menu-list li {
-    display: inline-block;
-}
-
-.menu-list a {
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 18px;
-    color: #497c60;
-    padding: 10px 15px;
-    transition: all 0.2s ease-in-out;
-}
-
-.menu-list a:hover {
-    color: #3e3e3e;
-    font-size: 16px;
-}
 
 /* 배너 영역 */
 .banner-content {

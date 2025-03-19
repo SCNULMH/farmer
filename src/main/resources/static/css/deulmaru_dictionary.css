@@ -1,27 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@100..900&family=Sunflower:wght@700&display=swap');
+@font-face {
+    font-family: '클로버체';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/YClover-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
 
+/* 기본 스타일 */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+}
 
 
 /* 배너 영역 */
-.container {
-    align-items: center;
-
-}
-
 .banner-content {
-    background: rgba(255, 240, 162, 0.362); /* 반투명 배경 */
+    background: rgba(255, 240, 162, 0.362); 
     padding: 4%;
     border-radius: 0 0 40px 40px;
     color: #b55e39d2;
 }
 
 .banner-content h2 {
-    font-size: 30px;
+    font-size: 33px;
     font-weight: bold;
     margin-bottom: 3%;
 }
 
 .banner-content p {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 15px;
 }
 
@@ -29,22 +41,14 @@
 
 /* 검색창 영역 */
 .input-group {
-    max-width: 50%; /* 검색창 최대 너비 설정 */
-    margin: 10px auto; /* 가운데 정렬 */
+	height: 50px;
+    max-width: 50%; 
+    margin: 10px auto; 
     margin-top: 4%;
     margin-bottom: 4%;
 }
 
-/* ✅ 드롭다운 버튼 스타일 */
-.input-group .btn {
-    background-color: transparent; 
-    color: rgb(56, 56, 56); 
-    border: 4px solid #ff8d63c8; /* 테두리 */
-    border-radius: 50px;
-    border-right: transparent;
-}
-
-/* ✅ 검색창 스타일 */
+/* 검색창 스타일 */
 .search-input {
     border: 4px solid #ff8d63c8;
     border-left: transparent;
@@ -53,16 +57,51 @@
     color: #878787;
 }
 
-/* ✅ 드롭다운 메뉴 스타일 */
-.dropdown-menu {
-    background-color: transparent;
-    border: 2px solid #a8a8a8;
+/* 드롭다운 버튼 스타일 */
+.input-group .btn {
+    background-color: transparent; 
+    color: rgb(56, 56, 56); 
+    font-size : 17px;
+    border: 4px solid #ff8d63c8; 
+    border-right:transparent;
+    border-radius: 50px;
 }
 
-/* ✅ 드롭다운 항목 스타일 */
-.dropdown-item {
-    color: rgb(33, 33, 33);
+.input-group .form-control {
+	border: 4px solid #ff8d63c8; 
+	border-right: transparent;
+	border-left: transparent;
+	font-size : 17px;
 }
+
+.input-group .btn-primary {
+	width:70px;
+	padding: 5px;
+	border-left:transparent;
+	font-size : 17px;
+}
+
+
+#paging {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 4%;
+	margin-bottom: 10%;
+}
+
+#paging .btn-secondary {
+	background-color: transparent;
+	color: black;
+	border: transparent;
+	font-size: 18px;
+}
+
+#paging .btn-secondary:hover {
+	font-weight: bold;
+}
+
+
 
 
 
@@ -70,6 +109,58 @@
 
 
 /* ✅ 작물별 병해충(Dictionary) 카드 스타일 */
+#dictionary {
+    display: flex;
+    justify-content: center; /* 전체 컨테이너 가운데 정렬 */
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    
+}
+
+
+/* ✅ 개별 카드 스타일 (한 줄에 3개씩) */
+#dictionary #resultTable a {
+    display: block;
+    width: calc(33.33% - 16px); /* 3개씩 배치되도록 설정 */
+    max-width: 380px; /* 카드 크기 제한 */
+    text-decoration: none; /* 기본 링크 스타일 제거 */
+
+}
+
+
+#dictionary #resultTable .dictionary-card {
+    width: 100%; /* 부모 요소(a 태그)의 크기를 100% 차지 */
+    height: 100%; /* 내부 요소가 늘어날 경우 대응 */
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid rgba(200, 200, 200, 0.5);
+    transition: all 0.3s ease-in-out;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0; /* 내부 여백 제거 */
+    box-sizing: border-box;
+    border-radius: 30px 30px; 
+}
+
+/* 카드 이미지 크기 조정 */
+#dictionary #resultTable .dictionary-card img {
+    width: 100%; /* 부모 요소(dictionary-card)의 전체 너비 차지 */
+    height: 250px; /* 이미지 높이 고정 */
+	border-radius:0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .dictionary-card-list {
     width: 100%;
     margin-top: 2%;
@@ -86,12 +177,6 @@
     margin-right: 10px;
 }
 
-.dictionary-card-list li a{
-    text-decoration: none !important; /* 밑줄 제거 */
-    color: inherit !important; /* 글자색 변경 방지 */
-    display: block; /* 블록 요소로 설정하여 카드 전체를 클릭 가능 */
-    cursor: default; /* 커서를 기본 상태로 변경하여 링크처럼 보이지 않게 함 */
-}
 
 /* ✅ 병해충 카드 스타일 */
 .dictionary-card {
