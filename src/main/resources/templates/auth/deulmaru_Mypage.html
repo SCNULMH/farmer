@@ -143,12 +143,16 @@
         </div>
     </div>
 
-    <!-- 나의 작물 재배 일정 -->
-    <div class="container-sm text-left">
-        <div class="agri-calendar">
-            <h3>나의 작물 재배 일정</h3>
-        </div>
-    </div>
+	<!-- 나의 작물 재배 일정 -->
+	<div class="container-sm text-left" id="cropScheduleArea">
+	    <div class="agri-calendar">
+	        <h3>나의 작물 재배 일정</h3>
+	        <!-- API 결과로 받은 HTML 템플릿을 삽입할 영역 -->
+	        <div id="cropScheduleContent">
+	            <p>재배작물을 선택하면 일정이 표시됩니다.</p>
+	        </div>
+	    </div>
+	</div>
 
     <script src="/js/deulmaru_const.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -308,5 +312,44 @@
 
     </script>
     
+    <script>
+    // 작물 매핑은 이미 프론트엔드에서 사용되고 있지만, CropSchedule API 호출에는 선택된 작물명을 이용합니다.
+    
+    // function to load crop schedule using the selected cropName
+    function loadCropScheduleAPI(cropName) {
+        if (!cropName || cropName.trim() === "") {
+            $("#cropScheduleContent").html("<p>재배작물을 선택해 주세요.</p>");
+            return;
+        }
+        $.ajax({
+            url: "/api/crop-schedule",
+            type: "GET",
+            data: { cropName: cropName },
+            dataType: "html",
+            success: function(response) {
+                // 응답으로 받은 HTML 템플릿을 해당 영역에 삽입
+                $("#cropScheduleContent").html(response);
+            },
+            error: function() {
+                $("#cropScheduleContent").html("<p>농작업일정 정보를 불러오는 데 실패했습니다.</p>");
+            }
+        });
+    }
+    
+    // 문서 로드 시, 이미 userCrop 값이 있다면 API 호출
+    $(document).ready(function() {
+        var userCrop = $("#userCrop").val();
+        if (userCrop && userCrop.trim() !== "") {
+            loadCropScheduleAPI(userCrop);
+        }
+        
+        // 만약 재배작물 입력값이 변경되면, 변경 이벤트에 따라 API를 재호출할 수도 있습니다.
+        $("#cropInput").on("autocompleteselect", function(event, ui) {
+            // 선택된 값이 히든 필드에 설정되므로, 그 값을 읽어 API 호출
+            var selectedCrop = $("#userCrop").val();
+            loadCropScheduleAPI(selectedCrop);
+        });
+    });
+    </script>
 </body>
 </html>
