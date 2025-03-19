@@ -153,7 +153,6 @@ body {
     display: block;
     width: calc(33.33% - 16px); /* 3개씩 배치되도록 설정 */
     max-width: 380px !important; /* 카드 크기 제한 */
-
 }
 
 
@@ -212,29 +211,36 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-.dictionary-card-list {
-    width: 100%;
-    margin-top: 2%;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap; /* 병해충 카드들은 가로로 정렬되도록 설정 */
-    justify-content: center; /* 카드 간격 유지 */
-    list-style-type: none;
+/*상세보기 콘텐츠 영역*/
+#sickDetailModal .modal-dialog {
+	display: flex !important;
+	max-width: 80% !important;
+	padding: 5% !important;
 }
 
-.dictionary-card-list li {
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
+#sickDetailModal .modal-title {
+	font-weight: bold;
+	font-size : 18px;
+	color: #497C60;
 }
+
+.modal-body h3 {
+	font-weight: bold;
+	margin-bottom: 2%;
+}
+
+.modal-body p {
+	font-size : 18px;
+}
+
+#sickDetailModal .modal-body img {
+	max-width: 300px !important;
+	margin: 20px !important;
+	justify-content : center !important;
+}
+
+
+
 
 
 /* ✅ 병해충 카드 스타일 */
