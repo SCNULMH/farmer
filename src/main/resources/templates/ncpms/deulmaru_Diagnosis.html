@@ -54,15 +54,23 @@
                 </div>
             </div>
 
-            <!-- 판별 결과 박스 (오른쪽 50%) -->
+            <!-- 판별 결과 및 작물명 입력 영역 (오른쪽 50%) -->
             <div class="col-md-6">
                 <div class="container-sm mt-4">
                     <h4>판별 결과</h4>
-                    <p id="result-text" th:text="${prediction != null ? prediction : '이미지를 업로드하면 결과가 표시됩니다.'}"></p>
-                    <img th:src="@{${imageUrl}}" alt="업로드된 이미지" class="img-fluid" th:if="${imageUrl != null}">
+                    <!-- 작물명 입력 필드 (분석 전에 반드시 입력) -->
+                    <input type="text" id="cropNameInput" placeholder="작물명을 입력하세요" class="form-control mb-3">
                     
-                    <!-- 진단하기 버튼 추가 -->
+                    <!-- 진단하기 버튼 -->
                     <button id="diagnosis-button" class="btn btn-warning mt-3" disabled>🦠 진단하기</button>
+                    
+                    <p id="result-text">이미지를 업로드하면 결과가 표시됩니다.</p>
+                    <img id="result-image" alt="업로드된 이미지" class="img-fluid" style="display: none;">
+                    
+                    <!-- 진단 이력 저장 영역 (진단 완료 후 보이도록 설정) -->
+                    <div id="save-history-container" style="margin-top: 20px; display: none;">
+                        <button id="save-history-button" class="btn btn-primary mt-2">진단 이력 저장하기</button>
+                    </div>
                 </div>
             </div>
         </div>

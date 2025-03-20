@@ -11,12 +11,14 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class FileUploadController {
 
+    // 기존 프로퍼티 사용 (upload.path)
     @Value("${upload.path}")
     private String uploadDir;
 
@@ -26,9 +28,16 @@ public class FileUploadController {
     @Value("${python.interpreter.path}")
     private String pythonInterpreterPath;
 
+    /**
+     * 파일 업로드 및 예측 실행 (작물명 포함)
+     * 클라이언트에서 file과 함께 cropName을 전달받습니다.
+     */
     @PostMapping("/upload")
     @ResponseBody
-    public Map<String, String> uploadImage(@RequestParam("file") MultipartFile file) {
+    public Map<String, String> uploadImage(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("cropName") String cropName
+    ) {
         Map<String, String> response = new HashMap<>();
 
         if (file.isEmpty()) {
@@ -49,12 +58,13 @@ public class FileUploadController {
             // 업로드된 파일 저장
             String filename = file.getOriginalFilename();
             Path filePath = path.resolve(filename);
-            Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // Python 스크립트 실행 및 결과 반환
-            String diseasePrediction = predictImage(pythonScriptPath, filePath.toString());
 
-            response.put("prediction", diseasePrediction);
+            // Python 스크립트 실행 (작물명과 파일 경로를 전달)
+            String predictionResult = predictImage(pythonScriptPath, cropName, filePath.toString());
+
+            response.put("prediction", predictionResult);
             response.put("imageUrl", "/uploads/" + filename);
 
         } catch (IOException e) {
@@ -64,11 +74,16 @@ public class FileUploadController {
         return response;
     }
 
-    private String predictImage(String scriptPath, String imagePath) {
+    /**
+     * predict.py 스크립트를 실행하여 예측 결과를 얻습니다.
+     * 인자 순서는: cropName, imagePath
+     */
+    private String predictImage(String scriptPath, String cropName, String imagePath) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(
                     pythonInterpreterPath,
                     scriptPath,
+                    cropName,
                     imagePath
             );
 
@@ -79,7 +94,6 @@ public class FileUploadController {
             while ((line = reader.readLine()) != null) {
                 output.append(line).append("\n");
             }
-
             return output.toString().trim();
 
         } catch (IOException e) {
