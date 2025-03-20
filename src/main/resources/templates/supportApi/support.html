@@ -6,19 +6,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  
 <link rel="stylesheet" type="text/css" href="/css/support.css">
+
 </head>
 <body>
+
 	<!-- 헤더 삽입 -->
 	<div th:replace="layout/header :: header"></div>
 
-	<h1>정부 지원금 목록</h1>
+	<!-- 배너 추가 -->
+    <div class="container-sm text-center w-50">
+        <div class="banner-content text-center">
+            <h2>지원사업 정보</h2>
+            <p>지역별 지원사업 정보를 확인하세요</p>
+        </div>
+    </div>
 
 	<!-- 🔍 검색 및 세부 필터 -->
-	<div class="filter-container">
-		<input type="text" id="searchKeyword" placeholder="검색어 입력">
+	<div class="container-sm">
+		<div class="input-group">
+		
+		<input type="text" class="search-input" id="searchKeyword" placeholder="검색어 입력">
 
 		<!-- 🌍 지역 필터 -->
-		<select id="searchArea">
+		<select class="Area-group" id="searchArea">
 			<option value="전국">전국</option>
 			<option value="서울">서울</option>
 			<option value="부산">부산</option>
@@ -39,14 +49,19 @@
 			<option value="제주">제주</option>
 		</select>
 
-
+		<!-- 🔍 검색 버튼 -->
+		<button class="search-input-btn" id="searchBtn">검색</button>
+		
+		</div>
+		
+		<div class="date-picker-container">
+		
 		<!-- 📅 신청 기간 필터 -->
 		<input type="date" id="startDate"> <input type="date"
 			id="endDate">
-
-
-		<!-- 🔍 검색 버튼 -->
-		<button id="searchBtn">검색</button>
+			
+		</div>
+		
 	</div>
 
 
@@ -145,28 +160,62 @@ function buildApiUrl(page = 1) {
 
 	<!-- 리스트 렌더링 -->
 	<script>
-function renderGrantList(grants) {
-    let html = "";
-    if (grants && grants.length > 0) {
-        grants.forEach(function(grant) {
-            let status = getStatus(grant.applEdDt); // ✅ 진행 상태 계산
+	// 동적 카드 생성 시 버튼에 data-seq 속성을 추가
+	function renderGrantList(grants) {
+	    let html = "";
+	    if (grants && grants.length > 0) {
+	        grants.forEach(function(grant) {
+	            let status = getStatus(grant.applEdDt); // 진행 상태 계산
+	            html += `
+	                <li class="card benefit-card">
+	                    <div class="card-body">
+	                        <h3 class="card-title">${grant.title || "제목 없음"}</h3>
+	                        
+	                        <div class="info-row d-flex">
+	                            <p class="card-text"><strong>대상 :</strong></p>
+	                            <p class="card-text card-text-content">${grant.eduTarget || "대상 정보 없음"}</p>
+	                        </div>
+	                        
+	                        <div class="info-row d-flex">
+	                            <p class="date-range"><strong>신청기간 :</strong></p>
+	                            <p class="date-range-content">${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
+	                        </div>
+	                        
+	                        <div class="info-row d-flex">
+	                            <p class="card-ongoing"><strong>진행 상태 :</strong></p>
+	                            <p class="card-ongoing-info">${status}</p>
+	                        </div>
+	                        
+	                        <button class="show-more" data-seq="${grant.seq}">상세보기</button>
+	                    </div>
+	                </li>
+	            `;
+	        });
+	        
+	        html = `
+	            <div class="benefit-content-container container-sm w-75">
+	                <div class="benefit-content" id="benefit">
+	                    <ul class="benefit-list d-flex flex-wrap">
+	                        ${html}
+	                    </ul>
+	                </div>
+	            </div>
+	        `;
+	    } else {
+	        html = "<p>⚠ 데이터가 없습니다.</p>";
+	    }
+	    
+	    $("#grantList").html(html);
+	}
 
-            html += `
-                <div class="card">
-                    <h3>${grant.title || "제목 없음"}</h3>
-                    <p><strong>대상:</strong> ${grant.eduTarget || "대상 정보 없음"}</p>
-                    <p><strong>신청 기간:</strong> ${grant.applStDt || "기간 없음"} ~ ${grant.applEdDt || "기간 없음"}</p>
-                    <p><strong>진행 상태:</strong> <span class="${status === '진행중' ? 'ongoing' : 'closed'}">${status}</span></p>
-                    <p><a href="/supportApi/detail/${grant.seq}">상세보기</a></p>
-                </div>
-            `;
-        });
-    } else {
-        html = "<p>⚠ 데이터가 없습니다.</p>";
-    }
-
-    $("#grantList").html(html);
-}
+	// 버튼 클릭 이벤트 처리 (동적 요소에 적용)
+	$(document).on('click', '.show-more', function() {
+	    // 버튼에 저장된 데이터 속성에서 grant.seq 값 읽어오기
+	    const seq = $(this).data('seq');
+	    if (seq) {
+	        window.location.href = `/supportApi/detail/${seq}`;
+	    }
+	});
 
 </script>
 
@@ -223,7 +272,7 @@ function renderGrantList(grants) {
 
 	<!-- 첫 페이지 기본값 호출 -->
 	<script>
-$(document).ready(function() {
+	$(document).ready(function() {
     $("#searchBtn").click(function() {
         fetchGrants(1); // ✅ 검색 버튼 클릭 시 1페이지부터 새로 불러오기
     });

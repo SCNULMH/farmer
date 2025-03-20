@@ -5,22 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>병해충 사전 페이지</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/deulmaru_dictionary.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<link rel="stylesheet" href="/css/deulmaru_index.css">
 </head>
   <body>
-<!-- 헤더 삽입 -->
+	<!-- 헤더 삽입 -->
     <div th:replace="layout/header :: header"></div>
     
-    <div class="container my-4">
-      <!-- 추천 영역 -->
-      <section id="recommendationSection">
-        <h2 id="recommendationTitle">추천 지원금</h2>
-        <ul class="benefit-list d-flex flex-wrap">
-          <!-- 동적 카드와 추천 기준 헤더가 삽입됩니다 -->
-        </ul>
-      </section>
+    
+    <!-- 맞춤 지원 보조금 슬라이드 swiper 탭 -->
+	<div class="container-sm">
+	  <div class="main-benefit">
+	    <div class="main-benefit-ttl text-left">
+	      <h4>나를 위한 추천 지원 사업</h4>
+	      <p>지역별, 연령별 나에게 맞는 지원 사업 정보를 확인하세요</p>
+	    </div>
+	    
+          <!-- 동적 콘텐츠가 삽입될 영역 -->
+          <div class="benefit-content hidden" id="benefit">
+            <div class="container my-4">
+              <!-- 추천 영역 -->
+              <section id="recommendationSection">
+                <ul class="benefit-list d-flex flex-wrap">
+                  <!-- 동적 카드와 추천 기준 헤더가 이곳에 삽입됩니다 -->
+                </ul>
+              </section>
+            </div>
+            <!-- plant-gif 영역 (디자인 고정 요소) -->
+            <ul class="benefit-list d-flex flex-wrap">
+              <div class="plant-gif">
+                <img src="./image/지원금컨테이너.gif" alt="지원금 컨테이너">
+              </div>
+            </ul>
+          </div>
+          
+          <!-- 자세히 보기 버튼 -->
+          <div class="more-link">
+            <a href="/supportApi/support">자세히 보기 →</a>
+          </div>
+        </div>
+      </div>
     </div>
+    
+        <!-- 3. 메인 서비스 기능 탭 -->
+    <div class="main-svc container-sm mt-4">
+        <div class="main-svc-ttl text-center mb-2">
+            <h4>들마루 서비스</h4>
+        </div>
+        
+        <div class="main-svc-box d-flex align-items-center mb-5">
+            <a href="/auth/deulmaru_Diagnosis">
+                <div class="svc-box-1 svc-box">
+                    <p class="svc-box-ttl">AI 병해충 진단</p>
+                    <p class="svc-box-content">작물의 병해충을 진단할 수 있습니다</p>
+                    <img src="/image/freepik_diag_icon.png" alt="img">
+                </div>
+            </a>
+            <a href="/auth/deulmaru_dictionary">
+                <div class="svc-box-2 svc-box">
+                    <p class="svc-box-ttl">병해충 사전</p>
+                    <p class="svc-box-content">병해충에 관한 궁금증을 해결하세요</p>
+                    <img src="/image/freepik_const_icon.png" alt="img">
+                </div>  
+            </a>
+            <a href="/supportApi/support">
+                <div class="svc-box-3 svc-box">
+                    <p class="svc-box-ttl">지원금 정보</p>
+                    <p class="svc-box-content">농촌정착 지원금 정보를 확인하세요</p>
+                    <img src="/image/freepik_benefit_icon.png" alt="img">
+                </div>
+            </a>
+        </div>
+    </div>
+    
     
     <!-- Thymeleaf를 통해 로그인 여부 및 사용자 정보 전달 -->
     <script th:inline="javascript">
@@ -133,7 +190,6 @@
       // 로그인한 경우: 개인 맞춤 추천을 호출. API는 Map 형태로 { overall: {...}, ageGender: {...}, region: {...} } 반환.
       function loadPersonalRecommendations() {
           var $ul = $("#recommendationSection ul.benefit-list");
-          $("#recommendationTitle").text("내 맞춤 추천 지원금");
           $ul.html("<p>추천 지원금을 불러오는 중...</p>");
           
           $.ajax({
@@ -174,5 +230,7 @@
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <div th:replace="layout/Footer :: Footer"></div>
+    
   </body>
 </html>

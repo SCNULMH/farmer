@@ -6,54 +6,94 @@
 	
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .sub-info {
-            font-size: 14px;
-            color: gray;
-            margin-top: -10px;
-            margin-bottom: 10px;
-        }
-        .status {
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        .ongoing {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .closed {
-            background-color: #d9534f;
-            color: white;
-        }
-        .btn-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+/* 전체 페이지 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;      /* 화면 가운데 정렬 */
+    max-width: 800px;       /* 최대 폭 설정 */
+    padding: 0 15px;        /* 좌우 여백 */
+    line-height: 1.6;       /* 줄간격 */
+}
+
+/* 제목(지원금 상세 정보) */
+h1#grantTitle {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* 서브 정보(지역 정보, 진행 상태) */
+.sub-info {
+    font-size: 15px;
+    color: #666;
+    margin: -5px 0 15px;    /* 위아래 간격 조정 */
+}
+
+/* 상태 표시 */
+.status {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-size: 14px;
+}
+.ongoing {
+    background-color: #28a745; /* 부트스트랩 Success 계열 */
+    color: #fff;
+}
+.closed {
+    background-color: #dc3545; /* 부트스트랩 Danger 계열 */
+    color: #fff;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 */
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    vertical-align: top;    /* 내용 위쪽 정렬 */
+}
+th {
+    width: 25%;             /* 첫 열 고정 폭 (상황에 맞게 조정) */
+    background-color: #f7f7f7;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* 버튼 컨테이너 */
+.btn-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #4CAF50; /* 기본 초록색 */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 5px; /* 버튼 간격 */
+    transition: background-color 0.2s ease-in-out;
+}
+.btn:hover {
+    background-color: #45a049;
+}
+
+/*관심 등록 버튼만 별도 스타일 주고 싶으면(선택사항)*/
+#interestBtn {
+    background-color: #ff9800;
+}
+#interestBtn:hover {
+    background-color: #e68900;
+}
+
     </style>
 </head>
 <body>
