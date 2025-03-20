@@ -96,6 +96,11 @@ th {
 
     </style>
 </head>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var serviceKey = /*[[${serviceKey}]]*/ "";
+/*]]>*/
+</script>
 <body>
 
     <h1 id="grantTitle">지원금 상세 정보</h1>
@@ -139,7 +144,7 @@ th {
         console.log("📌 상세 페이지 seq 값:", seq);
 
         $.ajax({
-            url: "https://apis.data.go.kr/1390000/youngV2/policyViewV2?typeDv=json&serviceKey=lwFN%2B9DgtdnDkUuQpxCaemhEBXNKBw%2FEIeII2WsOlInuroAHa9InabfXhyR365jieyuEEzrb2QYAHP3b3AlrFA%3D%3D&seq=" + seq,
+        	url: "https://apis.data.go.kr/1390000/youngV2/policyViewV2?typeDv=json&serviceKey=" + serviceKey + "&seq=" + seq,
             type: "GET",
             dataType: "json",
             success: function(response) {
@@ -247,10 +252,6 @@ $(document).ready(function() {
     });
 });
 </script>
-
-
-
-
 
 </body>
 </html>

@@ -1,4 +1,5 @@
-    <div th:fragment="footer">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="Footer">
         <style>
             /* 푸터 스타일 */
             .site-footer {
@@ -77,7 +78,7 @@
         <footer class="site-footer">
             <div class="footer-container">
                 <div class="footer-header d-flex align-text-left">
-                    <img src="./image/들마루로고.png">
+                	<img th:src="@{/image/들마루로고.png}" alt="들마루로고">
                     <h1>들마루</h1>
                 </div>
 
