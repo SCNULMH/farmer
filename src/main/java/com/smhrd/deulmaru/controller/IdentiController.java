@@ -35,7 +35,7 @@ public class IdentiController {
     public ResponseEntity<?> saveIdenti(
             HttpSession session,
             @RequestParam("diseaseName") String diseaseName,
-            @RequestParam("confidenceScore") double confidenceScore,
+            @RequestParam("confidenceScore") String confidenceScore, // ✅ String으로 받아서 변환
             @RequestParam("cropName") String cropName,
             @RequestPart("file") MultipartFile file,
             @RequestParam(value = "overwrite", defaultValue = "true") boolean overwrite
@@ -50,25 +50,36 @@ public class IdentiController {
             }
 
             String userId = user.getUserId();
-            
-            // 🔍 diseaseName에서 "예측 결과:" 이후의 텍스트만 추출
+
+            // 🔍 diseaseName에서 필요 없는 부분 제거
             if (diseaseName.contains("병해충 진단 결과:")) {
-                diseaseName = diseaseName.substring(diseaseName.indexOf("병해충 진단 결과:") + 11).trim();
+                diseaseName = diseaseName.replace("병해충 진단 결과:", "").trim();
             }
-            
+            if (diseaseName.contains("예측 결과:")) {
+                diseaseName = diseaseName.replace("예측 결과:", "").trim();
+            }
+
+            // 🔍 confidenceScore를 double로 변환
+            double confidenceScoreValue = 0.0;
+            try {
+                confidenceScoreValue = Double.parseDouble(confidenceScore.replace("%", "").trim());
+            } catch (NumberFormatException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ confidenceScore 값 변환 실패: " + confidenceScore);
+            }
+
             // 🔍 서버에서 받은 요청 데이터 출력
             System.out.println("📥 받은 요청 데이터:");
             System.out.println("   🔹 userId: " + userId);
             System.out.println("   🔹 cropName: " + cropName);
             System.out.println("   🔹 diseaseName: " + diseaseName);
-            System.out.println("   🔹 confidenceScore: " + confidenceScore);
+            System.out.println("   🔹 confidenceScore: " + confidenceScoreValue);
             System.out.println("   🔹 file: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
 
             // 파일 저장 처리
             String imagePath = identiService.storeImage(file, overwrite);
 
             // DB에 판별 결과 저장
-            IdentiEntity entity = identiService.saveIdentiResult(userId, diseaseName, cropName, confidenceScore, imagePath);
+            IdentiEntity entity = identiService.saveIdentiResult(userId, diseaseName, cropName, confidenceScoreValue, imagePath);
 
             // 관련 정보 조회
             String relatedInfo = identiService.getRelatedInfo(diseaseName);
@@ -88,6 +99,7 @@ public class IdentiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
 
     // 응답 DTO 클래스
     public static class IdentiResponse {

@@ -105,14 +105,8 @@ function startDiagnosis() {
 
 // 진단 이력 저장 버튼 클릭 시 실행될 함수 (추후 추가 구현)
 async function saveDiagnosisHistory() {
-    let userId = sessionStorage.getItem("userId"); // ✅ userId 세션에서 가져오기
-    if (!userId || userId === "null") {
-        console.warn("⚠️ userId가 null입니다. 세션에서 다시 가져옵니다.");
-        const sessionUser = JSON.parse(sessionStorage.getItem("user")); // 세션에서 전체 유저 정보 가져오기
-        userId = sessionUser ? sessionUser.userId : null;
-    }
-
-    let resultText = document.getElementById("result-text").innerText.trim();
+    const userId = sessionStorage.getItem("userId");
+    const resultText = document.getElementById("result-text").innerText.trim();
     const cropName = document.getElementById("cropNameInput").value.trim();
     const file = document.getElementById("chooseFile").files[0];
 
@@ -121,35 +115,11 @@ async function saveDiagnosisHistory() {
         return;
     }
 
-    let diseaseName = "알 수 없음";
-    let confidenceScore = 0;
-
     try {
-        // ✅ JSON 형식이면 파싱
-        if (resultText.startsWith("{") && resultText.endsWith("}")) {
-            const parsedResult = JSON.parse(resultText);
-            diseaseName = parsedResult["병해충진단 결과"] || "알 수 없음";
-            confidenceScore = parseFloat(parsedResult["정확도"].replace("%", "")) || 0;
-        } else {
-            // ✅ 일반 문자열 형태 ("예상 병명: 정상\n정확도: 99.8%") 처리
-            const lines = resultText.split("\n");
-            if (lines.length >= 2) {
-                diseaseName = lines[0].replace("병해충진단 결과:", "").trim();
-                confidenceScore = parseFloat(lines[1].replace("정확도:", "").replace("%", "").trim()) || 0;
-            }
-        }
-
-        console.log("📤 서버로 전송할 데이터:");
-        console.log("   🔹 userId:", userId);
-        console.log("   🔹 diseaseName:", diseaseName);
-        console.log("   🔹 confidenceScore:", confidenceScore);
-        console.log("   🔹 cropName:", cropName);
-        console.log("   🔹 file:", file.name);
-
-        if (!userId) {
-            alert("❌ 로그인 정보가 없습니다. 다시 로그인해주세요.");
-            return;
-        }
+        // ✅ JSON 형태로 저장된 결과에서 '예상 병명'과 '정확도' 분리
+        const parsedResult = JSON.parse(resultText);
+        const diseaseName = parsedResult["병해충 진단 결과"]; // 이거 텍스트 정확하게 일치시켜야함
+        const confidenceScore = parseFloat(parsedResult["정확도"].replace("%", "")); // "99.8%" -> 99.8 숫자로 변환
 
         const formData = new FormData();
         formData.append("userId", userId);
@@ -175,6 +145,7 @@ async function saveDiagnosisHistory() {
         document.getElementById("result-text").textContent = "🚨 서버 오류 발생: " + error;
     }
 }
+
 
 
 // 이벤트 리스너 등록
