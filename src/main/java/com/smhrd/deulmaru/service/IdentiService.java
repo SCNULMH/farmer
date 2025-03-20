@@ -17,8 +17,9 @@ public class IdentiService {
 
     private final IdentiRepository repository;
 
-    @Value("${file.upload-dir}")
+    @Value("${upload.path}")
     private String uploadDir;
+
 
     public IdentiService(IdentiRepository repository) {
         this.repository = repository;

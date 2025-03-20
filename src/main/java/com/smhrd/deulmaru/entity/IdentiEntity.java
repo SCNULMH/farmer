@@ -1,14 +1,9 @@
 package com.smhrd.deulmaru.entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Data;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "identi")
@@ -19,7 +14,7 @@ public class IdentiEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    // (옵션) 사용자 ID : TB_USER와 연동할 수 있음
+    // 사용자 ID (마이페이지 연동 시 활용)
     private String userId;
     
     // 업로드된 이미지 파일 경로
