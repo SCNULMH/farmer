@@ -105,8 +105,14 @@ function startDiagnosis() {
 
 // 진단 이력 저장 버튼 클릭 시 실행될 함수 (추후 추가 구현)
 async function saveDiagnosisHistory() {
-    const userId = sessionStorage.getItem("userId"); // ✅ 현재 로그인한 사용자 ID 가져오기
-    const diseaseName = document.getElementById("result-text").innerText.replace("예측 결과: ", "").trim();
+    let userId = sessionStorage.getItem("userId"); // ✅ userId 세션에서 가져오기
+    if (!userId || userId === "null") {
+        console.warn("⚠️ userId가 null입니다. 세션에서 다시 가져옵니다.");
+        const sessionUser = JSON.parse(sessionStorage.getItem("user")); // 세션에서 전체 유저 정보 가져오기
+        userId = sessionUser ? sessionUser.userId : null;
+    }
+
+    let resultText = document.getElementById("result-text").innerText.trim();
     const cropName = document.getElementById("cropNameInput").value.trim();
     const file = document.getElementById("chooseFile").files[0];
 
@@ -115,30 +121,60 @@ async function saveDiagnosisHistory() {
         return;
     }
 
-    const formData = new FormData();
-    formData.append("userId", userId);  // ✅ 동적으로 사용자 ID 추가
-    formData.append("diseaseName", diseaseName);
-    formData.append("cropName", cropName);
-    formData.append("file", file);
+    let diseaseName = "알 수 없음";
+    let confidenceScore = 0;
 
     try {
+        // ✅ JSON 형식이면 파싱
+        if (resultText.startsWith("{") && resultText.endsWith("}")) {
+            const parsedResult = JSON.parse(resultText);
+            diseaseName = parsedResult["병해충진단 결과"] || "알 수 없음";
+            confidenceScore = parseFloat(parsedResult["정확도"].replace("%", "")) || 0;
+        } else {
+            // ✅ 일반 문자열 형태 ("예상 병명: 정상\n정확도: 99.8%") 처리
+            const lines = resultText.split("\n");
+            if (lines.length >= 2) {
+                diseaseName = lines[0].replace("병해충진단 결과:", "").trim();
+                confidenceScore = parseFloat(lines[1].replace("정확도:", "").replace("%", "").trim()) || 0;
+            }
+        }
+
+        console.log("📤 서버로 전송할 데이터:");
+        console.log("   🔹 userId:", userId);
+        console.log("   🔹 diseaseName:", diseaseName);
+        console.log("   🔹 confidenceScore:", confidenceScore);
+        console.log("   🔹 cropName:", cropName);
+        console.log("   🔹 file:", file.name);
+
+        if (!userId) {
+            alert("❌ 로그인 정보가 없습니다. 다시 로그인해주세요.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("userId", userId);
+        formData.append("diseaseName", diseaseName);
+        formData.append("confidenceScore", confidenceScore);
+        formData.append("cropName", cropName);
+        formData.append("file", file);
+
         const response = await fetch("/api/ident/save", {
             method: "POST",
             body: formData,
-			credentials: "include"
+            credentials: "include",
         });
 
-        const result = await response.json();
         if (response.ok) {
-            alert("✅ 진단 이력이 저장되었습니다.");
+            console.log("✅ 진단 이력이 성공적으로 저장되었습니다.");
         } else {
-            alert("❌ 진단 이력 저장 실패: " + result);
+            const result = await response.json();
+            document.getElementById("result-text").textContent = "❌ 진단 이력 저장 실패: " + result.error;
         }
     } catch (error) {
-        alert("🚨 서버 오류 발생: " + error);
+        console.error("🚨 서버 오류 발생:", error);
+        document.getElementById("result-text").textContent = "🚨 서버 오류 발생: " + error;
     }
 }
-
 
 
 // 이벤트 리스너 등록
