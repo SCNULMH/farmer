@@ -110,22 +110,30 @@
         </div> <!-- 여기서 내 프로필 탭을 닫아야 합니다. -->
 
         <!-- AI 진단 이력 탭 -->
-        <div class="tab-content hidden" id="diagHistoryTab">
-            <table class="table table-bordered text-left">
-                <thead class="table-dark">
-                    <tr>
-                        <th>진단 날짜</th>
-                        <th>병해충 명</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2024-03-13</td>
-                        <td>잎마름병</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+		<!-- AI 진단 이력 탭 -->
+		<div class="tab-content hidden" id="diagHistoryTab">
+		    <table class="table table-bordered text-left">
+		        <thead class="table-dark">
+		            <tr>
+		                <th>진단 날짜</th>
+		                <th>작물명</th>
+		                <th>병해충 명</th>
+		                <th>진단 이미지</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="history : ${identiHistory}">
+		                <td th:text="${#temporals.format(history.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
+		                <td th:text="${history.cropName}"></td>
+		                <td th:text="${history.diseaseName}"></td>
+		                <td>
+		                    <img th:src="@{'/uploads/' + ${history.imagePath}}" alt="진단 이미지" class="img-thumbnail" style="width:100px; height:auto;">
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		</div>
+
 
         <!-- 지원금 탭 -->
         <div class="tab-content hidden" id="benefitTab">

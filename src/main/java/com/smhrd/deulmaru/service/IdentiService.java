@@ -17,9 +17,8 @@ public class IdentiService {
 
     private final IdentiRepository repository;
 
-    @Value("${upload.path}")
+    @Value("${file.upload-dir:${user.home}/uploads}")	
     private String uploadDir;
-
 
     public IdentiService(IdentiRepository repository) {
         this.repository = repository;
@@ -47,11 +46,12 @@ public class IdentiService {
     }
 
     // DB에 판별 결과 저장
-    public IdentiEntity saveIdentiResult(String userId, String diseaseName, String cropName, String imagePath) {
+    public IdentiEntity saveIdentiResult(String userId, String diseaseName, String cropName, double confidenceScore, String imagePath) {
         IdentiEntity entity = new IdentiEntity();
         entity.setUserId(userId);
         entity.setDiseaseName(diseaseName);
         entity.setCropName(cropName);
+        entity.setConfidenceScore(confidenceScore);
         entity.setImagePath(imagePath);
         entity.setIdentificationTime(LocalDateTime.now());
         return repository.save(entity);

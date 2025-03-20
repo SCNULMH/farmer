@@ -26,6 +26,9 @@ public class IdentiEntity {
     // 작물명
     private String cropName;
     
+    // 신뢰도
+    private double confidenceScore; 
+   
     // 판별 시간
     private LocalDateTime identificationTime;
 }
