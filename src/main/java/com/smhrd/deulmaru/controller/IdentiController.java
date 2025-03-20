@@ -31,19 +31,30 @@ public class IdentiController {
             @RequestParam(value = "userId", required = false) String userId,
             @RequestParam("diseaseName") String diseaseName,
             @RequestParam("cropName") String cropName,
-            @RequestParam("file") MultipartFile file,
+            @RequestPart("file") MultipartFile file, // @RequestPart를 사용하여 파일을 처리
             @RequestParam(value = "overwrite", defaultValue = "false") boolean overwrite
     ) {
         try {
+            // 서버에서 받은 요청 데이터 확인 (디버깅용 로그)
+            System.out.println("📥 받은 요청 데이터:");
+            System.out.println("   🔹 userId: " + userId);
+            System.out.println("   🔹 cropName: " + cropName);
+            System.out.println("   🔹 diseaseName: " + diseaseName);
+            System.out.println("   🔹 file: " + (file != null ? file.getOriginalFilename() : "파일 없음"));
+
             // 파일 저장 처리
             String imagePath = identiService.storeImage(file, overwrite);
+            
             // DB에 판별 결과 저장
             IdentiEntity entity = identiService.saveIdentiResult(userId, diseaseName, cropName, imagePath);
+
             // 관련 정보 조회 (예시)
             String relatedInfo = identiService.getRelatedInfo(diseaseName);
+
             // 응답 DTO 생성 후 반환
             return ResponseEntity.ok().body(new IdentiResponse(entity, relatedInfo));
         } catch (Exception e) {
+            System.out.println("❌ 저장 실패: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

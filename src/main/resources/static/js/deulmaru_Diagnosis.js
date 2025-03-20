@@ -110,37 +110,62 @@ function startDiagnosis() {
 
 // 진단 이력 저장 버튼 클릭 시 실행될 함수 (추후 추가 구현)
 function saveDiagnosisHistory() {
-    alert("진단 이력 저장 기능은 추후 구현됩니다.");
+    const userId = "test_user";  // 실제 로그인한 사용자 ID로 변경 필요
+    const cropName = document.getElementById("cropNameInput").value.trim();
+    
+    // 기존 전체 진단 결과 텍스트
+    const fullResultText = document.getElementById("result-text").innerText;
+    const keyword = "예측 결과:";
+    let diseaseName = "";
+    
+    // "예측 결과:" 이후의 텍스트만 추출
+    const idx = fullResultText.indexOf(keyword);
+    if (idx !== -1) {
+        diseaseName = fullResultText.substring(idx + keyword.length).trim();
+    } else {
+        diseaseName = fullResultText.trim();
+    }
+    
+    const fileInput = document.getElementById("chooseFile"); // 파일 선택 input
+
+    if (!cropName || !diseaseName || fileInput.files.length === 0) {
+        alert("❌ 모든 정보를 입력하세요. (작물명, 진단 결과, 이미지)");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("cropName", cropName);
+    formData.append("diseaseName", diseaseName);
+    formData.append("file", fileInput.files[0]);
+	formData.append("overwrite", true);
+
+    console.log("📤 서버로 보낼 데이터:");
+    console.log("   🔹 userId:", userId);
+    console.log("   🔹 cropName:", cropName);
+    console.log("   🔹 diseaseName:", diseaseName);
+    console.log("   🔹 file:", fileInput.files[0].name);
+
+    fetch("/api/ident/save", {
+        method: "POST",
+        body: formData // FormData 사용시 Content-Type 자동 설정 (multipart/form-data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`🚨 서버 오류: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert("✅ 진단 이력이 저장되었습니다!");
+        console.log("서버 응답:", data);
+    })
+    .catch(error => {
+        alert("❌ 진단 이력 저장 실패! 다시 시도해주세요.");
+        console.error("에러 발생:", error);
+    });
 }
 
-// 안내 가이드 토글 함수
-function toggleGuide() {
-    const guideContent = document.getElementById("aiGuide");
-    guideContent.classList.toggle("show");
-}
-
-// 드래그 앤 드롭 설정
-function setUpDragAndDrop() {
-    const dropZone = document.getElementById("drop-file");
-    const fileInput = document.getElementById("chooseFile");
-
-    dropZone.addEventListener("dragover", function (event) {
-        event.preventDefault();
-        dropZone.style.border = "3px solid #1e824c";
-    });
-
-    dropZone.addEventListener("dragleave", function () {
-        dropZone.style.border = "3px dashed #dbdbdb";
-    });
-
-    dropZone.addEventListener("drop", function (event) {
-        event.preventDefault();
-        dropZone.style.border = "3px dashed #dbdbdb";
-        const files = event.dataTransfer.files;
-        fileInput.files = files;
-        handleFileUpload(files);
-    });
-}
 
 // 이벤트 리스너 등록
 document.getElementById("chooseFile").addEventListener("change", function(event) {
