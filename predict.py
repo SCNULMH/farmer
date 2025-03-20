@@ -82,10 +82,11 @@ def predict(crop_name, image_path):
         result = disease_mapping.get(predicted_index, "알 수 없음")
 
         return json.dumps({
-            "예상 병명": result,
+            "병해충진단 결과": result,
             "정확도": f"{confidence_percent:.1f}%"
         }, ensure_ascii=False)
-
+        
+        
     except Exception as e:
         return json.dumps({"error": f"❌ 예측 오류: {str(e)}"}, ensure_ascii=False)
 
