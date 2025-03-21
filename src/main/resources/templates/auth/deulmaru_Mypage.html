@@ -131,16 +131,39 @@
 				        <td th:text="${history.cropName}"></td>
 				        <td th:text="${history.diseaseName}"></td>
 				        <td th:text="${history.confidenceScore + '%'}"></td>
-				        <td>
-				            <img th:src="@{'/uploads/' + ${#strings.substring(history.imagePath, history.imagePath.lastIndexOf('/') + 1)}}" 
-				                 alt="진단 이미지" class="img-thumbnail" style="width:100px; height:auto;">
-				        </td>
+						<td>
+						    <img th:src="@{'/uploads/' + ${#strings.substring(history.imagePath, history.imagePath.lastIndexOf('/') + 1)}}"
+						         alt="진단 이미지" class="img-thumbnail"
+						         style="width:100px; height:auto; cursor:pointer;"
+						         onclick="openImageModal(this.src)">
+						</td>
 				    </tr>
 				</tbody>
 
 
 		    </table>
 		</div>
+		
+		<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-body text-center">
+		        <img id="modalImage" src="" alt="진단 이미지 확대" class="img-fluid" style="max-height: 600px;">
+		      </div>
+		    </div>
+		  </div>
+		</div> 
+
+		<script>
+			// 업로드 이미지 확대
+		function openImageModal(imageSrc) {
+		    // 이미지 경로 설정
+		    document.getElementById("modalImage").src = imageSrc;
+		    // Bootstrap 모달 열기
+		    const modal = new bootstrap.Modal(document.getElementById("imageModal"));
+		    modal.show();
+		}
+		</script>
 
 
         <!-- 지원금 탭 -->

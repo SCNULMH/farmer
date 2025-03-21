@@ -38,9 +38,10 @@ public class IdentiService {
         }
 
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        return filePath.toString();
+        return originalFilename; // 경로 말고 파일명만 저장
     }
-
+    
+    
     public IdentiEntity saveIdentiResult(String userId, String diseaseName, String cropName, double confidenceScore, String imagePath) {
         IdentiEntity entity = new IdentiEntity();
         entity.setUserId(userId);
