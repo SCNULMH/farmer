@@ -118,19 +118,27 @@
 		                <th>진단 날짜</th>
 		                <th>작물명</th>
 		                <th>병해충 명</th>
+		                <th>정확도</th>
 		                <th>진단 이미지</th>
 		            </tr>
 		        </thead>
-		        <tbody>
-		            <tr th:each="history : ${identiHistory}">
-		                <td th:text="${#temporals.format(history.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></td>
-		                <td th:text="${history.cropName}"></td>
-		                <td th:text="${history.diseaseName}"></td>
-		                <td>
-		                    <img th:src="@{'/uploads/' + ${history.imagePath}}" alt="진단 이미지" class="img-thumbnail" style="width:100px; height:auto;">
-		                </td>
-		            </tr>
-		        </tbody>
+				<tbody>
+				    <tr th:if="${#lists.isEmpty(identiHistory)}">
+				        <td colspan="5">진단 이력이 없습니다.</td>
+				    </tr>
+				    <tr th:each="history : ${identiHistory}">
+				        <td th:text="${#temporals.format(history.identificationTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				        <td th:text="${history.cropName}"></td>
+				        <td th:text="${history.diseaseName}"></td>
+				        <td th:text="${history.confidenceScore + '%'}"></td>
+				        <td>
+				            <img th:src="@{'/uploads/' + ${#strings.substring(history.imagePath, history.imagePath.lastIndexOf('/') + 1)}}" 
+				                 alt="진단 이미지" class="img-thumbnail" style="width:100px; height:auto;">
+				        </td>
+				    </tr>
+				</tbody>
+
+
 		    </table>
 		</div>
 
@@ -359,7 +367,7 @@
         });
     });
     </script>
-    
+    <script th:src="@{/js/deulmaru_alram.js}"></script>
     <div th:replace="layout/Footer :: Footer"></div>
 </body>
 </html>

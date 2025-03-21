@@ -385,7 +385,62 @@
 	});
 	</script>
 
+	<script>
+    // ✅ 페이지 로드 시, 관심 등록 여부 확인
+    $.ajax({
+        url: "/api/interest/check",
+        type: "GET",
+        data: { grantId: seq },
+        success: function(response) {
+            if (response.exists) {
+                // 이미 등록되어 있다면, 취소 버튼으로 표시
+                $("#interestBtn").text("관심 취소").removeClass("disabled").prop("disabled", false);
+            }
+        },
+        error: function() {
+            console.log("관심 등록 여부 확인 실패");
+        }
+    });
 
-	<div th:replace="layout/Footer :: Footer"></div>
+    // ✅ 관심 등록 / 취소 버튼 클릭 이벤트
+    $("#interestBtn").click(function() {
+        let btn = $(this);
+        let applEdDt = $("#grantPeriod").text().split("~")[1].trim(); // 마감일
+        let title = $("#grantTitle").text();
+        
+        // 버튼 텍스트에 따라 등록 또는 취소 처리
+        if (btn.text() === "관심 등록") {
+            // 등록 처리
+            $.ajax({
+                url: "/api/interest/add",
+                type: "POST",
+                data: { grantId: seq, applEdDt: applEdDt, title: title },
+                success: function(response) {
+                    alert(response);
+                    btn.text("관심 취소");
+                },
+                error: function(xhr) {
+                    alert("관심 등록 실패! (" + xhr.responseText + ")");
+                }
+            });
+        } else if (btn.text() === "관심 취소") {
+            // 취소 처리
+            $.ajax({
+                url: "/api/interest/cancel",
+                type: "DELETE",
+                data: { grantId: seq },
+                success: function(response) {
+                    alert(response);
+                    btn.text("관심 등록");
+                },
+                error: function(xhr) {
+                    alert("관심 취소 실패! (" + xhr.responseText + ")");
+                }
+            });
+        }
+    });
+</script>
+<script th:src="@{/js/deulmaru_alram.js}"></script>
+
 </body>
 </html>

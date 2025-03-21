@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface IdentiRepository extends JpaRepository<IdentiEntity, Long> {
 	
 	  List<IdentiEntity> findByUserIdOrderByIdentificationTimeDesc(String userId);
+	  
+
 }

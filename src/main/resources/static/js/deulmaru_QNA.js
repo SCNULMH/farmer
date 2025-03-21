@@ -1,46 +1,87 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("✅ deulmaru_consult.js 로드 완료");
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ deulmaru_QNA.js 로드 완료");
 
-    // 병해충 상담 검색 요청 함수
-    window.fetchConsultData = function() {
-        let query = document.getElementById("consultQuery").value;
-        if (!query) {
-            alert("검색어를 입력하세요!");
-            return;
+    // 드롭다운 동작 처리
+    const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
+    dropdownItems.forEach(item => {
+        item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const selectedValue = this.getAttribute("data-value");
+            const selectedText = this.textContent;
+
+            const button = document.getElementById("dropdownMenuButton");
+            button.textContent = selectedText;
+            button.setAttribute("data-search-type", selectedValue);
+        });
+    });
+
+    // 기본값 세팅 (제목+내용 → 실제 API에서는 '제목'만 검색됨) 이거 점검해야해
+    // 기본값 세팅 (제목+내용 → 실제 API에서는 '제목'만 검색됨) 이거 점검해야해
+    // 기본값 세팅 (제목+내용 → 실제 API에서는 '제목'만 검색됨) 이거 점검해야해
+    // 기본값 세팅 (제목+내용 → 실제 API에서는 '제목'만 검색됨) 이거 점검해야해
+    // 기본값 세팅 (제목+내용 → 실제 API에서는 '제목'만 검색됨) 이거 점검해야해
+    const dropdownButton = document.getElementById("dropdownMenuButton");
+    dropdownButton.textContent = "제목+내용";
+    dropdownButton.setAttribute("data-search-type", "title"); // 기본은 제목 검색
+
+    const consultQuery = document.getElementById("consultQuery");
+    consultQuery.value = "";
+    consultQuery.placeholder = "검색어를 입력하세요!";
+
+    // 페이지 로드시 자동 검색 실행
+    fetchConsultData("벼");
+
+    // 검색창 엔터 입력 시 검색 실행
+    consultQuery.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            fetchConsultData();
         }
+    });
+});
 
-        // /ncpms/consult 엔드포인트 호출 (페이지 정보 포함)
-        let url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&page=1`;
-        console.log("🔍 병해충 상담 요청 URL:", url);
+// 병해충 상담 검색 요청
+window.fetchConsultData = function (customQuery) {
+    const query = customQuery || document.getElementById("consultQuery").value;
+    if (!query) {
+        alert("검색어를 입력하세요!");
+        return;
+    }
 
-        fetch(url)
-            .then(response => response.text())
-            .then(str => new window.DOMParser().parseFromString(str, "application/xml"))
-            .then(data => {
-                let items = data.getElementsByTagName("item");
-                let tableBody = document.querySelector("#consultResultTable tbody");
-                tableBody.innerHTML = ""; // 기존 결과 초기화
+    // 드롭다운 값 가져오기 (제목 or 내용)
+    const searchType = document.getElementById("dropdownMenuButton").getAttribute("data-search-type");
+    const paramKey = (searchType === "content") ? "reqestCn" : "dgnssReqSj"; // 기본은 제목
 
-                for (let item of items) {
-                    let title = item.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
-                    let consultId = item.getElementsByTagName("dgnssReqNo")[0]?.textContent || "";
-                    let requestDate = item.getElementsByTagName("registDatetm")[0]?.textContent || "정보 없음";
+    const url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&type=${paramKey}&page=1`;
+    console.log("🔍 병해충 상담 요청 URL:", url);
 
-                    let row = `
-                        <tr>
-                            <td>${title}</td>
-                            <td>${consultId}</td>
-                            <td>${requestDate}</td>
-                            <td><button onclick="fetchConsultDetail('${consultId}')">상세보기</button></td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                }
-            })
-            .catch(error => {
-                console.error("🔴 병해충 상담 에러:", error);
-            });
-    };
+    fetch(url)
+        .then(response => response.text())
+        .then(str => new window.DOMParser().parseFromString(str, "application/xml"))
+        .then(data => {
+            const items = data.getElementsByTagName("item");
+            const tableBody = document.querySelector("#consultResultTable tbody");
+            tableBody.innerHTML = "";
+
+            for (let item of items) {
+                const title = item.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
+                const consultId = item.getElementsByTagName("dgnssReqNo")[0]?.textContent || "";
+                const requestDate = item.getElementsByTagName("registDatetm")[0]?.textContent || "정보 없음";
+
+                const row = `
+                    <tr>
+                        <td>${title}</td>
+                        <td>${consultId}</td>
+                        <td>${requestDate}</td>
+                        <td><button onclick="fetchConsultDetail('${consultId}')">상세보기</button></td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            }
+        })
+        .catch(error => {
+            console.error("🔴 병해충 상담 에러:", error);
+        });
+};
 
     // 병해충 상담 상세보기 요청 함수
 	window.fetchConsultDetail = function(consultId) {
@@ -107,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	        });
 	};
 	
-});
 
 // 이미지 클릭 시 모달로 확대보기
 	function showImageModal(imageSrc) {

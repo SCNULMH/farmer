@@ -1,19 +1,28 @@
 package com.smhrd.deulmaru.controller;
 
+import com.smhrd.deulmaru.entity.IdentiEntity;
 import com.smhrd.deulmaru.entity.UserEntity;
+import com.smhrd.deulmaru.service.IdentiService;
 import com.smhrd.deulmaru.service.UserService;
 import jakarta.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/auth") // ✅ 공통 URL Prefix 적용
 public class AuthController {
 
-    private final UserService userService;
+	@Autowired
+	IdentiService identiService;
+	
+	@Autowired
+	UserService userService;
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -27,8 +36,20 @@ public class AuthController {
 
     // ✅ 마이페이지
     @GetMapping("/mypage")
-    public String mypage() {
-        return "auth/deulmaru_Mypage";
+    public String myPage(HttpSession session, Model model) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/auth/deulmaru_Login";
+        }
+
+        model.addAttribute("user", user);
+
+        List<IdentiEntity> historyList = identiService.getHistoryByUserId(user.getUserId());
+        System.out.println( historyList  );
+        
+        model.addAttribute("identiHistory", historyList);
+
+        return "/auth/deulmaru_Mypage";
     }
 
     // ✅ 로그인 처리 (일반 로그인)
