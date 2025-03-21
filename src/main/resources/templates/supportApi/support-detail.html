@@ -218,14 +218,15 @@ $(document).ready(function() {
     $("#interestBtn").click(function() {
         let btn = $(this);
         let applEdDt = $("#grantPeriod").text().split("~")[1].trim(); // 마감일
-
+        let title = $("#grantTitle").text();
+        
         // 버튼 텍스트에 따라 등록 또는 취소 처리
         if (btn.text() === "관심 등록") {
             // 등록 처리
             $.ajax({
                 url: "/api/interest/add",
                 type: "POST",
-                data: { grantId: seq, applEdDt: applEdDt },
+                data: { grantId: seq, applEdDt: applEdDt, title: title },
                 success: function(response) {
                     alert(response);
                     btn.text("관심 취소");

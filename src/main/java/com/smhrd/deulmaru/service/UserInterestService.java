@@ -24,17 +24,22 @@ public class UserInterestService {
     
     // ✅ 관심 지원금 등록
     @Transactional
-    public String addInterest(String userId, String grantId, LocalDate applEdDt) {
+    public String addInterest(String userId, String grantId, LocalDate applEdDt, String title) {
         if (userInterestRepository.existsByUserIdAndGrantId(userId, grantId)) {
             return "이미 관심 등록된 지원금입니다.";
         }
-        UserInterest interest = new UserInterest(null, userId, grantId, applEdDt, true, null);
+        // 기본적으로 alarmEnabled는 true, notifyYn은 false로 설정합니다.
+        UserInterest interest = new UserInterest(null, userId, grantId, applEdDt, true, null, false, title);
+        interest.setTitle(title);
         userInterestRepository.save(interest);
         return "관심 등록이 완료되었습니다.";
     }
 
-    // ✅ 관심 지원금 목록 조회
+
+    // 관심 지원금 목록 조회
     public List<UserInterest> getUserInterests(String userId) {
+        // 업데이트 후 조회하면, 마감 임박 알림이 활성화된 항목을 확인할 수 있음.
+        updateImminentNotifications(userId);
         return userInterestRepository.findByUserId(userId);
     }
 
@@ -47,5 +52,28 @@ public class UserInterestService {
         userInterestRepository.deleteByUserIdAndGrantId(userId, grantId);
         return "관심 등록이 취소되었습니다.";
     }
+    
+    // 알람 기능
+    @Transactional
+    public void updateImminentNotifications(String userId) {
+        List<UserInterest> interests = userInterestRepository.findByUserId(userId);
+        LocalDate today = LocalDate.now();
+        
+        for (UserInterest interest : interests) {
+            long remainingDays = java.time.temporal.ChronoUnit.DAYS.between(today, interest.getApplEdDt());
+            // alarmEnabled 체크는 필요하다면 추가
+            if (interest.isAlarmEnabled() && remainingDays <= 14 && remainingDays >= 0) {
+                // 마감 임박 상태이면 알림을 활성화 (notifyYn = true)
+                interest.setNotifyYn(true);
+            } else {
+                // 조건에 맞지 않으면 알림 비활성화 (옵션)
+                interest.setNotifyYn(false);
+            }
+        }
+        // 변경된 interest들은 Transaction 내에서 자동으로 flush됨.
+    }
+    
+    
+
 
 }

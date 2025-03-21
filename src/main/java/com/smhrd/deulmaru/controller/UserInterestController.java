@@ -46,7 +46,8 @@ public class UserInterestController {
     @PostMapping("/add")
     public ResponseEntity<String> addInterest(HttpSession session,
                                               @RequestParam String grantId,
-                                              @RequestParam LocalDate applEdDt) {
+                                              @RequestParam LocalDate applEdDt,
+                                              @RequestParam String title) {
         UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
 
         if (loggedInUser == null) {
@@ -54,9 +55,11 @@ public class UserInterestController {
         }
 
         String userId = loggedInUser.getUserId();
-        String result = userInterestService.addInterest(userId, grantId, applEdDt);
+        String result = userInterestService.addInterest(userId, grantId, applEdDt, title);
         return ResponseEntity.ok(result);
     }
+
+
     
     
     // ✅ 관심 등록 취소 API (DELETE 방식, 파라미터로 grantId 사용)
@@ -84,6 +87,7 @@ public class UserInterestController {
         List<UserInterest> interests = userInterestService.getUserInterests(loggedInUser.getUserId());
         return ResponseEntity.ok(interests);
     }
+    
     
     
 }
