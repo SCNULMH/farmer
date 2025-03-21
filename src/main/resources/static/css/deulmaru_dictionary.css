@@ -123,15 +123,15 @@ body {
     outline: none !important;
     box-shadow: none !important;
     transform: none !important; /* 크기 변형 방지 */
+    transition: none !important; /* 부드러운 효과 제거 */
 }
 
 /* 검색 입력 필드 focus 효과 제거 */
-.input-group .form-control:hover,
-.input-group .form-control:focus,
-.input-group .form-control:active {
+.input-group .form-control:focus {
     outline: none !important;
     border: 4px solid #ff8d63c8 !important;
     box-shadow: none !important;
+    transition: all 0.2s ease-in-out;
 }
 
 
@@ -403,7 +403,7 @@ body {
         .image-btn-isac span {
             font-size: 17px;
             font-weight: 900;
-            color: orange;
+            color: #000;
             font-family: '최애체';
         }
 

@@ -79,6 +79,23 @@
     </div>
     
     
+    
+    <!-- ✅ 이삭이 버튼 (챗봇 토글) -->
+     <div class="button-isac mb-5">
+        <button class="image-btn-isac" onclick="toggleChatbot()">
+            <span>AI 이삭이</span>
+            <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
+        </button>
+    </div>
+
+    <!-- ✅ 챗봇 팝업 UI -->
+    <div id="chatbot" class="chatbot-container">
+        <div class="chatbot-popup">
+            <button class="close-chatbot" onclick="toggleChatbot()">×</button>
+            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+    </div>
+    
     <!-- Thymeleaf를 통해 로그인 여부 및 사용자 정보 전달 -->
     <script th:inline="javascript">
       var isLoggedIn = /*[[${session.user != null}]]*/ false;
@@ -227,6 +244,20 @@
               loadOverallRecommendations();
           }
       });
+    </script>
+    
+   	<script>
+         // AI 챗봇 토글 JS 함수
+         function toggleChatbot() {
+        var chatbot = document.getElementById("chatbot");
+
+        // 챗봇 창이 열려있으면 숨기고, 닫혀있으면 표시
+        if (chatbot.style.display === "none" || chatbot.style.display === "") {
+            chatbot.style.display = "block";
+        } else {
+            chatbot.style.display = "none";
+        }
+    }
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
