@@ -6,93 +6,175 @@
 	
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-/* 전체 페이지 스타일 */
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px auto;      /* 화면 가운데 정렬 */
-    max-width: 800px;       /* 최대 폭 설정 */
-    padding: 0 15px;        /* 좌우 여백 */
-    line-height: 1.6;       /* 줄간격 */
-}
+		/* 전체 페이지 스타일 */
+		body {
+		    font-family: Arial, sans-serif;
+		}
+		
+		.support-detail {
+			margin-top: 5%;
+			margin-bottom: 15%;
+		}
+		
+		/* 제목(지원금 상세 정보) */
+		h1#grantTitle {
+		    font-size: 28px;
+		    margin-bottom: 10px;
+		}
+		
+		/* 서브 정보(지역 정보, 진행 상태) */
+		.sub-info {
+		    font-size: 15px;
+		    color: #666;
+		    margin: -5px 0 15px;    /* 위아래 간격 조정 */
+		}
+		
+		/* 상태 표시 */
+		.status {
+		    font-weight: bold;
+		    padding: 4px 8px;
+		    border-radius: 5px;
+		    margin-right: 5px;
+		    font-size: 14px;
+		}
+		.ongoing {
+		    background-color: #28a745; /* 부트스트랩 Success 계열 */
+		    color: #fff;
+		}
+		.closed {
+		    background-color: #dc3545; /* 부트스트랩 Danger 계열 */
+		    color: #fff;
+		}
+		
+		/* 테이블 스타일 */
+		table {
+		    width: 100%;
+		    border-collapse: collapse;
+		    margin-top: 10px;
+		    background-color: #fff;
+		    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 */
+		}
+		th, td {
+		    border: 1px solid #ddd;
+		    padding: 12px 15px;
+		    vertical-align: top;    /* 내용 위쪽 정렬 */
+		}
+		th {
+		    width: 25%;             /* 첫 열 고정 폭 (상황에 맞게 조정) */
+		    background-color: #f7f7f7;
+		    font-weight: bold;
+		    text-align: left;
+		}
+		
+		/* 버튼 컨테이너 */
+		.btn-container {
+		    margin-top: 20px;
+		    text-align: center;
+		}
+		
+		/* 버튼 스타일 */
+		.btn {
+		    display: inline-block;
+		    padding: 10px 15px;
+		    background-color: #4CAF50; /* 기본 초록색 */
+		    color: white;
+		    text-decoration: none;
+		    border-radius: 5px;
+		    margin: 0 5px; /* 버튼 간격 */
+		    transition: background-color 0.2s ease-in-out;
+		}
+		.btn:hover {
+		    background-color: #45a049;
+		}
+		
+		/*관심 등록 버튼만 별도 스타일 주고 싶으면(선택사항)*/
+		#interestBtn {
+		    background-color: #ff9800;
+		}
+		#interestBtn:hover {
+		    background-color: #e68900;
+		}
 
-/* 제목(지원금 상세 정보) */
-h1#grantTitle {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
 
-/* 서브 정보(지역 정보, 진행 상태) */
-.sub-info {
-    font-size: 15px;
-    color: #666;
-    margin: -5px 0 15px;    /* 위아래 간격 조정 */
-}
 
-/* 상태 표시 */
-.status {
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 5px;
-    margin-right: 5px;
-    font-size: 14px;
-}
-.ongoing {
-    background-color: #28a745; /* 부트스트랩 Success 계열 */
-    color: #fff;
-}
-.closed {
-    background-color: #dc3545; /* 부트스트랩 Danger 계열 */
-    color: #fff;
-}
+		/*  ✅ 이삭이 버튼 (챗봇 토글)  */
+        .button-isac {
+            position: fixed;  /* 화면에 고정 */
+            bottom: 0px;      /* 화면 하단에서 20px 떨어진 위치 */
+            right: 20px;       /* 화면 오른쪽에서 20px 떨어진 위치 */
+            z-index: 1000;     /* 다른 요소 위에 표시되도록 설정 */
+            
+        }
+        .image-btn-isac {
+            width: 150px;
+            height: 110px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            
+        }
+        .image-btn-isac img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
 
-/* 테이블 스타일 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 */
-}
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    vertical-align: top;    /* 내용 위쪽 정렬 */
-}
-th {
-    width: 25%;             /* 첫 열 고정 폭 (상황에 맞게 조정) */
-    background-color: #f7f7f7;
-    font-weight: bold;
-    text-align: left;
-}
+        .image-btn-isac span {
+            font-size: 17px;
+            font-weight: 900;
+            color: #000;
+            font-family: '최애체';
+        }
 
-/* 버튼 컨테이너 */
-.btn-container {
-    margin-top: 20px;
-    text-align: center;
-}
+        .image-btn-isac:hover {
+            transform: scale(1.1);
+            transition: all 0.2s ease-in-out;
+            
+        }
 
-/* 버튼 스타일 */
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    background-color: #4CAF50; /* 기본 초록색 */
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 0 5px; /* 버튼 간격 */
-    transition: background-color 0.2s ease-in-out;
-}
-.btn:hover {
-    background-color: #45a049;
-}
+        /* <!-- ✅ 챗봇 팝업 UI --> */
+        /* ✅ 챗봇 팝업 컨테이너 스타일 */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px; /* 화면 하단에서 20px 위 */
+            right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+            width: 30%; /* 챗봇 팝업 너비 */
+            display: none;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+            overflow: hidden;
+        }
 
-/*관심 등록 버튼만 별도 스타일 주고 싶으면(선택사항)*/
-#interestBtn {
-    background-color: #ff9800;
-}
-#interestBtn:hover {
-    background-color: #e68900;
-}
+        /* ✅ 챗봇 팝업 스타일 */
+        .chatbot-popup {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            width: 100%;
+            height: 90%;
+            border: 1px solid #ddd;
+        }
+
+        /* ✅ 닫기 버튼 스타일 */
+        .close-chatbot {
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: #000;
+            cursor: pointer;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+        
+        .close-chatbot:hover {
+        	font-size: 29px;
+        	font-weight: bold;
+        }
+
+
 
     </style>
 </head>
@@ -101,41 +183,91 @@ th {
     var serviceKey = /*[[${serviceKey}]]*/ "";
 /*]]>*/
 </script>
+
+
+
+
 <body>
 
-    <h1 id="grantTitle">지원금 상세 정보</h1>
-    <p class="sub-info">
-        <span id="grantLocation" class="status">지역 정보 없음</span> | 
-        <span id="grantStatus" class="status"></span>
-    </p>
+	<!-- 헤더 삽입 -->
+	<div th:replace="layout/header :: header"></div>
+	
+	<div class="container-sm text-left">
+		<div class="support-detail">
+		    <h1 id="grantTitle">지원금 상세 정보</h1>
+		    <p class="sub-info">
+		        <span id="grantLocation" class="status">지역 정보 없음</span> | 
+		        <span id="grantStatus" class="status"></span>
+		    </p>
+		
+		    <table>
+		        <tr>
+		            <th>신청기간</th>
+		            <td id="grantPeriod"></td>
+		        </tr>
+		        <tr>
+		            <th>주관기관</th>
+		            <td id="grantAgency"></td>
+		        </tr>
+		        <tr>
+		            <th>대상</th>
+		            <td id="grantTarget"></td>
+		        </tr>
+		        <tr>
+		            <th>담당부서</th>
+		            <td id="grantDept"></td>
+		        </tr>
+				<tr>
+			    	<th>요약내용</th>
+			    	<td id="grantContent"></td>
+				</tr>
+		    </table>
+		    <div class="btn-container">
+		        <a href="/supportApi/support" class="btn">목록으로 돌아가기</a>
+		        <a id="infoUrlBtn" href="#" class="btn" target="_blank" style="display: none;">공문보기</a>
+		        <button id="interestBtn" class="btn">관심 등록</button>
+		    </div>
+		</div>	    
+	</div>
 
-    <table>
-        <tr>
-            <th>신청기간</th>
-            <td id="grantPeriod"></td>
-        </tr>
-        <tr>
-            <th>주관기관</th>
-            <td id="grantAgency"></td>
-        </tr>
-        <tr>
-            <th>대상</th>
-            <td id="grantTarget"></td>
-        </tr>
-        <tr>
-            <th>담당부서</th>
-            <td id="grantDept"></td>
-        </tr>
-		<tr>
-	    	<th>요약내용</th>
-	    	<td id="grantContent"></td>
-		</tr>
-    </table>
-    <div class="btn-container">
-        <a href="/supportApi/support" class="btn">목록으로 돌아가기</a>
-        <a id="infoUrlBtn" href="#" class="btn" target="_blank" style="display: none;">공문보기</a>
-        <button id="interestBtn" class="btn">관심 등록</button>
+
+
+
+
+
+	<!-- ✅ 이삭이 버튼 (챗봇 토글) -->
+     <div class="button-isac mb-5">
+        <button class="image-btn-isac" onclick="toggleChatbot()">
+            <span>AI 이삭이</span>
+            <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
+        </button>
     </div>
+
+    <!-- ✅ 챗봇 팝업 UI -->
+    <div id="chatbot" class="chatbot-container">
+        <div class="chatbot-popup">
+            <button class="close-chatbot" onclick="toggleChatbot()">×</button>
+            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+         // AI 챗봇 토글 JS 함수
+         function toggleChatbot() {
+        var chatbot = document.getElementById("chatbot");
+
+        // 챗봇 창이 열려있으면 숨기고, 닫혀있으면 표시
+        if (chatbot.style.display === "none" || chatbot.style.display === "") {
+            chatbot.style.display = "block";
+        } else {
+            chatbot.style.display = "none";
+        }
+    }
+    </script>
 
 
     <script>
@@ -187,17 +319,73 @@ th {
     });
     </script>
     
-<script>
-$(document).ready(function() {
-    let seq = "[[${seq}]]";  // 지원금 ID
-    let userId = "[[${session.user?.userId}]]";  // 세션에서 로그인한 유저 정보
+	<script>
+	$(document).ready(function() {
+	    let seq = "[[${seq}]]";  // 지원금 ID
+	    let userId = "[[${session.user?.userId}]]";  // 세션에서 로그인한 유저 정보
+	
+	    if (!userId || userId === "null") {
+	        alert("로그인이 필요합니다.");
+	        $("#interestBtn").text("로그인 필요").addClass("disabled").prop("disabled", true);
+	        return;
+	    }
+	
+	    // ✅ 페이지 로드 시, 관심 등록 여부 확인
+	    $.ajax({
+	        url: "/api/interest/check",
+	        type: "GET",
+	        data: { grantId: seq },
+	        success: function(response) {
+	            if (response.exists) {
+	                // 이미 등록되어 있다면, 취소 버튼으로 표시
+	                $("#interestBtn").text("관심 취소").removeClass("disabled").prop("disabled", false);
+	            }
+	        },
+	        error: function() {
+	            console.log("관심 등록 여부 확인 실패");
+	        }
+	    });
+	
+	    // ✅ 관심 등록 / 취소 버튼 클릭 이벤트
+	    $("#interestBtn").click(function() {
+	        let btn = $(this);
+	        let applEdDt = $("#grantPeriod").text().split("~")[1].trim(); // 마감일
+	
+	        // 버튼 텍스트에 따라 등록 또는 취소 처리
+	        if (btn.text() === "관심 등록") {
+	            // 등록 처리
+	            $.ajax({
+	                url: "/api/interest/add",
+	                type: "POST",
+	                data: { grantId: seq, applEdDt: applEdDt },
+	                success: function(response) {
+	                    alert(response);
+	                    btn.text("관심 취소");
+	                },
+	                error: function(xhr) {
+	                    alert("관심 등록 실패! (" + xhr.responseText + ")");
+	                }
+	            });
+	        } else if (btn.text() === "관심 취소") {
+	            // 취소 처리
+	            $.ajax({
+	                url: "/api/interest/cancel",
+	                type: "DELETE",
+	                data: { grantId: seq },
+	                success: function(response) {
+	                    alert(response);
+	                    btn.text("관심 등록");
+	                },
+	                error: function(xhr) {
+	                    alert("관심 취소 실패! (" + xhr.responseText + ")");
+	                }
+	            });
+	        }
+	    });
+	});
+	</script>
 
-    if (!userId || userId === "null") {
-        alert("로그인이 필요합니다.");
-        $("#interestBtn").text("로그인 필요").addClass("disabled").prop("disabled", true);
-        return;
-    }
-
+	<script>
     // ✅ 페이지 로드 시, 관심 등록 여부 확인
     $.ajax({
         url: "/api/interest/check",
@@ -251,7 +439,6 @@ $(document).ready(function() {
             });
         }
     });
-});
 </script>
 <script th:src="@{/js/deulmaru_alram.js}"></script>
 
