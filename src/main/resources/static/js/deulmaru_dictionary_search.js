@@ -25,9 +25,24 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 });
 
+
+
+// 기본 검색
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("searchQuery").value = ""; // 검색창 비워두기
+  document.getElementById("searchQuery").placeholder = "검색어를 입력하세요!"; // placeholder 설정
+
+  document.getElementById("searchTypeDropdown").setAttribute("data-value", "crop");
+  document.getElementById("searchTypeDropdown").textContent = "작물명";
+
+  fetchSearchData("벼"); // "벼"를 기본 검색
+});
+
+
+
 // 병해충 검색 요청 함수
-window.fetchSearchData = function() {
-  let query = document.getElementById("searchQuery").value;
+window.fetchSearchData = function (customQuery) {
+  let query = customQuery || document.getElementById("searchQuery").value;
   let searchType = document.getElementById("searchTypeDropdown").getAttribute("data-value") || "sick";
 
   if (!query) {
@@ -43,7 +58,7 @@ window.fetchSearchData = function() {
     .then(str => new window.DOMParser().parseFromString(str, "application/xml"))
     .then(data => {
       let resultContainer = document.getElementById("resultTable");
-      resultContainer.innerHTML = "";  // 기존 카드 리스트 초기화
+      resultContainer.innerHTML = "";
 
       let items = data.getElementsByTagName("item");
 
@@ -54,34 +69,33 @@ window.fetchSearchData = function() {
         let sickNameChn = item.getElementsByTagName("sickNameChn")[0]?.textContent || "정보 없음";
         let thumbImg = item.getElementsByTagName("thumbImg")[0]?.textContent || "";
         let sickKey = item.getElementsByTagName("sickKey")[0]?.textContent || "";
-		
 
-        // 카드 HTML 생성
         let cardHtml = `
           <a href="#" class="col-md-4 col-sm-6 mb-4" onclick="fetchSickDetail('${sickKey}')">
             <div class="card dictionary-card">
-                <img src="${thumbImg}" class="card-img-top" alt="${sickNameKor}">
-                <div class="card-body">
-                    <h3 class="insect-ttl">${sickNameKor}</h3>
-                    <h4 class="crop-type">${cropName}</h4>
-                    <p class="insect-ttl-eng">${sickNameEng}</p>
-                    <p class="insect-ttl-chn">${sickNameChn}</p>
-                </div>
+              <img src="${thumbImg}" class="card-img-top" alt="${sickNameKor}">
+              <div class="card-body">
+                  <h3 class="insect-ttl">${sickNameKor}</h3>
+                  <h4 class="crop-type">${cropName}</h4>
+                  <p class="insect-ttl-eng">${sickNameEng}</p>
+                  <p class="insect-ttl-chn">${sickNameChn}</p>
+              </div>
             </div>
           </a>
         `;
 
-        // 카드 HTML을 결과 컨테이너에 추가
         resultContainer.innerHTML += cardHtml;
       }
 
-      // 검색 결과 영역 보이기
       document.getElementById("dictionary").classList.remove("hidden");
     })
     .catch(error => {
       console.error("🔴 병해충 검색 에러:", error);
     });
 };
+
+
+
 
 // 병해충 상세보기 요청 함수 (모달로 표시)
 window.fetchSickDetail = function(sickKey) {
