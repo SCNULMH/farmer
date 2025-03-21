@@ -1,3 +1,5 @@
+// ✅ 드롭다운 및 검색 이벤트 등록
+
 document.addEventListener("DOMContentLoaded", function(){
   console.log("✅ deulmaru_dictionary_search.js 로드 완료");
 
@@ -14,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   });
 
-  // 검색 입력창 엔터키 이벤트 등록
+  // 검색창 Enter 키 이벤트
   const searchQueryElem = document.getElementById("searchQuery");
   if (searchQueryElem) {
     searchQueryElem.addEventListener("keypress", function(event) {
@@ -25,31 +27,24 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 });
 
+// ✅ 초기 상태 세팅
 
-
-// 기본 검색
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("searchQuery").value = ""; // 검색창 비워두기
-  document.getElementById("searchQuery").placeholder = "검색어를 입력하세요!"; // placeholder 설정
-
+  document.getElementById("searchQuery").value = "";
+  document.getElementById("searchQuery").placeholder = "검색어를 입력하세요!";
   document.getElementById("searchTypeDropdown").setAttribute("data-value", "crop");
   document.getElementById("searchTypeDropdown").textContent = "작물명";
-
-  fetchSearchData("벼"); // "벼"를 기본 검색
+  fetchSearchData("벼");
 });
 
-
-
-// 병해충 검색 요청 함수
+// ✅ 병해충 검색
 window.fetchSearchData = function (customQuery) {
   let query = customQuery || document.getElementById("searchQuery").value;
   let searchType = document.getElementById("searchTypeDropdown").getAttribute("data-value") || "sick";
-
   if (!query) {
     alert("검색어를 입력하세요!");
     return;
   }
-
   let url = `http://localhost:8082/ncpms/search?query=${encodeURIComponent(query)}&type=${searchType}`;
   console.log("🔍 병해충 검색 요청 URL:", url);
 
@@ -59,9 +54,7 @@ window.fetchSearchData = function (customQuery) {
     .then(data => {
       let resultContainer = document.getElementById("resultTable");
       resultContainer.innerHTML = "";
-
       let items = data.getElementsByTagName("item");
-
       for (let item of items) {
         let cropName = item.getElementsByTagName("cropName")[0]?.textContent || "정보 없음";
         let sickNameKor = item.getElementsByTagName("sickNameKor")[0]?.textContent || "정보 없음";
@@ -81,12 +74,9 @@ window.fetchSearchData = function (customQuery) {
                   <p class="insect-ttl-chn">${sickNameChn}</p>
               </div>
             </div>
-          </a>
-        `;
-
+          </a>`;
         resultContainer.innerHTML += cardHtml;
       }
-
       document.getElementById("dictionary").classList.remove("hidden");
     })
     .catch(error => {
@@ -94,70 +84,103 @@ window.fetchSearchData = function (customQuery) {
     });
 };
 
-
-
-
-// 병해충 상세보기 요청 함수 (모달로 표시)
+// ✅ 상세보기 모달 열기
 window.fetchSickDetail = function(sickKey) {
-    if (!sickKey || sickKey.trim() === "") {
-        console.error("유효하지 않은 sickKey:", sickKey);
-        return;
-    }
+  if (!sickKey || sickKey.trim() === "") return;
+  let url = `http://localhost:8082/ncpms/sick_detail?sick_key=${encodeURIComponent(sickKey)}`;
+  console.log("🔍 병해충 상세보기 요청 URL:", url);
 
-    let url = `http://localhost:8082/ncpms/sick_detail?sick_key=${encodeURIComponent(sickKey)}`;
-    console.log("🔍 병해충 상세보기 요청 URL:", url);
+  fetch(url)
+    .then(response => response.text())
+    .then(xmlText => {
+      let xmlDoc = new window.DOMParser().parseFromString(xmlText, "application/xml");
+      let cropName = xmlDoc.getElementsByTagName("cropName")[0]?.textContent || "정보 없음";
+      let sickNameKor = xmlDoc.getElementsByTagName("sickNameKor")[0]?.textContent || "정보 없음";
+      let sickNameChn = xmlDoc.getElementsByTagName("sickNameChn")[0]?.textContent || "정보 없음";
+      let preventionMethod = xmlDoc.getElementsByTagName("preventionMethod")[0]?.textContent || "정보 없음";
+      let developmentCondition = xmlDoc.getElementsByTagName("developmentCondition")[0]?.textContent || "정보 없음";
+      let symptoms = xmlDoc.getElementsByTagName("symptoms")[0]?.textContent || "정보 없음";
 
-    fetch(url)
-      .then(response => response.text())
-      .then(xmlText => {
-          // XML 파싱
-          let xmlDoc = new window.DOMParser().parseFromString(xmlText, "application/xml");
+      let virusImgList = xmlDoc.getElementsByTagName("imageList")[0];
+      let virusImagesHtml = "";
+      if (virusImgList) {
+        let items = virusImgList.getElementsByTagName("item");
+        for (let i = 0; i < items.length; i++) {
+          let rawImageUrl = items[i].getElementsByTagName("image")[0]?.textContent || "";
+          let imageTitle = items[i].getElementsByTagName("imageTitle")[0]?.textContent || "";
+          let imageUrl = rawImageUrl;
+          virusImagesHtml += `
+            <div style="display:inline-block; margin:10px; text-align:center;">
+              <img src="${imageUrl}" alt="${imageTitle}" style="max-width:200px; cursor:pointer; border-radius:8px;"
+                   onclick="openImageModal('${imageUrl}')" onerror="this.src='/image/noimage.png'">
+              <div style="margin-top:5px;">${imageTitle}</div>
+            </div>`;
+        }
+      }
 
-          // XML에서 필요한 정보 추출
-          let cropName = xmlDoc.getElementsByTagName("cropName")[0]?.textContent || "정보 없음";
-          let sickNameKor = xmlDoc.getElementsByTagName("sickNameKor")[0]?.textContent || "정보 없음";
-          let sickNameChn = xmlDoc.getElementsByTagName("sickNameChn")[0]?.textContent || "정보 없음";
-          let preventionMethod = xmlDoc.getElementsByTagName("preventionMethod")[0]?.textContent || "정보 없음";
-          let developmentCondition = xmlDoc.getElementsByTagName("developmentCondition")[0]?.textContent || "정보 없음";
-          let symptoms = xmlDoc.getElementsByTagName("symptoms")[0]?.textContent || "정보 없음";
+      let detailHtml = `
+        <h3>${sickNameKor} (${sickNameChn})</h3>
+        <p><strong>작물명:</strong> ${cropName}</p>
+        <p><strong>예방 방법:</strong> ${preventionMethod}</p>
+        <p><strong>발병 조건:</strong> ${developmentCondition}</p>
+        <p><strong>증상:</strong> ${symptoms}</p>
+        <div><strong>관련 이미지:</strong><br>${virusImagesHtml}</div>`;
 
-          // 관련 이미지 처리
-          let virusImgList = xmlDoc.getElementsByTagName("virusImgList")[0];
-          let virusImagesHtml = "";
-          if (virusImgList) {
-              let items = virusImgList.getElementsByTagName("item");
-              for (let i = 0; i < items.length; i++) {
-                  let imageUrl = items[i].getElementsByTagName("image")[0]?.textContent || "";
-                  let imageTitle = items[i].getElementsByTagName("imageTitle")[0]?.textContent || "";
-                  if (imageUrl) {
-                      virusImagesHtml += `<div style="display:inline-block; margin:10px; text-align:center;">
-                          <img src="${imageUrl}" alt="${imageTitle || '병해충 이미지'}" style="max-width:200px;">
-                          <div>${imageTitle}</div>
-                      </div>`;
-                  }
-              }
-          }
-
-          // HTML 내용 구성
-          let detailHtml = `
-              <h3>${sickNameKor} (${sickNameChn})</h3>
-              <p><strong>작물명:</strong> ${cropName}</p>
-              <p><strong>예방 방법:</strong> ${preventionMethod}</p>
-              <p><strong>발병 조건:</strong> ${developmentCondition}</p>
-              <p><strong>증상:</strong> ${symptoms}</p>
-              <div><strong>관련 이미지:</strong><br>${virusImagesHtml}</div>
-          `;
-
-          // 모달에 상세 정보 삽입 후 표시
-          document.getElementById("sickDetailContainer").innerHTML = detailHtml;
-          document.getElementById("sickDetailModal").style.display = "block";
-      })
-      .catch(error => {
-          console.error("🔴 상세보기 에러:", error);
-      });
+      document.getElementById("sickDetailContainer").innerHTML = detailHtml;
+      document.getElementById("sickDetailModal").style.display = "block";
+    })
+    .catch(error => {
+      console.error("🔴 상세보기 에러:", error);
+    });
 };
 
-// 모달 닫기 함수
+// ✅ 상세 모달 닫기
 function closeSickDetailModal() {
-    document.getElementById("sickDetailModal").style.display = "none";
+  document.getElementById("sickDetailModal").style.display = "none";
 }
+
+// ✅ 이미지 확대 모달 열기 + 풀스크린
+window.openImageModal = function (src) {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+  modalImg.src = src;
+  modal.style.display = "flex";
+
+  // ✅ 전체화면 모드로 진입
+  if (modalImg.requestFullscreen) {
+    modalImg.requestFullscreen().catch(err => console.warn("전체화면 실패", err));
+  } else if (modalImg.webkitRequestFullscreen) {
+    modalImg.webkitRequestFullscreen();
+  } else if (modalImg.msRequestFullscreen) {
+    modalImg.msRequestFullscreen();
+  }
+};
+
+// ✅ 이미지 모달 닫기 (클릭 시)
+document.addEventListener("DOMContentLoaded", function () {
+  const imageModal = document.getElementById("imageModal");
+  const sickDetailModal = document.getElementById("sickDetailModal");
+
+  if (imageModal) {
+    imageModal.addEventListener("click", function () {
+      imageModal.style.display = "none";
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    });
+  }
+
+  // ✅ ESC 누르면 순서대로 모달 닫기
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      if (imageModal && imageModal.style.display === "flex") {
+        imageModal.style.display = "none";
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+      } else if (sickDetailModal && sickDetailModal.style.display === "block") {
+        sickDetailModal.style.display = "none";
+      }
+    }
+  });
+});

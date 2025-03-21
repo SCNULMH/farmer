@@ -100,6 +100,15 @@
 
     <script th:src="@{/js/deulmaru_alram.js}"></script>
 
+	<!-- ✅ 이미지 확대 모달 -->
+	<div id="imageModal" class="modal" style="display:none; justify-content: center; align-items: center;">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <img id="modalImage" src="" class="img-fluid" style="max-height:80vh; border-radius:10px;">
+	  </div>
+	</div>
+
+		
+	
     <div th:replace="layout/Footer :: Footer"></div>
   </body>
 </html>
