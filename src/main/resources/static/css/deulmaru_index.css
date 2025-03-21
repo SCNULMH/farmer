@@ -96,12 +96,13 @@
 /* GIF 컨테이너를 왼쪽에 정렬 */
 .plant-gif {
     display: flex; 
-    justify-content: flex-start; /* 가로 정렬: 왼쪽 */
+    justify-content: flex-end; /* 가로 정렬: 왼쪽 */
     align-items: center; /* 세로 중앙 정렬 */
-    width: 30%; /* GIF 컨테이너 크기 */
-    max-height: 200px; /* 너무 커지지 않도록 제한 */
+    width: 60%; /* GIF 컨테이너 크기 */
+    max-height: 700px; /* 너무 커지지 않도록 제한 */
     margin-top: 10px;
-    margin-right: auto; /* 왼쪽 정렬 유지 */
+    margin-left: auto; 
+    z-index: -1;
 }
 
 /* GIF 이미지 크기 조정 */
@@ -120,7 +121,7 @@
 .benefit-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 20px;
     justify-content: flex-end;
     padding: 0;
     list-style: none;
@@ -129,15 +130,23 @@
 /* ✅ 개별 카드 스타일 */
 .benefit-card {
     width: calc((100% - 90px) / 3); /* 한 줄 최대 3개 */
-    max-width: 350px; /* 카드 최대 너비 설정 */
+    max-width: 390px; /* 카드 최대 너비 설정 */
     flex: 1 1 auto;
-    height: 250px;
+    max-height: 270px;
     background-color: rgba(255, 255, 255, 0.841);
     border: transparent;
     border-radius: 10px;
-    padding: 13px;
+    padding: 18px;
     box-shadow: 0 3px 5px rgba(59, 59, 59, 0.089);
     transition: all 0.3s ease-in-out;
+}
+
+/* 로그인 시 보여지는 맞춤 대상 항목 */
+.benefit-card .recommendation-criteria {
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 16px;
+    font-weight: 300;
+    color: #bf8441d9;
 }
 
 /* ✅ 호버 효과 */
@@ -170,6 +179,7 @@
     color: #262626;
     font-weight: bold;
     margin: 0;
+    margin-bottom:15px;
     flex-shrink: 0;
 }
 
@@ -213,6 +223,8 @@
     line-height: 1.5;
     text-align: left;
     margin-right: 10px;
+    font-weight : bold;
+    margin-bottom : 15px;
 }
 
 .benefit-card .show-more{
@@ -223,12 +235,15 @@
     right: 15px;
     bottom: 15px;
     margin-top: 30px;
+    margin-bottom: 10px;
 }
 .benefit-card .show-more:hover {
     color: #8a4a00;
     text-decoration: underline; /* 밑줄 효과 */
 
 }    
+
+
 
 
 .more-link {
@@ -247,54 +262,6 @@
 
 
 
-/* 버튼 컨테이너 - 내부에서 오른쪽 끝 정렬 */
-.row .swiper-btn {
-    display: flex;
-    justify-content: flex-end; /* 컨테이너 내부에서 오른쪽 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    width: 100%; /* 전체 너비 확보 */
-    gap: 10px; /* 버튼 간 간격 */
-    padding-right: 20px; /* 오른쪽 여백 추가 */
-    margin-bottom: 10px;
-}
-
-
-/* 개별 버튼 스타일 */
-.row .swiper-button-prev,
-.row .swiper-button-next,
-.row .swiper-pause {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px; /* 버튼 크기 */
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-/* 버튼 호버 효과 */
-.row .swiper-button-prev:hover,
-.row .swiper-button-next:hover,
-.row .swiper-pause:hover {
-    background-color: #03290e;
-}
-
-
-/* 버튼 배경색 */
-.row .swiper-button-prev,
-.row .swiper-button-next,
-.row .swiper-pause {
-    background-color: #21492bb4; /* 초록색 */
-}
-
-/* 아이콘 스타일 */
-.row .swiper-button-prev i,
-.row .swiper-button-next i,
-.row .swiper-pause i {
-    font-size: 20px; /* 아이콘 크기 */
-    color: white;
-}
 
 
 
