@@ -157,7 +157,7 @@
     width: calc((100% - 90px) / 3); /* 한 줄 최대 3개 */
     max-width: 390px; /* 카드 최대 너비 설정 */
     flex: 1 1 auto;
-    max-height: 270px;
+    height: 270px;
     background-color: rgba(255, 255, 255, 0.841);
     border: transparent;
     border-radius: 10px;
