@@ -30,7 +30,7 @@ public class KakaoController {
     // ✅ 카카오 로그인 페이지
     @GetMapping("/login")
     public String kakaoLoginPage() {
-        return "auth/kakao-login";
+        return "auth/deulmaru_SignIn";
     }
     
     // ✅ 로그아웃 처리
@@ -94,7 +94,7 @@ public class KakaoController {
 
         // ✅ 4️⃣ 기존 회원이 아니면 → 카카오 회원가입 페이지로 이동
         session.setAttribute("kakaoUserInfo", kakaoUserInfo);
-        return "redirect:/auth/kakao/register";
+        return "redirect:/auth/deulmaru_SignIn";
     }
 
 
@@ -114,7 +114,7 @@ public class KakaoController {
         }
 
         model.addAttribute("kakaoUserInfo", kakaoUserInfo);
-        return "auth/kakao-register";
+        return "auth/deulmaru_SignIn";
     }
 
 
@@ -140,7 +140,7 @@ public class KakaoController {
         // ✅ 중복 체크: userId(로그인용 아이디)가 이미 존재하면 오류 처리
         if (userRepository.findByUserId(userId).isPresent()) {
             model.addAttribute("error", "이미 존재하는 아이디입니다.");
-            return "auth/kakao-register";
+            return "auth/deulmaru_SignIn";
         }
 
         UserEntity newUser = new UserEntity();

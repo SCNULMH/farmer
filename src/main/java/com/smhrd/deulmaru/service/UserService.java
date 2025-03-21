@@ -19,7 +19,7 @@ public class UserService {
 
 	// ✅ 회원가입 (세션 설정 추가)
 	public UserEntity registerUser(String userId, String userPw, String userNickname, String userEmail,
-			String userLocate, String userBirth, String userGender) {
+			String userLocate, String userBirth, String userGender, Long kakaoId) {
 		if (userRepository.findById(userId).isPresent()) {
 			throw new RuntimeException("이미 존재하는 아이디입니다.");
 		}
@@ -32,6 +32,7 @@ public class UserService {
 		user.setUserLocate(userLocate);
 		user.setUserBirth(LocalDate.parse(userBirth));
 		user.setUserGender(UserEntity.Gender.valueOf(userGender.toUpperCase()));
+		user.setKakaoId(kakaoId);
 
 		userRepository.save(user);
 
