@@ -4,19 +4,24 @@ import com.smhrd.deulmaru.entity.IdentiEntity;
 import com.smhrd.deulmaru.entity.UserEntity;
 import com.smhrd.deulmaru.service.IdentiService;
 import jakarta.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ident")
 public class IdentiController {
-
-    private final IdentiService identiService;
+	
+	@Autowired
+    IdentiService identiService;
 
     public IdentiController(IdentiService identiService) {
         this.identiService = identiService;
@@ -49,5 +54,14 @@ public class IdentiController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("저장 실패: " + e.getMessage());
         }
+    }
+    
+    @GetMapping("/history")
+    public List<IdentiEntity> getDiagnosisHistory(HttpSession session) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        if (user == null) {
+            return new ArrayList<>(); // 혹은 HTTP 401 에러 응답 처리 가능
+        }
+        return identiService.getHistoryByUserId(user.getUserId());
     }
 }
