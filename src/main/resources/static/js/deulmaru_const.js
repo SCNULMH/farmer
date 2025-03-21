@@ -10,8 +10,19 @@ document.addEventListener("DOMContentLoaded", function() {
             if (tabName === "benefitTab") {
                 loadInterestGrants();
             }
-        }
-    }
+        
+			if (tabName === "diagHistoryTab") {
+			                loadDiagnosisHistory();
+			}
+			
+			}
+    
+		
+		
+		
+		
+		
+		}
 
     window.showTab = showTab;
 
