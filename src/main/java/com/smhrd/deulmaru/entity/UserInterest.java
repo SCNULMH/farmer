@@ -35,4 +35,11 @@ public class UserInterest {
 
     @Column(name = "ADDED_AT", nullable = false, updatable = false, insertable = false)
     private LocalDateTime addedAt = LocalDateTime.now();
+    
+    // 신규 추가: 알림 표시 여부 (마감 임박 알림 활성화 여부)
+    @Column(name = "NOTIFY_YN", nullable = false)
+    private boolean notifyYn = false;
+    
+    @Column(name = "TITLE")
+    private String title;
 }
