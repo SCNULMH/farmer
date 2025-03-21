@@ -16,11 +16,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 			
 			}
-    
-		
-		
-		
-		
 		
 		}
 
