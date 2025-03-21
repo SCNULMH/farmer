@@ -73,12 +73,14 @@ public class AuthController {
                            @RequestParam String userLocate,
                            @RequestParam String userBirth,
                            @RequestParam String userGender,
-                           HttpSession session, Model model) {
+                           HttpSession session, 
+                           @RequestParam(required = false) Long kakaoId,
+                           Model model) {
         try {
             // 회원가입 요청이 올바르게 들어오는지 로그 확인
             System.out.println("회원가입 요청 수신: " + userId + ", " + userEmail);
 
-            UserEntity user = userService.registerUser(userId, userPw, userNickname, userEmail, userLocate, userBirth, userGender);
+            UserEntity user = userService.registerUser(userId, userPw, userNickname, userEmail, userLocate, userBirth, userGender, kakaoId);
             session.setAttribute("user", user);
             model.addAttribute("user", user);
 
