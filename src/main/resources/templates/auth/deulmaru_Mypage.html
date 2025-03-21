@@ -367,6 +367,60 @@
         });
     });
     </script>
+	function loadDiagnosisHistory() {
+	        console.log("📡 AI 진단 이력 불러오는 중...");
+
+	        fetch("/api/ident/history")
+	            .then(response => {
+	                if (!response.ok) throw new Error("진단 이력 응답 실패");
+	                return response.json();
+	            })
+	            .then(data => {
+	                const tbody = document.querySelector("#diagHistoryTab tbody");
+	                tbody.innerHTML = "";
+
+	                if (!data || data.length === 0) {
+	                    tbody.innerHTML = `<tr><td colspan="5">진단 이력이 없습니다.</td></tr>`;
+	                    return;
+	                }
+
+	                data.forEach(history => {
+	                    const row = document.createElement("tr");
+
+	                    const date = new Date(history.identificationTime);
+	                    const formattedDate = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+	                    const imgName = history.imagePath.split("/").pop();
+
+	                    row.innerHTML = `
+	                        <td>${formattedDate}</td>
+	                        <td>${history.cropName}</td>
+	                        <td>${history.diseaseName}</td>
+	                        <td>${history.confidenceScore}%</td>
+	                        <td><img src="/uploads/${imgName}" class="img-thumbnail" style="width:100px; height:auto;"></td>
+	                    `;
+
+	                    tbody.appendChild(row);
+	                });
+
+	                console.log("✅ AI 진단 이력 불러오기 완료");
+	            })
+	            .catch(error => {
+	                console.error("❌ 진단 이력 불러오기 실패:", error);
+	                const tbody = document.querySelector("#diagHistoryTab tbody");
+	                tbody.innerHTML = `<tr><td colspan="5">진단 이력 조회 중 오류 발생</td></tr>`;
+	            });
+	    }
+	});
+	<script>
+		
+		
+	</script>
+	
+	
+	
+	
+	
     <script th:src="@{/js/deulmaru_alram.js}"></script>
     <div th:replace="layout/Footer :: Footer"></div>
 </body>

@@ -36,21 +36,10 @@ public class AuthController {
 
     // ✅ 마이페이지
     @GetMapping("/mypage")
-    public String myPage(HttpSession session, Model model) {
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/auth/deulmaru_Login";
-        }
-
-        model.addAttribute("user", user);
-
-        List<IdentiEntity> historyList = identiService.getHistoryByUserId(user.getUserId());
-        System.out.println( historyList  );
-        
-        model.addAttribute("identiHistory", historyList);
-
-        return "/auth/deulmaru_Mypage";
+    public String mypage() {
+        return "auth/deulmaru_Mypage";
     }
+
 
     // ✅ 로그인 처리 (일반 로그인)
     @PostMapping("/login")
