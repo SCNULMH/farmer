@@ -2,6 +2,8 @@ package com.smhrd.deulmaru.service;
 
 import com.smhrd.deulmaru.entity.IdentiEntity;
 import com.smhrd.deulmaru.repository.IdentiRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,11 +14,12 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class IdentiService {
-
-    private final IdentiRepository repository;
+	@Autowired
+    IdentiRepository repository;
 
     @Value("${file.upload-dir:${user.home}/uploads}")
     private String uploadDir;
@@ -53,10 +56,40 @@ public class IdentiService {
         return repository.save(entity);
     }
 
+    //진단이력 불러오기
     public List<IdentiEntity> getHistoryByUserId(String userId) {
         return repository.findByUserIdOrderByIdentificationTimeDesc(userId);
     }
 
+    //진단이력 삭제하기
+    public boolean deleteByIdAndUser(Long id, String userId) {
+        Optional<IdentiEntity> optional = repository.findById(id);
+        if (optional.isPresent()) {
+            IdentiEntity entity = optional.get();
+            if (entity.getUserId().equals(userId)) {
+            	repository.deleteById(id);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public String getRelatedInfo(String diseaseName) {
         Map<String, String> infoMap = new HashMap<>();
         infoMap.put("병명1", "병명1 관련 정보");

@@ -55,7 +55,7 @@ public class IdentiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("저장 실패: " + e.getMessage());
         }
     }
-    
+    // 진단이력 불러오기
     @GetMapping("/history")
     public List<IdentiEntity> getDiagnosisHistory(HttpSession session) {
         UserEntity user = (UserEntity) session.getAttribute("user");
@@ -64,4 +64,36 @@ public class IdentiController {
         }
         return identiService.getHistoryByUserId(user.getUserId());
     }
+
+    // 진단이력 삭제하기
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteDiagnosis(@PathVariable Long id, HttpSession session) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+        }
+
+        boolean deleted = identiService.deleteByIdAndUser(id, user.getUserId());
+
+        if (deleted) {
+            return ResponseEntity.ok("삭제 완료");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("삭제할 이력이 없거나 권한 없음");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

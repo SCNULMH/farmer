@@ -120,6 +120,7 @@
 		                <th>병해충 명</th>
 		                <th>정확도</th>
 		                <th>진단 이미지</th>
+						<th>진단 이력 삭제</th>
 		            </tr>
 		        </thead>
 				<tbody>
@@ -422,6 +423,7 @@
 	                        <td>${history.diseaseName}</td>
 	                        <td>${history.confidenceScore}%</td>
 	                        <td><img src="/uploads/${imgName}" class="img-thumbnail" style="width:100px; height:auto;"></td>
+							<td><button class="btn btn-danger btn-sm" onclick="deleteHistory(${history.id})">삭제</button></td>
 	                    `;
 
 	                    tbody.appendChild(row);
@@ -435,6 +437,26 @@
 	                tbody.innerHTML = `<tr><td colspan="5">진단 이력 조회 중 오류 발생</td></tr>`;
 	            });
 	    }
+		
+		
+		
+		function deleteHistory(id) {
+		    if (!confirm("정말 이 진단 이력을 삭제하시겠습니까?")) return;
+
+		    fetch(`/api/ident/delete/${id}`, {
+		        method: "DELETE"
+		    })
+		    .then(response => {
+		        if (!response.ok) throw new Error("삭제 실패");
+		        alert("✅ 진단 이력이 삭제되었습니다.");
+		        location.reload(); // 또는 해당 행만 remove()
+		    })
+		    .catch(error => {
+		        console.error("❌ 삭제 오류:", error);
+		        alert("❌ 진단 이력 삭제 중 오류가 발생했습니다.");
+		    });
+		}
+
 	</script>		
 		
 	
