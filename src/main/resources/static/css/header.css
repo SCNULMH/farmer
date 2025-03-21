@@ -60,6 +60,14 @@
 	}
 
 
+	/* bell icon */
+	.navbar-nav .nav-link img {
+		width: auto;
+		height: 24px;
+	}
+
+
+
 	/* ✅ 메뉴 선택 바 (네비게이션 바 아래) */
 	.menu-bar {
 	    background-color: #fff; /* 네비게이션 바와 같은 배경색 */

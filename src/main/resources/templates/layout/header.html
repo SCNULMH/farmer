@@ -18,20 +18,16 @@
             <!-- 오른쪽 메뉴 -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
-                    <!-- 알림 아이콘 추가 (로그인한 사용자에 한해 노출) -->
-                    <li class="nav-item" th:if="${session.user != null}">
-					<a class="nav-link" href="javascript:void(0);" id="alarmIcon" style="position: relative;">
-					  <!-- 인라인 SVG 벨 아이콘 -->
-					  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-					    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
-					    <path fill-rule="evenodd" d="M8 1a4 4 0 0 0-4 4v2.086c0 .678-.24 1.337-.67 1.84-.418.48-.678 1.098-.678 1.614 0 .637.328 1.24.904 1.635.315.211.665.375 1.046.486V14h6v-.86c.381-.111.731-.275 1.046-.486.576-.395.904-.998.904-1.635 0-.516-.26-1.134-.678-1.614A2.937 2.937 0 0 1 12 7.086V5a4 4 0 0 0-4-4zM4 5a4 4 0 0 1 8 0v2.086c0 .685.225 1.317.59 1.79.362.466.56 1.035.56 1.398 0 .495-.262 1.063-.778 1.443A1.905 1.905 0 0 1 12 13H4a1.905 1.905 0 0 1-1.372-.283c-.516-.38-.778-.948-.778-1.443 0-.363.198-.932.56-1.398A3.06 3.06 0 0 0 4 7.086V5z"/>
-					  </svg>
-					</a>
-                    </li>
                 
                     <!-- 로그인 여부에 따라 표시 -->
                     <li class="nav-item" th:if="${session.user != null}">
                         <span class="nav-link">환영합니다, <span th:text="${session.user.userNickname}"></span> 님!</span>
+                    </li>
+                    <!-- 알림 아이콘 추가 (로그인한 사용자에 한해 노출) -->
+                    <li class="nav-item" th:if="${session.user != null}">
+					<a class="nav-link" href="javascript:void(0);" id="alarmIcon" style="position: relative;">
+						<img th:src="@{/image/free-icon-bell.png}">
+					</a>
                     </li>
                     <li class="nav-item" th:if="${session.user != null}">
                         <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
