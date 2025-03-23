@@ -157,8 +157,17 @@ console.log("✅ deulmaru_mapage.js 로드 완료");
 	    const modal = new bootstrap.Modal(document.getElementById("imageModal"));
 	    modal.show();
 	}	
-	// 작물 매핑은 이미 프론트엔드에서 사용되고 있지만, CropSchedule API 호출에는 선택된 작물명을 이용합니다.
-	 
+	
+// 동적 컨텐츠에 권한 이임
+	$(document).on("click", ".diagnosis-image", function () {
+	    const src = $(this).attr("src");
+	    openImageModal(src);
+	});
+
+
+	
+
+		// 작물 매핑은 이미 프론트엔드에서 사용되고 있지만, CropSchedule API 호출에는 선택된 작물명을 이용합니다.
 	 // function to load crop schedule using the selected cropName
 	 function loadCropScheduleAPI(cropName) {
 	     if (!cropName || cropName.trim() === "") {
@@ -221,14 +230,19 @@ console.log("✅ deulmaru_mapage.js 로드 완료");
 
 	 	                    const imgName = history.imagePath.split("/").pop();
 
-	 	                    row.innerHTML = `
-	 	                        <td>${formattedDate}</td>
-	 	                        <td>${history.cropName}</td>
-	 	                        <td>${history.diseaseName}</td>
-	 	                        <td>${history.confidenceScore}%</td>
-	 	                        <td><img src="/uploads/${imgName}" class="img-thumbnail" style="width:100px; height:auto;"></td>
-	 							<td><button class="btn btn-danger btn-sm" onclick="deleteHistory(${history.id})">삭제</button></td>
-	 	                    `;
+							row.innerHTML = `
+							    <td>${formattedDate}</td>
+							    <td>${history.cropName}</td>
+							    <td>${history.diseaseName}</td>
+							    <td>${history.confidenceScore}%</td>
+							    <td>
+							        <img src="/uploads/${imgName}" 
+							             class="img-thumbnail diagnosis-image"
+							             style="width:100px; height:auto; cursor:pointer;">
+							    </td>
+							    <td><button class="btn btn-danger btn-sm" onclick="deleteHistory(${history.id})">삭제</button></td>
+							`;
+
 
 	 	                    tbody.appendChild(row);
 	 	                });
@@ -242,8 +256,7 @@ console.log("✅ deulmaru_mapage.js 로드 완료");
 	 	            });
 	 	    }
 	 		
-	 		
-	 		
+
 	 		function deleteHistory(id) {
 	 		    if (!confirm("정말 이 진단 이력을 삭제하시겠습니까?")) return;
 
