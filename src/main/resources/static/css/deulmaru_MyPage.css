@@ -182,26 +182,26 @@
 
 
 /* ai 진단 이력 관리 영역 */
-.table {
+#diagHistoryTab .table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.table th, .table td {
+#diagHistoryTab  .table th, .table td {
     padding: 12px;
     border: 1px solid #ddd;
 }
 
-.table th:nth-child(1), .diag-date {
+#diagHistoryTab  .table th:nth-child(1), .diag-date {
     width: 30%;
 }
 
-.table-dark th {
+#diagHistoryTab  .table-dark th {
     background-color: #b3b3b355; /* 테이블 헤더 배경색 */
     color: rgb(50, 50, 50); /* 헤더 글자색 */
 }
 
-.table tbody .disease-name:hover {
+#diagHistoryTab  .table tbody .disease-name:hover {
     background-color: #678d652f; 
 }
 
@@ -213,18 +213,20 @@
 
 /* ✅ 카드 리스트 스타일 */
 .benefit-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: flex-start; 
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* ✅ 항상 3개의 열 유지 */
+    gap: 30px;
+    justify-items: center; /* 각 카드 가운데 정렬 */
+    align-item: center;
     padding: 0;
     list-style: none;
 }
 
 /* ✅ 개별 카드 스타일  */
 .benefit-card {
-    width: 340px;
-    height: 220px;
+    width: 100%; /* ✅ 열에 맞춰 채우기 */
+    max-width: 350px;
+    height: 260px;
     background-color: #ffd24a58;
     border: transparent;
     border-radius: 10px;
@@ -233,28 +235,33 @@
 
 /* ✅ 카드 제목 스타일 */
 .benefit-card .card-title {
-    font-size: 19px;
+	font-family: 'Paperlogy-8ExtraBold';
+    font-size: 20px;
     font-weight: bold;
     color: #8a4a00;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    margin-right: 5px;
     text-align: left;
 }
 
 /* ✅ 카드 내용 스타일 */
 .benefit-card .card-text {
-    font-size: 14px;
-    color: #444;
-    line-height: 1.5;
-    text-align: left;
+    font-size: 16px;
+    color: #262626;
+    font-weight: bold;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 /* ✅ 날짜 스타일 */
-.benefit-card .date-range {
-    font-size: 13px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 10px;
+.benefit-card .date-range, .card-ongoing {
+    font-size: 16px;
+    color: #262626;
+    line-height: 1.5;
     text-align: left;
+    margin-right: 10px;
+    font-weight : bold;
+    margin-bottom : 15px;
 }
 
 .benefit-card .show-more{
@@ -267,7 +274,7 @@
     margin-top: 30px;
 }
 .benefit-card .show-more:hover {
-    color: #000000;
+    color: #8a4a00;
     text-decoration: underline; /* 밑줄 효과 */
 
 }
@@ -281,10 +288,10 @@
     bottom: 15px;
     margin-top: 30px;
 }
-.benefit-card .cancel-interest-btn:hover {
-    color: #000000;
-    text-decoration: underline; /* 밑줄 효과 */
 
+.benefit-card .cancel-interest-btn:hover {
+	color: #8a4a00 ;
+    text-decoration: underline; /* 밑줄 효과 */
 }
 
 
@@ -320,6 +327,17 @@
 	margin-bottom: 10px;
 }
 
+
+#cropScheduleContent .selected-crop-info p {
+	margin-top: 2% !important;
+	margin-bottom: 3% !important;
+	font-size: 20px;
+	text-align: right;
+}
+
+#cropScheduleContent .selected-crop-info {
+	margin-top: 2% !important;
+}
 
 #cropScheduleContent .m_scrollTable {
 	margin-bottom: 3%;	

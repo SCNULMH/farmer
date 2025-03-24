@@ -257,6 +257,8 @@
     bottom: 15px;
     margin-top: 30px;
 }
+
+
 .benefit-card .show-more:hover {
     color: #8a4a00;
     text-decoration: underline; /* 밑줄 효과 */
