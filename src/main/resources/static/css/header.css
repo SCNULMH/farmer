@@ -63,8 +63,17 @@
 	/* bell icon */
 	.navbar-nav .nav-link img {
 		width: auto;
-		height: 24px;
+		height: 22px;
 	}
+
+	#alarmList div {
+		padding: 15px !important;
+	}
+
+
+
+
+
 
 
 
