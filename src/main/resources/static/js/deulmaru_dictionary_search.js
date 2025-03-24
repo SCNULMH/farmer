@@ -139,34 +139,22 @@ function closeSickDetailModal() {
   document.getElementById("sickDetailModal").style.display = "none";
 }
 
-// ✅ 이미지 확대 모달 열기 + 풀스크린
+/// ✅ 이미지 확대 모달 열기 (CSS 확대만 적용)
 window.openImageModal = function (src) {
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
   modalImg.src = src;
   modal.style.display = "flex";
-
-  // ✅ 전체화면 모드로 진입
-  if (modalImg.requestFullscreen) {
-    modalImg.requestFullscreen().catch(err => console.warn("전체화면 실패", err));
-  } else if (modalImg.webkitRequestFullscreen) {
-    modalImg.webkitRequestFullscreen();
-  } else if (modalImg.msRequestFullscreen) {
-    modalImg.msRequestFullscreen();
-  }
 };
 
-// ✅ 이미지 모달 닫기 (클릭 시)
 document.addEventListener("DOMContentLoaded", function () {
   const imageModal = document.getElementById("imageModal");
   const sickDetailModal = document.getElementById("sickDetailModal");
 
+  // ✅ 이미지 모달 닫기 (클릭 시)
   if (imageModal) {
     imageModal.addEventListener("click", function () {
       imageModal.style.display = "none";
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
     });
   }
 
@@ -175,12 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (event.key === "Escape") {
       if (imageModal && imageModal.style.display === "flex") {
         imageModal.style.display = "none";
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        }
       } else if (sickDetailModal && sickDetailModal.style.display === "block") {
         sickDetailModal.style.display = "none";
       }
     }
   });
 });
+

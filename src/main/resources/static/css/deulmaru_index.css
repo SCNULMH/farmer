@@ -68,21 +68,29 @@
 
 
 
-
-
-
+.main-image img {
+	width: 100%;
+	height: auto;
+	opacity: 0.9;
+	border-radius: 0 0 30px 30px;
+}
 
 
 
 
 /* <!-- 2. 맞춤 지원 보조금 슬라이드 swiper 탭 --> */
+/* <!-- 2. 맞춤 지원 보조금 슬라이드 swiper 탭 --> */
 .main-benefit {
-    background-color: #eefbe587;
-    border-radius: 10px;
+    position: relative; /* ✅ 기준 요소로 설정 */
+    background-color: #eefbe5c5;
+    border-radius: 30px;
     padding: 5%;
     margin-bottom: 11%;
-    margin-top: 8%;
-}
+    margin-top: 11%;
+    height: 750px;
+    overflow: hidden; /* GIF가 삐져나가지 않도록 */
+} 
+
 
 .main-benefit-ttl h4 {
     font-weight: bold;
@@ -102,45 +110,31 @@
 
 /* gif 컨테이너 */
 .plant-gif {
-    position: absolute; /* 절대 위치 */
-    right: 0; /* 오른쪽 정렬 유지 */
-    bottom: 0; /* 하단 배치 */
-    align-items: center; /* 세로 중앙 정렬 */
-    width: 50%; /* GIF 컨테이너 크기 */
-    max-height: 600px; /* 너무 커지지 않도록 제한 */
-    margin-top: 10px;
-    margin-left: auto; 
-    z-index: 0;
+    position: absolute; /* ✅ 위치 고정 */
+    bottom: 0;
+    right: 0;
+    width: 50%; /* 넓이 */
+    height: 90%; /* 부모 높이만큼 */
+    z-index: 0; /* ✅ 카드보다 아래 */
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    pointer-events: none; /* 사용자가 클릭하지 못하게 */
 }
 
-/* GIF 이미지 크기 조정 */
 .plant-gif img {
-    width: 80%; /* 컨테이너 크기에 맞춤 */
-    height: auto; /* 비율 유지 */
-    object-fit: contain; /* 이미지 비율 유지하면서 크기 맞춤 */
-    margin-left: 20px;
-    margin-top: 7%;
-    opacity : 0.8;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.8;
 }
+
 
 
 
 
 
 /* 지원금 항목 컨테이너 */
-.main-benefit {
-	height: 650px; /* 최대 높이 설정 */
-}
-
-.main-benefit-ttl h4{
-	margin-bottom: 20px;
-	font-size: 28px;
-}
-
-.main-benefit-ttl p {
-	font-size: 20px;
-}
-
 .benefit-list {
     display: flex;
     flex-wrap: wrap;
@@ -275,7 +269,7 @@
 
 .more-link {
     text-align: left;
-    margin-top: 10px;
+    margin-top: 5%;
     margin-left: 20px;
     z-index: 20;
 }
