@@ -180,14 +180,19 @@ console.log("✅ deulmaru_mapage.js 로드 완료");
 	         data: { cropName: cropName },
 	         dataType: "html",
 	         success: function(response) {
-	             // 응답으로 받은 HTML 템플릿을 해당 영역에 삽입
-	             $("#cropScheduleContent").html(response);
-	         },
-	         error: function() {
-	             $("#cropScheduleContent").html("<p>농작업일정 정보를 불러오는 데 실패했습니다.</p>");
-	         }
-	     });
-	 }
+				const displayHtml = `
+				                <div class="selected-crop-info">
+				                    <p><strong>선택된 작물:</strong> ${cropName}</p>
+				                </div>
+				                ${response}
+				            `;
+				            $("#cropScheduleContent").html(displayHtml);
+				        },
+				        error: function() {
+				            $("#cropScheduleContent").html("<p>농작업일정 정보를 불러오는 데 실패했습니다.</p>");
+				        }
+				    });
+				}
 	 
 	 // 문서 로드 시, 이미 userCrop 값이 있다면 API 호출
 	 $(document).ready(function() {
