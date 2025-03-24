@@ -18,7 +18,7 @@ public class NcpmsService {
 
     public String search(String query, String type) {
         String url = apiBaseUrl + "?apiKey=" + apiKey +
-                "&serviceCode=SVC01&serviceType=AA001&displayCount=10&startPoint=1" +
+                "&serviceCode=SVC01&serviceType=AA001&displayCount=30&startPoint=1" +
                 (type.equals("crop") ? "&cropName=" + query : "&sickNameKor=" + query);
         return restTemplate.getForObject(url, String.class);
     }
@@ -28,11 +28,14 @@ public class NcpmsService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getConsult(String query, int page) {
+    public String getConsult(String query, int startPoint, int displayCount) {
         String url = apiBaseUrl + "?apiKey=" + apiKey + "&serviceCode=SVC41&serviceType=AA001" +
-                "&dgnssReqSj=" + query + "&displayCount=10&startPoint=" + ((page - 1) * 10 + 1);
+                "&dgnssReqSj=" + query +
+                "&displayCount=" + displayCount +
+                "&startPoint=" + startPoint;
         return restTemplate.getForObject(url, String.class);
     }
+
 
     public String getConsultDetail(String consultId) {
         String url = apiBaseUrl + "?apiKey=" + apiKey + "&serviceCode=SVC42&serviceType=AA001&dgnssReqNo=" + consultId;
