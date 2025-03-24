@@ -56,7 +56,7 @@
                     <input type="password" class="form-control" name="userPw" placeholder="변경할 비밀번호 입력">
                 </div>
 
-				<div class="input-group">
+				<div class="input-group mb-3">
 				    <span class="input-group-text">주소지</span>
 				    <select class="form-select" name="userLocate">
 				        <option th:selected="${session.user.userLocate == '서울'}" value="서울">서울</option>
@@ -96,16 +96,16 @@
 
             <!-- 카카오 계정이 연동된 경우 -->
             <div th:if="${session.user != null and session.user.kakaoId != null}" class="mt-4">
-                <p>현재 카카오 계정과 연동되어 있습니다.</p>
+                <p class="kakao-connect">  현재 카카오 계정과 연동되어 있습니다.</p>
                 <form action="/auth/kakao/unlink" method="post">
-                    <button type="submit" class="btn btn-danger">카카오 연동 해제</button>
+                    <button type="submit" class="btn-kakao">카카오 연동 해제</button>
                 </form>
             </div>
 
             <!-- 카카오 계정이 연동되지 않은 경우 -->
             <div th:if="${session.user != null and session.user.kakaoId == null}" class="mt-4">
                 <p>카카오 계정이 연동되지 않았습니다.</p>
-                <a href="/auth/kakao/link" class="btn btn-primary">카카오 계정 연동하기</a>
+                <a href="/auth/kakao/link" class="btn-kakao">카카오 계정 연동하기</a>
             </div>
         </div> <!-- 여기서 내 프로필 탭을 닫아야 합니다. -->
 
@@ -179,7 +179,7 @@
 	<!-- 나의 작물 재배 일정 -->
 	<div class="container-sm text-left" id="cropScheduleArea">
 	    <div class="agri-calendar">
-	        <h3>나의 작물 재배 일정</h3>
+	        <h3>📆 나의 작물 재배 일정 📆</h3>
 	        <!-- API 결과로 받은 HTML 템플릿을 삽입할 영역 -->
 	        <div id="cropScheduleContent">
 	            <p>재배작물을 선택하면 일정이 표시됩니다.</p>

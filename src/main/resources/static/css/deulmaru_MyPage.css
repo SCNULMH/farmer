@@ -120,26 +120,47 @@
 
 
 
-
-/* 내프로필 관리 인풋 영역 */
-.input-group-text {
-    width: 100px;
+/* 카카오 연동하기 버튼 */
+.tab-content .mt-4 p {
+	font-weight: bold;
+	font-size: 17px;
 }
 
-.button-group{
+.tab-content .mt-4 .btn-kakao {
+	background-color: #fdeb22;
+	padding: 10px 15px;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    border-radius: 7px;
+	text-decoration: none;
+	color: #3f1f00;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+
+/* 내프로필 관리 인풋 영역 */
+#profileTab .input-group-text {
+    width: 100px;
+    font-weight: bold;
+    color: gray;
+}
+
+
+#profileTab .button-group{
     margin-top: 1%;
     justify-content :end;
     transition: all 0.3s ease-in-out;
 }
 
-.btn:nth-child(2) {
+#profileTab .btn:nth-child(2) {
     background-color: #b55e39d2;
     border: #b55e39d2;
     color: white;
 }
 
-.btn:nth-child(2):hover {
-    background-color: #8d3b19d2; /* 더 진한 초록색 */
+#profileTab .btn:nth-child(2):hover {
+    background-color: #8d3b19d2;
 }
 
 /* ✅ 스위치 버튼 크기 키우기 */
@@ -272,25 +293,91 @@
 
 
 
-/* 작물 재배 일정 영역 */
-.agri-calendar-text{
-    margin-top: 5%;
-    margin-bottom: 10%;
+/* 나의 작물 재배 일정 컨테이너 영역 */
+#cropScheduleArea {
+	margin-top: 10%;
+	margin-bottom: 15%;
 }
 
-.agri-calendar-text h3{
-    margin-bottom: 2%;
-    font-weight: bold;
-    font-size: 25px ;
+#cropScheduleContent p {
+	margin-top: 3%;
+	font-size: 17px;
+	font-weight: bold;
 }
 
-/* ✅ 이미지가 container-sm 안에 맞게 조절 */
-.agri-calendar img {
-    max-width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
-    height: auto; /* 비율 유지 */
-    display: block; /* 이미지가 남는 공간을 차지하지 않도록 */
-    margin: 0 auto; /* 중앙 정렬 */
+/* "나의 작물 재배 일정" 텍스트 */
+.agri-calendar h3 {  
+	font-weight: bold;
+	margin-bottom: 3%;
+	text-align: center;
+	
+	
 }
+
+.agri-calendar h2 {
+	font-weight: bold;
+	font-size : 20px;
+	margin-bottom: 10px;
+}
+
+
+#cropScheduleContent .m_scrollTable {
+	margin-bottom: 3%;	
+}
+
+
+.tblSchedule th {
+	text-align: center;
+	border: 1px solid rgba(47, 169, 33, 0.714);
+	color: #313131;
+}
+
+.tblSchedule thead tr:nth-child(2) td{
+	background-color: rgba(47, 169, 33, 0.714);
+	font-size: 10px;
+	color:transparent;
+}
+.tblSchedule thead tr:nth-child(2) td.bg2 {
+	background-color: rgba(47, 169, 33, 0.5);
+}
+
+.tblSchedule thead tr:nth-child(2) td.bg3 {
+	background-color: rgba(47, 169, 33, 0.325);
+}
+
+
+
+.tblSchedule tbody tr:nth-child(2),
+.tblSchedule tbody tr:nth-child(4),
+.tblSchedule tbody tr:nth-child(6) {
+	border: 1px solid #acacac92;
+}
+
+
+.tblSchedule tbody td.calTd.bgBlue,
+.tblSchedule tbody td.calTd.bgRed,
+.tblSchedule tbody td.calTd.bgYellow {
+	background-color: #c4f0ff92;
+	font-size: 17px;
+}
+
+.tblSchedule tbody td.calTd.bgRed {
+	background-color: #c4f0ff92;
+	font-size: 17px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
