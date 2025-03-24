@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "TB_USER_INTEREST", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"USER_ID", "GRANT_ID"})
-}) // ✅ 기존 복합 키는 UNIQUE 제약으로 유지
+}) //  기존 복합 키는 UNIQUE 제약으로 유지
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class UserInterest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // ✅ 단일 기본 키 (AUTO_INCREMENT)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 단일 기본 키 (AUTO_INCREMENT)
     @Column(name = "INTEREST_IDX")
     private Long interestIdx;
 

@@ -28,7 +28,7 @@ public class UserInterestController {
         this.userInterestService = userInterestService;
     }
     
- // ✅ 관심 등록 여부 확인 API
+ //  관심 등록 여부 확인 API
     @GetMapping("/check")
     public ResponseEntity<?> checkInterest(HttpSession session, @RequestParam String grantId) {
         UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
@@ -42,7 +42,7 @@ public class UserInterestController {
     }
 
     
-    // ✅ 관심 등록 API (POST 요청만 허용)
+    //  관심 등록 API (POST 요청만 허용)
     @PostMapping("/add")
     public ResponseEntity<String> addInterest(HttpSession session,
                                               @RequestParam String grantId,
@@ -77,7 +77,7 @@ public class UserInterestController {
 
     
     
-    // ✅ 관심 등록 취소 API (DELETE 방식, 파라미터로 grantId 사용)
+    // 관심 등록 취소 API (DELETE 방식, 파라미터로 grantId 사용)
     @DeleteMapping("/cancel")
     public ResponseEntity<String> cancelInterest(HttpSession session,
                                                    @RequestParam String grantId) {
@@ -102,7 +102,6 @@ public class UserInterestController {
         List<UserInterest> interests = userInterestService.getUserInterests(loggedInUser.getUserId());
         return ResponseEntity.ok(interests);
     }
-    
     
     
 }

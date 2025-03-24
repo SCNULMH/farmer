@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/auth") // ✅ 공통 URL Prefix 적용
+@RequestMapping("/auth") // 공통 URL Prefix 적용
 public class AuthController {
 
 	@Autowired
@@ -28,20 +28,20 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // ✅ 로그인 페이지
+    //  로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
         return "auth/deulmaru_Login";
     }
 
-    // ✅ 마이페이지
+    // 마이페이지
     @GetMapping("/mypage")
     public String mypage() {
         return "auth/deulmaru_Mypage";
     }
 
 
-    // ✅ 로그인 처리 (일반 로그인)
+    // 로그인 처리 (일반 로그인)
     @PostMapping("/login")
     public String login(@RequestParam String userId, @RequestParam String userPw, HttpSession session, Model model) {
         Optional<UserEntity> user = userService.loginUser(userId, userPw, session);
@@ -55,14 +55,14 @@ public class AuthController {
         }
     }
 
-    // ✅ 로그아웃 처리
+    //  로그아웃 처리
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
 
-    // ✅ 회원가입 선택 페이지
+    //  회원가입 선택 페이지
     @GetMapping("/register-options")
     public String showRegisterOptions() {
         return "auth/deulmaru_SignIn_Main";

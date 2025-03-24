@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller  // ✅ @RestController → @Controller로 변경
-@RequestMapping("/supportApi")  
+@Controller // @RestController → @Controller로 변경
+@RequestMapping("/supportApi")
 public class SupportController {
-	
-    @Value("${api.serviceKey}")
-    private String apiServiceKey;
-	
-    @GetMapping("/support")
-    public String grantsPage(Model model) {
-    	model.addAttribute("serviceKey", apiServiceKey); // 뷰에서 사용하기 위해 추가
-        return "supportApi/support";  // ✅ templates/support.html 반환
-    }
-    
-    @GetMapping("/detail/{seq}")
-    public String grantDetailPage(@PathVariable String seq, Model model) {
-        model.addAttribute("seq", seq);
-        model.addAttribute("serviceKey", apiServiceKey); // 뷰에서 사용하기 위해 추가
-        return "supportApi/support-detail";  // ✅ templates/support-detail.html 반환
-    }
+
+	@Value("${api.serviceKey}")
+	private String apiServiceKey;
+
+	@GetMapping("/support")
+	public String grantsPage(Model model) {
+		model.addAttribute("serviceKey", apiServiceKey); // 뷰에서 사용하기 위해 추가
+		return "supportApi/support"; // templates/support.html 반환
+	}
+
+	@GetMapping("/detail/{seq}")
+	public String grantDetailPage(@PathVariable String seq, Model model) {
+		model.addAttribute("seq", seq);
+		model.addAttribute("serviceKey", apiServiceKey); // 뷰에서 사용하기 위해 추가
+		return "supportApi/support-detail"; // templates/support-detail.html 반환
+	}
 }
