@@ -23,11 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
   consultQuery.value = "";
   consultQuery.placeholder = "검색어를 입력하세요!";
 
-  fetchConsultData("벼", 1);
+  fetchAllPagesUntilEmpty("벼", "dgnssReqSj");
 
   consultQuery.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
-      fetchConsultData();
+      pageResultCache = {};
+      fetchAllPagesUntilEmpty(consultQuery.value, dropdownButton.getAttribute("data-search-type"));
     }
   });
 });
@@ -36,43 +37,48 @@ let currentPage = 1;
 const resultsPerPage = 10;
 let totalResults = 0;
 let cachedItems = [];
+let pageResultCache = {};
 let currentQuery = "";
 let currentSearchType = "";
+let lastLoadedPage = 0;
 
-window.fetchConsultData = function (customQuery, page = 1) {
-  const query = customQuery || document.getElementById("consultQuery").value;
-  if (!query) {
-    alert("검색어를 입력하세요!");
-    return;
-  }
-
+function fetchAllPagesUntilEmpty(query, type, page = 1) {
   currentQuery = query;
-  currentSearchType = document.getElementById("dropdownMenuButton").getAttribute("data-search-type") || "dgnssReqSj";
+  currentSearchType = type;
 
-  const url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&type=${currentSearchType}&page=${page}`;
+  const url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&type=${type}&page=${page}`;
 
   fetch(url)
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, "application/xml"))
     .then(data => {
       const items = data.getElementsByTagName("item");
-      cachedItems = Array.from(items);
-      totalResults = cachedItems.length;
-      currentPage = page;
-      displayCurrentPage();
+      const itemArray = Array.from(items);
+
+      if (itemArray.length === 0) {
+        currentPage = 1;
+        cachedItems = pageResultCache[1] || [];
+        totalResults = Object.values(pageResultCache).reduce((acc, arr) => acc + arr.length, 0);
+        displayCurrentPage();
+        return;
+      }
+
+      pageResultCache[page] = itemArray;
+      lastLoadedPage = page;
+
+      fetchAllPagesUntilEmpty(query, type, page + 1);
     })
     .catch(error => {
-      console.error("🔴 병해충 상담 에러:", error);
+      console.error("🔴 자동 페이징 에러:", error);
     });
-};
+}
 
 function displayCurrentPage() {
   const tableBody = document.querySelector("#consultResultTable tbody");
   tableBody.innerHTML = "";
 
-  const startIdx = (currentPage - 1) % 5 * resultsPerPage;
-  const endIdx = startIdx + resultsPerPage;
-  const pageItems = cachedItems.slice(startIdx, endIdx);
+  cachedItems = pageResultCache[currentPage] || [];
+  const pageItems = cachedItems.slice(0, resultsPerPage);
 
   pageItems.forEach(item => {
     const title = item.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
@@ -96,19 +102,28 @@ function updatePagination() {
   const pageInfo = document.getElementById("pageInfo");
   const pageNumbers = document.getElementById("pageNumbers");
 
-  const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
-  const totalPages = 5;
-
-  pageInfo.textContent = `페이지 ${currentPage}`;
-
+  const totalPages = lastLoadedPage;
+  // pageInfo.textContent = `페이지 ${currentPage}`; // 디버깅용 코드
   pageNumbers.innerHTML = "";
-  for (let i = startPage; i < startPage + totalPages; i++) {
+
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, currentPage + 2);
+
+  if (endPage - startPage < 4) {
+    if (startPage === 1) {
+      endPage = Math.min(startPage + 4, totalPages);
+    } else if (endPage === totalPages) {
+      startPage = Math.max(endPage - 4, 1);
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "btn btn-sm btn-outline-dark mx-1" + (i === currentPage ? " active" : "");
     btn.onclick = () => {
       currentPage = i;
-      fetchConsultData(currentQuery, i);
+      displayCurrentPage();
     };
     pageNumbers.appendChild(btn);
   }
@@ -116,11 +131,12 @@ function updatePagination() {
 
 window.changePage = function (delta) {
   const newPage = currentPage + delta;
-  if (newPage >= 1) {
+  if (newPage >= 1 && newPage <= lastLoadedPage) {
     currentPage = newPage;
-    fetchConsultData(currentQuery, newPage);
+    displayCurrentPage();
   }
 };
+
 
 window.fetchConsultDetail = function (consultId) {
   if (!consultId || consultId.trim() === "") return;
