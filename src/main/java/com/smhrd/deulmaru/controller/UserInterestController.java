@@ -46,18 +46,33 @@ public class UserInterestController {
     @PostMapping("/add")
     public ResponseEntity<String> addInterest(HttpSession session,
                                               @RequestParam String grantId,
-                                              @RequestParam LocalDate applEdDt,
+                                              @RequestParam String applEdDt,
                                               @RequestParam String title) {
         UserEntity loggedInUser = (UserEntity) session.getAttribute("user");
-
         if (loggedInUser == null) {
             return ResponseEntity.badRequest().body("로그인이 필요합니다.");
         }
 
         String userId = loggedInUser.getUserId();
-        String result = userInterestService.addInterest(userId, grantId, applEdDt, title);
+        LocalDate parsedDate;
+
+        try {
+            if (applEdDt.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+                parsedDate = LocalDate.parse(applEdDt);  // yyyy-MM-dd
+            } else if (applEdDt.matches("^\\d{4}-\\d{2}$")) {
+                LocalDate firstDay = LocalDate.parse(applEdDt + "-01");
+                parsedDate = firstDay.withDayOfMonth(firstDay.lengthOfMonth());
+            } else {
+                return ResponseEntity.badRequest().body("올바르지 않은 날짜 형식입니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("날짜 파싱 오류: " + e.getMessage());
+        }
+
+        String result = userInterestService.addInterest(userId, grantId, parsedDate, title);
         return ResponseEntity.ok(result);
     }
+
 
 
     
