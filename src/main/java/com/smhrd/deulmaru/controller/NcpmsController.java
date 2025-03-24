@@ -29,9 +29,18 @@ public class NcpmsController {
     }
 
     @GetMapping("/consult")
-    public ResponseEntity<String> consult(@RequestParam String query, @RequestParam(defaultValue = "1") int page) {
-        return ResponseEntity.ok(ncpmsService.getConsult(query, page));
+    public ResponseEntity<String> getConsultData(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        int resultsPerPage = 10;
+        int displayCount = 50;
+        int startPoint = (page - 1) * resultsPerPage + 1;
+
+        String result = ncpmsService.getConsult(query, startPoint, displayCount);
+        return ResponseEntity.ok(result);
     }
+
 
     @GetMapping("/consult_detail")
     public ResponseEntity<String> consultDetail(@RequestParam String consult_id) {

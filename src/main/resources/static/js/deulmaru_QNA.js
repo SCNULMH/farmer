@@ -1,9 +1,7 @@
-// ✅ 드롭다운 및 검색 이벤트 등록
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("✅ deulmaru_QNA.js 로드 완료");
 
-  // 드롭다운 항목 클릭 시 선택값 업데이트
   const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
   dropdownItems.forEach(item => {
     item.addEventListener("click", function (e) {
@@ -17,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 기본값 세팅 (제목 + "벼")
   const dropdownButton = document.getElementById("dropdownMenuButton");
   dropdownButton.textContent = "제목";
   dropdownButton.setAttribute("data-search-type", "dgnssReqSj");
@@ -26,54 +23,62 @@ document.addEventListener("DOMContentLoaded", function () {
   consultQuery.value = "";
   consultQuery.placeholder = "검색어를 입력하세요!";
 
-  fetchConsultData("벼");
+  fetchAllPagesUntilEmpty("벼", "dgnssReqSj");
 
-  // 검색창 엔터 입력 시 검색 실행
   consultQuery.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
-      fetchConsultData();
+      pageResultCache = {};
+      fetchAllPagesUntilEmpty(consultQuery.value, dropdownButton.getAttribute("data-search-type"));
     }
   });
 });
 
-// ✅ 병해충 상담 검색 요청
 let currentPage = 1;
 const resultsPerPage = 10;
 let totalResults = 0;
 let cachedItems = [];
+let pageResultCache = {};
+let currentQuery = "";
+let currentSearchType = "";
+let lastLoadedPage = 0;
 
-window.fetchConsultData = function (customQuery) {
-  const query = customQuery || document.getElementById("consultQuery").value;
-  if (!query) {
-    alert("검색어를 입력하세요!");
-    return;
-  }
+function fetchAllPagesUntilEmpty(query, type, page = 1) {
+  currentQuery = query;
+  currentSearchType = type;
 
-  const searchType = document.getElementById("dropdownMenuButton").getAttribute("data-search-type") || "dgnssReqSj";
-  const paramKey = searchType;
-  const url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&type=${paramKey}&page=1`;
+  const url = `http://localhost:8082/ncpms/consult?query=${encodeURIComponent(query)}&type=${type}&page=${page}`;
 
   fetch(url)
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, "application/xml"))
     .then(data => {
       const items = data.getElementsByTagName("item");
-      cachedItems = Array.from(items);
-      totalResults = cachedItems.length;
-      currentPage = 1;
-      displayCurrentPage();
+      const itemArray = Array.from(items);
+
+      if (itemArray.length === 0) {
+        currentPage = 1;
+        cachedItems = pageResultCache[1] || [];
+        totalResults = Object.values(pageResultCache).reduce((acc, arr) => acc + arr.length, 0);
+        displayCurrentPage();
+        return;
+      }
+
+      pageResultCache[page] = itemArray;
+      lastLoadedPage = page;
+
+      fetchAllPagesUntilEmpty(query, type, page + 1);
     })
     .catch(error => {
-      console.error("🔴 병해충 상담 에러:", error);
+      console.error("🔴 자동 페이징 에러:", error);
     });
-};
+}
 
 function displayCurrentPage() {
   const tableBody = document.querySelector("#consultResultTable tbody");
   tableBody.innerHTML = "";
-  const startIdx = (currentPage - 1) * resultsPerPage;
-  const endIdx = startIdx + resultsPerPage;
-  const pageItems = cachedItems.slice(startIdx, endIdx);
+
+  cachedItems = pageResultCache[currentPage] || [];
+  const pageItems = cachedItems.slice(0, resultsPerPage);
 
   pageItems.forEach(item => {
     const title = item.getElementsByTagName("dgnssReqSj")[0]?.textContent || "정보 없음";
@@ -86,8 +91,7 @@ function displayCurrentPage() {
         <td>${consultId}</td>
         <td>${requestDate}</td>
         <td><button onclick="fetchConsultDetail('${consultId}')">상세보기</button></td>
-      </tr>
-    `;
+      </tr>`;
     tableBody.innerHTML += row;
   });
 
@@ -98,11 +102,22 @@ function updatePagination() {
   const pageInfo = document.getElementById("pageInfo");
   const pageNumbers = document.getElementById("pageNumbers");
 
-  const totalPages = Math.ceil(totalResults / resultsPerPage);
-  pageInfo.textContent = `페이지 ${currentPage} / ${totalPages}`;
-
+  const totalPages = lastLoadedPage;
+  // pageInfo.textContent = `페이지 ${currentPage}`; // 디버깅용 코드
   pageNumbers.innerHTML = "";
-  for (let i = 1; i <= totalPages; i++) {
+
+  let startPage = Math.max(1, currentPage - 2);
+  let endPage = Math.min(totalPages, currentPage + 2);
+
+  if (endPage - startPage < 4) {
+    if (startPage === 1) {
+      endPage = Math.min(startPage + 4, totalPages);
+    } else if (endPage === totalPages) {
+      startPage = Math.max(endPage - 4, 1);
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "btn btn-sm btn-outline-dark mx-1" + (i === currentPage ? " active" : "");
@@ -115,15 +130,14 @@ function updatePagination() {
 }
 
 window.changePage = function (delta) {
-  const totalPages = Math.ceil(totalResults / resultsPerPage);
   const newPage = currentPage + delta;
-  if (newPage >= 1 && newPage <= totalPages) {
+  if (newPage >= 1 && newPage <= lastLoadedPage) {
     currentPage = newPage;
     displayCurrentPage();
   }
 };
 
-// ✅ 상세보기 모달 열기
+
 window.fetchConsultDetail = function (consultId) {
   if (!consultId || consultId.trim() === "") return;
   let url = `http://localhost:8082/ncpms/consult_detail?consult_id=${consultId}`;
@@ -164,7 +178,6 @@ window.fetchConsultDetail = function (consultId) {
     });
 };
 
-// 이미지 클릭 시 모달로 확대보기
 window.showImageModal = function (imageSrc) {
   const modal = document.getElementById("imageModal");
   const modalImage = document.getElementById("modalImage");
@@ -180,7 +193,6 @@ window.closeModal = function () {
   document.getElementById("consultDetailModal").style.display = "none";
 };
 
-// ✅ ESC 키로 모달 닫기
 window.addEventListener("keydown", function (e) {
   if (e.key === "Escape") {
     const imageModal = document.getElementById("imageModal");
@@ -191,22 +203,9 @@ window.addEventListener("keydown", function (e) {
       closeModal();
     }
   }
-  
-  
-  
-  
-  
-  
-  
-       // AI 챗봇 토글
-       function toggleChatbot() {
-      var chatbot = document.getElementById("chatbot");
-
-      // 챗봇 창이 열려있으면 숨기고, 닫혀있으면 표시
-      if (chatbot.style.display === "none" || chatbot.style.display === "") {
-          chatbot.style.display = "block";
-      } else {
-          chatbot.style.display = "none";
-      }
-  }
 });
+
+function toggleChatbot() {
+  const chatbot = document.getElementById("chatbot");
+  chatbot.style.display = (chatbot.style.display === "none" || chatbot.style.display === "") ? "block" : "none";
+}
