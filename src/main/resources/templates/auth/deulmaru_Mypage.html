@@ -25,9 +25,10 @@
 
     <!-- 메뉴 탭 -->
 	<div class="container-sm tab-menu">
-	    <button class="tab-button active" data-tab="profileTab" onclick="showTab('profileTab')">내 프로필</button> 
-	    <button class="tab-button" data-tab="diagHistoryTab" onclick="showTab('diagHistoryTab')">AI 진단 이력</button> 
 	    <button class="tab-button" data-tab="benefitTab" onclick="showTab('benefitTab')">지원금</button> 
+	    <button class="tab-button" data-tab="CalendarTab" onclick="showTab('CalendarTab')">농작업 일정</button> 
+	    <button class="tab-button" data-tab="diagHistoryTab" onclick="showTab('diagHistoryTab')">AI 진단 이력</button> 
+	    <button class="tab-button active" data-tab="profileTab" onclick="showTab('profileTab')">회원정보 수정</button> 
 	</div>
 
     <!-- 탭 콘텐츠 -->
@@ -79,15 +80,6 @@
 				    </select>
 				</div>
 				
-				    <!-- 재배작물 선택 영역 -->
-				<div class="input-group mb-3">
-			    <span class="input-group-text">재배작물</span>
-			    <!-- 사용자가 이전에 선택한 작물명이 있으면 미리 채워줍니다 -->
-			    <input type="text" id="cropInput" class="form-control" placeholder="작물명을 입력하세요" th:value="${session.user.userCrop}">
-			    <!-- 히든 필드도 미리 채워줍니다 -->
-			    <input type="hidden" name="userCrop" id="userCrop" th:value="${session.user.userCrop}">
-				</div>
-
                 <div class="button-group text-end mt-4">
                     <button type="button" class="btn btn-outline-secondary me-2">취소</button>
                     <button class="btn btn-primary" type="submit">수정</button>
@@ -177,16 +169,23 @@
     </div>
 
 	<!-- 나의 작물 재배 일정 -->
-	<div class="container-sm text-left" id="cropScheduleArea">
-	    <div class="agri-calendar">
-	        <h3>📆 나의 작물 재배 일정 📆</h3>
-	        <!-- API 결과로 받은 HTML 템플릿을 삽입할 영역 -->
-	        <div id="cropScheduleContent">
-	            <p>재배작물을 선택하면 일정이 표시됩니다.</p>
-	        </div>
+	<div class="tab-content hidden" id="CalendarTab">
+	  <div class="container-sm text-left" id="cropScheduleArea">
+	    <!-- 재배작물 선택 영역 -->
+	    <div class="input-group mb-3">
+	      <span class="input-group-text">재배작물</span>
+	      <input type="text" id="cropInput" class="form-control" placeholder="작물명을 입력하세요" th:value="${session.user.userCrop}">
+	      <input type="hidden" name="userCrop" id="userCrop" th:value="${session.user.userCrop}">
 	    </div>
+	    <div class="agri-calendar">
+	      <h3>📆 나의 농작업 일정 📆</h3>
+	      <!-- API 결과로 받은 HTML 템플릿을 삽입할 영역 -->
+	      <div id="cropScheduleContent">
+	        <p>재배작물을 선택하면 일정이 표시됩니다.</p>
+	      </div>
+	    </div>
+	  </div>
 	</div>
-	
 	
 	
 	

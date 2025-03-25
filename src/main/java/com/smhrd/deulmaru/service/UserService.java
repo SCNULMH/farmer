@@ -64,6 +64,8 @@ public class UserService {
 			userRepository.save(user);
 		}
 	}
+	
+	
 
 	// 카카오 회원가입 처리 메서드 추가
 	public UserEntity registerKakaoUser(String kakaoId, String userNickname, HttpSession session) {

@@ -135,18 +135,35 @@ console.log("✅ deulmaru_mapage.js 로드 완료");
     var cropNames = Object.keys(cropMapping);
 
     // jQuery UI Autocomplete 적용
-    $(document).ready(function() {
-        $("#cropInput").autocomplete({
-            source: cropNames,
-            minLength: 1, // 사용자가 최소 1글자 입력하면 추천 시작
-            select: function(event, ui) {
-                // 사용자가 항목을 선택하면, 선택한 작물명을 입력 필드와 히든 필드에 설정
-                $("#cropInput").val(ui.item.value);
-                $("#userCrop").val(ui.item.value);
-                return false; // 기본 동작(자동완성 후 입력 필드에 값 설정)을 방지하고, 직접 처리
-            }
-        });
-    });
+	$(document).ready(function() {
+	    $("#cropInput").autocomplete({
+	        source: cropNames,
+	        minLength: 1,
+	        select: function(event, ui) {
+	            // 사용자가 항목을 선택하면, 선택한 작물명을 입력 필드와 히든 필드에 설정
+	            $("#cropInput").val(ui.item.value);
+	            $("#userCrop").val(ui.item.value);
+	            
+	            // 재배작물 정보를 별도로 업데이트하기 위한 AJAX 호출
+	            $.ajax({
+	                url: "/mypage/update-crop",
+	                type: "POST",
+	                data: { userCrop: ui.item.value },
+	                success: function(response) {
+	                    console.log("재배작물 정보 업데이트 성공:", response);
+	                },
+	                error: function(xhr, status, error) {
+	                    console.error("재배작물 정보 업데이트 실패:", error);
+	                }
+	            });
+	            
+	            // 작물 재배 일정 API 호출 (기존 기능)
+	            loadCropScheduleAPI(ui.item.value);
+	            return false;
+	        }
+	    });
+	});
+
 	
 
 		// 업로드 이미지 확대
