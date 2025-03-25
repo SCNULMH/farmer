@@ -48,7 +48,7 @@
     border-radius: 30px;
     padding: 5%;
     margin-bottom: 11%;
-    margin-top: 11%;
+    margin-top: 2%;
     height: 750px;
     overflow: hidden; /* GIF가 삐져나가지 않도록 */
 } 

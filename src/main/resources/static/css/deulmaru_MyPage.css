@@ -31,15 +31,16 @@
 
 }
 
+/* 배너 영역 */
 .banner-content {
-    background: rgba(255, 240, 162, 0.362); /* 반투명 배경 */
+    background: #c6e1be37; /* 반투명 배경 */
     padding: 4%;
     border-radius: 0 0 40px 40px;
-    color: #b55e39d2;
+    color: #11512e;
 }
 
 .banner-content h2 {
-    font-size: 30px;
+    font-size: 33px;
     font-weight: bold;
     margin-bottom: 3%;
 }
@@ -76,7 +77,7 @@
 
 
 .tab-button.active {
-    background-color: #b55e39d2;
+    background-color: #11512e;
     color: white;
 }
 
@@ -84,7 +85,7 @@
 
 /* ✅ 마우스 오버 효과 */
 .tab-button:hover {
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     color: #444444;
 }
 
@@ -123,7 +124,8 @@
 /* 카카오 연동하기 버튼 */
 .tab-content .mt-4 p {
 	font-weight: bold;
-	font-size: 17px;
+	font-size: 20px;
+	color: #373737c4;
 }
 
 .tab-content .mt-4 .btn-kakao {
@@ -154,13 +156,13 @@
 }
 
 #profileTab .btn:nth-child(2) {
-    background-color: #b55e39d2;
-    border: #b55e39d2;
+    background-color: #11512e;
+    border: #11512e;
     color: white;
 }
 
 #profileTab .btn:nth-child(2):hover {
-    background-color: #8d3b19d2;
+    background-color: #0e2c1b;
 }
 
 /* ✅ 스위치 버튼 크기 키우기 */
@@ -308,19 +310,46 @@
 	margin-bottom: 15%;
 }
 
+
+/* input-group */
+#cropScheduleArea .input-group {
+	margin-bottom: 20px;
+}
+
+#cropScheduleArea .input-group-text {
+	background-color: #497c60;
+	color: #fff;
+	font-weight: bold;
+	border: none;
+	font-size: 16px;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+#cropInput {
+	border: 2px solid #497c6077;
+	border-left: none;
+	font-size: 16px;
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
 #cropScheduleContent p {
 	margin-top: 3%;
 	font-size: 17px;
 	font-weight: bold;
+	color: #666;
 }
 
 /* "나의 작물 재배 일정" 텍스트 */
-.agri-calendar h3 {  
-	font-weight: bold;
-	margin-bottom: 1%;
+/* 일정 타이틀 */
+.agri-calendar h3 {
+	font-weight: 800;
+	font-size: 24px;
+	margin-bottom: 16px;
 	text-align: center;
-	
-	
+	color: #2f4f4f;
+	letter-spacing: -0.5px;
 }
 
 .agri-calendar h2 {
@@ -369,7 +398,13 @@
 
 .tblSchedule tbody tr:nth-child(2),
 .tblSchedule tbody tr:nth-child(4),
-.tblSchedule tbody tr:nth-child(6) {
+.tblSchedule tbody tr:nth-child(6),
+.tblSchedule tbody tr:nth-child(8),
+.tblSchedule tbody tr:nth-child(10),
+.tblSchedule tbody tr:nth-child(14),
+.tblSchedule tbody tr:nth-child(16),
+.tblSchedule tbody tr:nth-child(18),
+.tblSchedule tbody tr:nth-child(20) {
 	border: 1px solid #acacac92;
 }
 
@@ -385,7 +420,6 @@
 	background-color: #c4f0ff92;
 	font-size: 17px;
 }
-
 
 
 
