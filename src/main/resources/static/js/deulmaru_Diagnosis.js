@@ -2,6 +2,7 @@ let uploadedFile = null; // 업로드된 파일 저장
 let diagnosisStarted = false; // 진단 진행 여부
 let predictionResult = ""; // 예측된 병 코드 및 이름 저장
 
+
 // 파일 업로드 이벤트 핸들러
 function handleFileUpload(files) {
 	const resultText = document.getElementById("result-text");
@@ -199,6 +200,8 @@ function toggleChatbot() {
 	const chatbot = document.getElementById("chatbot");
 	chatbot.style.display = (chatbot.style.display === "none" || chatbot.style.display === "") ? "block" : "none";
 }
+
+
 
 // 이벤트 리스너 등록
 document.getElementById("chooseFile").addEventListener("change", function(event) {
