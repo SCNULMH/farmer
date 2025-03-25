@@ -113,8 +113,23 @@
 	    </div>
 	</div>
 
+	<script>
+		
+		
+	</script>
 
-    <!-- 스크립트 로드 -->
+    <!-- 로그인 안하면 쫓아내기 -->
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    const isLoggedIn = /*[[${session.user != null}]]*/ false;
+	    if (!isLoggedIn) {
+	        alert("로그인이 필요합니다!");
+	        location.href = "/auth/deulmaru_Login";
+	    }
+	/*]]>*/
+	</script>
+
+	
 	<script>
 	function toggleChatbot() {
 	    const chatbot = document.getElementById('chatbot');
