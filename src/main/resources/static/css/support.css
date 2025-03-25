@@ -26,10 +26,10 @@
 
 /* 배너 영역 */
 .banner-content {
-    background: rgba(255, 240, 162, 0.362); /* 반투명 배경 */
+    background: #c6e1be37; /* 반투명 배경 */
     padding: 4%;
     border-radius: 0 0 40px 40px;
-    color: #b55e39d2;
+    color: #11512e;
 }
 
 .banner-content h2 {
@@ -46,107 +46,175 @@
 
 
 
-
-
-
-/* 검색창 영역 */
 .input-group {
-	height: 50px;
-    max-width: 50%; /* 검색창 최대 너비 설정 */
-    margin: 10px auto; /* 가운데 정렬 */
+    display: flex;
+    align-items: center;
+    white-space: nowrap;     /* 줄바꿈 방지 */
+    max-width: 50%;        /* 원하는 최대 너비 */
+    margin: 10px auto;
     margin-top: 4%;
     margin-bottom: 3%;
 }
 
 
-
-/* ✅ 지역 스타일 */
-.Area-group {
-    background-color: transparent; 
-    color: rgb(56, 56, 56); 
-    border: 4px solid #ff8d63c8; /* 테두리 */
-    border-radius: 50px;
-    border-right: transparent;
-    width: 15%;
-    text-align: center;
-}
-
-
-/* ✅ 검색창 스타일 */
 .search-input {
-	width: 470px;
-    border: 4px solid #ff8d63c8;
-    border-left: transparent;
-    border-right:transparent;
+    flex: 1; /* 남은 공간 모두 차지 */
+    min-width: 0; /* flex 항목 줄어들 수 있도록 */
+    border: 4px solid #11512e;
+    border-top-left-radius: 50px !important;
+    border-bottom-left-radius: 50px !important;
+    border-right: none;
     padding: 10px 15px;
-    border-radius: 50px;
     color: #878787;
+    font-size: 16px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+	transition: all 0.2s ease-in-out;
 }
 
 .search-input-btn {
-	width: 11%;
-    border: 4px solid #ff8d63c8;
-    border-left: transparent !important;
+    border: 4px solid #11512e;
+    border-left: none !important;
     padding: 10px 15px;
-    border-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
     color: #878787;
     background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* 고정 크기 버튼 (이미지 크기와 어울리게) */
+    flex-shrink: 0; /* 줄어들지 않게 */
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+	transition: all 0.2s ease-in-out;
 }
 
 .search-input-btn img {
-	width: 25px;
-	height: 26px;	
+    width: 25px;
+    height: 26px;
+}
+
+
+@media (max-width: 480px) {
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input,
+    .search-input-btn {
+        border-radius: 30px !important;
+    }
+
+    .search-input {
+        border-right: 4px solid #11512e;
+        margin-bottom: 8px;
+    }
+
+    .search-input-btn {
+        width: 100%;
+        border-left: 4px solid #11512e !important;
+    }
 }
 
 
 
-/* 신청 기간 선택 */
-.date-picker-container {
-    display: flex;
-    gap: 10px;
-    align-items: flex-end;
-    justify-content: flex-end; 
-    width: 100%; 
-    margin-right: 10px;
-}
 
-#startDate, 
-#endDate {
-    width: 130px;
-    height: 35px;
-    padding: 5px;
-    border: 1px solid gray;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
-    color: #808080;
-    font-size: 14px;
-}
+
 
 
 
 /* 지역 필터 버튼 그룹 */
 #regionFilter {
-	margin-left: 10px;
+	margin-left: 11px;
 	
 }
 #regionFilter .region-btn {
 	border: transparent !important;
 	border-radius: 0px;
 	font-family: 'Paperlogy-8ExtraBold';
-	font-size : 20px;
+	font-size : 22px;
 	font-weight: bold;
-	color:  #497c60;
+	color: #272727c0;
 }
-#regionFilter .region-btn:hover {
-	background-color: transparent;
-	transform: scale(1.1);
+#regionFilter .region-btn:hover,
+#regionFilter .region-btn:active,
+#regionFilter .region-btn:focus {
+	background-color: transparent !important;
+	transform: scale(1.1) !important;
+	color:  #497c60 !important;
 }
 
 
 
+/* 📅 신청 기간 필터 전체 박스 */
+.date-picker-container {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	flex-wrap: wrap;
+	width: 100%;
+	margin-top: 12px;
+	margin-bottom:3%;
+	font-family: 'Pretendard', sans-serif;
+}
+
+/* "기간 선택" 텍스트 */
+.date-label {
+	font-weight: bold;
+	font-size: 18px;
+	color: #444;
+	margin: 0;
+	white-space: nowrap;
+}
+
+/* 날짜 선택 영역 묶음 */
+.date-range {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+/* 날짜 입력 필드 공통 스타일 */
+#startDate,
+#endDate {
+	width: 140px;
+	height: 36px;
+	padding: 6px 12px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	text-align: center;
+	cursor: pointer;
+	color: #444;
+	font-size: 15px;
+	background-color: #fff;
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+	transition: all 0.2s ease-in-out;
+}
+
+/* 선택 시 강조 효과 */
+#startDate:focus,
+#endDate:focus {
+	outline: none;
+	border-color: #ff6e3a;
+	box-shadow: 0 0 6px #ff6e3a33;
+}
+
+/* ~ 표시 꾸미기 */
+.date-dash {
+	font-size: 22px;
+	font-weight: bold;
+	color: #888;
+	user-select: none;
+}
 
 
+
+.date-picker-container p {
+	font-weight: bold;
+	font-size: 17px;
+	padding-top: 10px;
+}
 
 
 
@@ -310,9 +378,9 @@
 }
 
 .pagination li.active {
-    background-color: #eb903be0;
+    background-color:#11512e;
     color: #fff;
-    border-color: #eb903be0;
+    border-color:#11512e;
 }
 
 .pagination li:hover:not(.active) {

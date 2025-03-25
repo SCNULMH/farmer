@@ -34,56 +34,53 @@
 	<div class="container-sm ">
 		<div class="input-group ">
 		
-		
-
-		
 		<!-- 선택된 지역 값을 저장 (기본값 '전국') -->
-		<input type="hidden" id="selectedRegion" value="전국">
-
-			
-			
+		<input type="hidden" id="selectedRegion" value="전국">	
 			<input type="text" class="search-input" id="searchKeyword" placeholder="검색어를 입력하세요">
-	
-		
 			<!-- 🔍 검색 버튼 -->
-			<button class="search-input-btn" id="searchBtn"><img src="/image/input_icon.png"></button>
-		
+			<button class="search-input-btn" id="searchBtn"><img src="/image/input_icon.png"></button>		
 		</div>
-		
-		<div class="date-picker-container">
-			
-			<!-- 📅 신청 기간 필터 -->
-			<input type="date" id="startDate"> 
-			<span>-</span>
-			<input type="date" id="endDate">
-			
-		</div>
-		
+				
 	</div>
+	
+		<div class="container-sm mb-4">
+			<div class="date-picker-container">
+				<!-- 📅 신청 기간 필터 -->
+				<p class="date-label">📅 기간 선택</p>
+				<div class="date-range">
+				<input type="date" id="startDate">
+				<span class="date-dash">-</span>
+				<input type="date" id="endDate">
+		</div>
+			</div>
+		</div>
+	
 	
 			<!-- 🌍 지역 필터 버튼 그룹 -->
 		<div class="container-sm text-left">
 			<div id="regionFilter" class="btn-group" role="group" aria-label="지역 필터">
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="전국">전국</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="서울">서울</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="부산">부산</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="대구">대구</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="인천">인천</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="광주">광주</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="대전">대전</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="울산">울산</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="세종">세종</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="경기">경기</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="강원">강원</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="충북">충북</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="충남">충남</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="전북">전북</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="전남">전남</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="경북">경북</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="경남">경남</button>
-			  <button type="button" class="btn btn-outline-primary region-btn" data-value="제주">제주</button>
+			  <button type="button" class="btn region-btn" data-value="전국">전국</button>
+			  <button type="button" class="btn region-btn" data-value="서울">서울</button>
+			  <button type="button" class="btn region-btn" data-value="부산">부산</button>
+			  <button type="button" class="btn region-btn" data-value="대구">대구</button>
+			  <button type="button" class="btn region-btn" data-value="인천">인천</button>
+			  <button type="button" class="btn region-btn" data-value="광주">광주</button>
+			  <button type="button" class="btn region-btn" data-value="대전">대전</button>
+			  <button type="button" class="btn region-btn" data-value="울산">울산</button>
+			  <button type="button" class="btn region-btn" data-value="세종">세종</button>
+			  <button type="button" class="btn region-btn" data-value="경기">경기</button>
+			  <button type="button" class="btn region-btn" data-value="강원">강원</button>
+			  <button type="button" class="btn region-btn" data-value="충북">충북</button>
+			  <button type="button" class="btn region-btn" data-value="충남">충남</button>
+			  <button type="button" class="btn region-btn" data-value="전북">전북</button>
+			  <button type="button" class="btn region-btn" data-value="전남">전남</button>
+			  <button type="button" class="btn region-btn" data-value="경북">경북</button>
+			  <button type="button" class="btn region-btn" data-value="경남">경남</button>
+			  <button type="button" class="btn region-btn" data-value="제주">제주</button>
 			</div>
 		</div>	
+		
+
 
 	<!-- 🔹 지원금 목록 카드뷰 -->
 	<div class="card-container" id="grantList">
