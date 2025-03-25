@@ -128,6 +128,7 @@
 	
 	    if (!userId || userId === "null") {
 	        alert("로그인이 필요합니다.");
+			window.location.href = "/auth/deulmaru_Login";
 	        $("#interestBtn").text("로그인 필요").addClass("disabled").prop("disabled", true);
 	        return;
 	    }

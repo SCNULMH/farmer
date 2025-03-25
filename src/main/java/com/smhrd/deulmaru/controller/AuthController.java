@@ -36,7 +36,10 @@ public class AuthController {
 
     // 마이페이지
     @GetMapping("/mypage")
-    public String mypage() {
+    public String mypage(HttpSession session) {
+    	 if (session.getAttribute("user") == null) {
+             return "redirect:/auth/login";
+         }
         return "auth/deulmaru_Mypage";
     }
 
@@ -125,17 +128,28 @@ public class AuthController {
     }
 
     @GetMapping("/deulmaru_dictionary")
-    public String deulmaru_dictionary() {
+    public String deulmaru_dictionary(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            
+        	return "redirect:/auth/login";
+            
+        }
         return "ncpms/deulmaru_dictionary";
     }
 
     @GetMapping("/deulmaru_QnA")
-    public String deulmaru_QnA() {
+    public String deulmaru_QnA(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/auth/login";
+        }
         return "ncpms/deulmaru_QnA";
     }
 
     @GetMapping("/deulmaru_Diagnosis")
-    public String deulmaru_Diagnosis() {
+    public String deulmaru_Diagnosis(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/auth/login";
+        }
         return "ncpms/deulmaru_Diagnosis";
     }
     
