@@ -40,7 +40,7 @@ disease_mapping = {
 def predict(crop_name, image_path):
     try:
         if not os.path.exists(image_path):
-            return json.dumps({"error": "❌ 이미지 파일을 찾을 수 없습니다."}, ensure_ascii=False)
+            return "❌ 이미지 파일을 찾을 수 없습니다."
 
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -66,7 +66,7 @@ def predict(crop_name, image_path):
         }
 
         if crop_name not in crop_valid_indices:
-            return json.dumps({"error": "❌ 올바른 작물명이 아닙니다. (고추, 딸기, 참외, 토마토, 포도 중 하나를 입력하세요.)"}, ensure_ascii=False)
+            return "❌ 올바른 작물명이 아닙니다. (고추, 딸기, 참외, 토마토, 포도 중 하나를 입력하세요.)"
 
         valid_indices = crop_valid_indices[crop_name]
         valid_probs = {i: probs[i] for i in valid_indices}
@@ -74,21 +74,14 @@ def predict(crop_name, image_path):
         confidence_percent = valid_probs[predicted_index] * 100
 
         if confidence_percent < 60:
-            return json.dumps({
-                "prediction": "작물이 아닙니다.",
-                "confidence": f"{confidence_percent:.1f}%"
-            }, ensure_ascii=False)
+            return f"작물이 아닙니다. (정확도: {confidence_percent:.1f}%)"
 
         result = disease_mapping.get(predicted_index, "알 수 없음")
 
-        return json.dumps({
-            "병해충 진단 결과": result,
-            "정확도": f"{confidence_percent:.1f}%"
-        }, ensure_ascii=False)
-        
-        
+        return f"병해충 진단 결과: {result}, 정확도: {confidence_percent:.1f}%"
+
     except Exception as e:
-        return json.dumps({"error": f"❌ 예측 오류: {str(e)}"}, ensure_ascii=False)
+        return f"❌ 예측 오류: {str(e)}"
 
 
 if __name__ == "__main__":
