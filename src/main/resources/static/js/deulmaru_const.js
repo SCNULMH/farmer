@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	        // ✅ 각 탭별 데이터 로드
 	        if (tabName === "benefitTab") loadInterestGrants();
 	        if (tabName === "diagHistoryTab") loadDiagnosisHistory();
+	        if (tabName === "diagHistoryTab") loadCropScheduleAPI();
+			
 	    }
 	}
 
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showTab = showTab;
 
     // 기본 탭을 "내 프로필"로 설정
-    if(document.getElementById("profileTab")) {
-        showTab('profileTab');
+    if(document.getElementById("benefitTab")) {
+        showTab('benefitTab');
     }
 });

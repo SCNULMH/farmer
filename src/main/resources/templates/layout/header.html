@@ -21,7 +21,7 @@
                 
                     <!-- 로그인 여부에 따라 표시 -->
                     <li class="nav-item" th:if="${session.user != null}">
-                        <span class="nav-link">환영합니다, <span th:text="${session.user.userNickname}"></span> 님!</span>
+                        <a class="nav-link" th:href="@{/auth/mypage}" th:text="${session.user.userNickname}"></a>
                     </li>
                     <!-- 알림 아이콘 추가 (로그인한 사용자에 한해 노출) -->
                     <li class="nav-item" th:if="${session.user != null}">
@@ -57,9 +57,9 @@
 	<div class="menu-bar">
 	    <ul class="menu-list">
 	        <li><a href="/supportApi/support">지원사업 정보</a></li>
-	        <li><a href="/auth/deulmaru_dictionary">병해충 검색</a></li>
+	        <li><a href="/auth/deulmaru_dictionary">병해충 사전</a></li>
 	        <li><a href="/auth/deulmaru_QnA">병해충 상담</a></li>
-	        <li><a href="/auth/deulmaru_Diagnosis">사진으로 병해충 검색</a></li>
+	        <li><a href="/auth/deulmaru_Diagnosis">AI병해충 판별</a></li>
 	    </ul>
 	</div>
 	
