@@ -57,6 +57,7 @@
 		background-color: inherit !important;
 		font-size:18px !important;
 		transition: all 0.2s ease-in-out;
+		transform: none !important;
 	}
 
 

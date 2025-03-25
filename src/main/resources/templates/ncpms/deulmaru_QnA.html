@@ -15,7 +15,7 @@
     <!-- 병해충 조회 배너 -->
     <div class="container-sm text-center w-50">
       <div class="banner-content text-center">
-        <h2>병해충 QnA</h2>
+        <h2>병해충 상담</h2>
         <p>병해충 관련 상담 내용을 조회하세요</p>
       </div>
     </div>
@@ -81,23 +81,42 @@
     
 	
 	
-	
 	<!-- ✅ 이삭이 버튼 (챗봇 토글) -->
-     <div class="button-isac mb-5">
-        <button class="image-btn-isac" onclick="toggleChatbot()">
-            <span>AI 이삭이</span>
-            <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
-        </button>
-    </div>
+	<div class="button-isac">
+	    <button class="image-btn-isac" onclick="toggleChatbot()">
+	        <span>AI 이삭이</span>
+	        <img src="/image/이삭3-removebg-preview.png" alt="버튼 이미지">
+	    </button>
+	</div>
 
-    <!-- ✅ 챗봇 팝업 UI -->
-    <div id="chatbot" class="chatbot-container">
-        <div class="chatbot-popup">
-            <button class="close-chatbot" onclick="toggleChatbot()">×</button>
-            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
-        </div>
-    </div>
-    
+	<!-- ✅ 챗봇 팝업 UI -->
+	<div id="chatbot" class="chatbot-container">
+	    <div class="chatbot-popup">
+	        <button class="close-chatbot" onclick="toggleChatbot()">×</button>
+	        <div class="iframe-wrapper">
+	            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="100%" frameborder="0"></iframe>
+	        </div>
+	    </div>
+	</div>
+
+
+    <!-- 스크립트 로드 -->
+	<script>
+	function toggleChatbot() {
+	    const chatbot = document.getElementById('chatbot');
+	    const isOpen = chatbot.style.display === 'block';
+	
+	    if (isOpen) {
+	        chatbot.style.display = 'none';
+	        document.documentElement.classList.remove('scroll-locked');
+	        document.body.classList.remove('scroll-locked');
+	    } else {
+	        chatbot.style.display = 'block';
+	        document.documentElement.classList.add('scroll-locked');
+	        document.body.classList.add('scroll-locked');
+	    }
+	}
+	</script>
     
 
     

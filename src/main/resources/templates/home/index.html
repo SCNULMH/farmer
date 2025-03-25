@@ -100,13 +100,34 @@
         </button>
     </div>
 
-    <!-- ✅ 챗봇 팝업 UI -->
-    <div id="chatbot" class="chatbot-container">
-        <div class="chatbot-popup">
-            <button class="close-chatbot" onclick="toggleChatbot()">×</button>
-            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="500px" frameborder="0"></iframe>
-        </div>
-    </div>
+   <!-- ✅ 챗봇 팝업 UI -->
+	<div id="chatbot" class="chatbot-container">
+	    <div class="chatbot-popup">
+	        <button class="close-chatbot" onclick="toggleChatbot()">×</button>
+	        <div class="iframe-wrapper">
+	            <iframe src="https://www.nongsaro.go.kr/chatbot/aichatbot.html" width="100%" height="100%" frameborder="0"></iframe>
+	        </div>
+	    </div>
+	</div>
+
+
+    <!-- 스크립트 로드 -->
+	<script>
+	function toggleChatbot() {
+	    const chatbot = document.getElementById('chatbot');
+	    const isOpen = chatbot.style.display === 'block';
+	
+	    if (isOpen) {
+	        chatbot.style.display = 'none';
+	        document.documentElement.classList.remove('scroll-locked');
+	        document.body.classList.remove('scroll-locked');
+	    } else {
+	        chatbot.style.display = 'block';
+	        document.documentElement.classList.add('scroll-locked');
+	        document.body.classList.add('scroll-locked');
+	    }
+	}
+	</script>
     
     <!-- Thymeleaf를 통해 로그인 여부 및 사용자 정보 전달 -->
     <script th:inline="javascript">

@@ -309,7 +309,7 @@
             z-index: 1000;     /* 다른 요소 위에 표시되도록 설정 */
             
         }
-        .image-btn-isac {
+         .image-btn-isac {
             width: 150px;
             height: 110px;
             border-radius: 50%;
@@ -338,48 +338,54 @@
             
         }
 
-        /* <!-- ✅ 챗봇 팝업 UI --> */
-        /* ✅ 챗봇 팝업 컨테이너 스타일 */
-        .chatbot-container {
-            position: fixed;
-            bottom: 20px; /* 화면 하단에서 20px 위 */
-            right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
-            width: 30%; /* 챗봇 팝업 너비 */
-            display: none;
-            z-index: 1000; /* 다른 요소 위에 표시 */
-            overflow: hidden;
-        }
+    /* ✅ 챗봇 팝업 전체 영역 */
+    .chatbot-container {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 70%;
+        height: 80%;
+        z-index: 1001;
+    }
 
+    /* ✅ 챗봇 팝업창 UI */
+    .chatbot-popup {
+        background: #fff;
+        border: 2px solid #ccc;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
 
+    /* ✅ 닫기 버튼 */
+    .close-chatbot {
+        align-self: flex-end;
+        background: none;
+        border: none;
+        font-size: 24px;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
 
-        /* ✅ 챗봇 팝업 스타일 */
-        .chatbot-popup {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            width: 100%;
-            height: 90%;
-            border: 1px solid #ddd;
-        }
+    /* ✅ iframe wrapper */
+    .iframe-wrapper {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+    }
 
-        /* ✅ 닫기 버튼 스타일 */
-        .close-chatbot {
-            background: none;
-            border: none;
-            font-size: 26px;
-            color: #000;
-            cursor: pointer;
-            position: absolute;
-            left: 10px;
-            top: 10px;
-        }
-        
-        .close-chatbot:hover {
-        	font-size: 29px;
-        	font-weight: bold;
-        }
+    .iframe-wrapper iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
 
-
-
-
+    /* ✅ 팝업 열릴 때 스크롤 막기 */
+    .scroll-locked {
+        overflow: hidden;
+        height: 100%;
+    }
