@@ -35,27 +35,11 @@
 		<div class="input-group ">
 		
 		
-			<!-- 🌍 지역 필터 -->
-			<select class="Area-group" id="searchArea">
-				<option value="전국">전국</option>
-				<option value="서울">서울</option>
-				<option value="부산">부산</option>
-				<option value="대구">대구</option>
-				<option value="인천">인천</option>
-				<option value="광주">광주</option>
-				<option value="대전">대전</option>
-				<option value="울산">울산</option>
-				<option value="세종">세종</option>
-				<option value="경기">경기</option>
-				<option value="강원">강원</option>
-				<option value="충북">충북</option>
-				<option value="충남">충남</option>
-				<option value="전북">전북</option>
-				<option value="전남">전남</option>
-				<option value="경북">경북</option>
-				<option value="경남">경남</option>
-				<option value="제주">제주</option>
-			</select>
+
+		
+		<!-- 선택된 지역 값을 저장 (기본값 '전국') -->
+		<input type="hidden" id="selectedRegion" value="전국">
+
 			
 			
 			<input type="text" class="search-input" id="searchKeyword" placeholder="검색어를 입력하세요">
@@ -76,7 +60,28 @@
 		</div>
 		
 	</div>
-
+	
+			<!-- 🌍 지역 필터 버튼 그룹 -->
+		<div id="regionFilter" class="btn-group" role="group" aria-label="지역 필터">
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="전국">전국</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="서울">서울</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="부산">부산</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="대구">대구</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="인천">인천</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="광주">광주</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="대전">대전</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="울산">울산</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="세종">세종</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="경기">경기</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="강원">강원</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="충북">충북</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="충남">충남</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="전북">전북</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="전남">전남</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="경북">경북</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="경남">경남</button>
+		  <button type="button" class="btn btn-outline-primary region-btn" data-value="제주">제주</button>
+		</div>
 
 	<!-- 🔹 지원금 목록 카드뷰 -->
 	<div class="card-container" id="grantList">
@@ -118,45 +123,58 @@
 
 	<!-- 요청 URL 생성 -->
 	<script>
-function buildApiUrl(page = 1) {
-    let baseUrl = "https://apis.data.go.kr/1390000/youngV2/policyListV2";
-    let params = [];
+	// 버튼 클릭 이벤트 처리
+	$(document).on('click', '.region-btn', function() {
+	    // 모든 버튼에서 active 클래스 제거 후, 클릭한 버튼에 추가
+	    $(".region-btn").removeClass("active");
+	    $(this).addClass("active");
+	    
+	    // 선택한 지역 값을 hidden input에 저장
+	    let selectedRegion = $(this).data("value");
+	    $("#selectedRegion").val(selectedRegion);
+	});
 
-    // ✅ 고정된 필수 파라미터
-    params.push("typeDv=json");
-    params.push("serviceKey=" + serviceKey);
-    params.push(`rowCnt=${itemsPerPage}`);
-    params.push(`cp=${page}`);
+	// API URL 생성 함수 내에서 지역 값 가져오기 수정
+	function buildApiUrl(page = 1) {
+	    let baseUrl = "https://apis.data.go.kr/1390000/youngV2/policyListV2";
+	    let params = [];
+	    
+	    // 필수 파라미터
+	    params.push("typeDv=json");
+	    params.push("serviceKey=" + serviceKey);
+	    params.push(`rowCnt=${itemsPerPage}`);
+	    params.push(`cp=${page}`);
+	    
+	    // 동적 파라미터
+	    let selectedRegion = $("#selectedRegion").val(); // 버튼 선택값
+	    let keyword = $("#searchKeyword").val();
+	    let startDate = $("#startDate").val();
+	    let endDate = $("#endDate").val();
+	    let status = $("#searchStatus").val();
+	    let minPrice = $("#minPrice").val();
+	    let maxPrice = $("#maxPrice").val();
+	    let sortOrder = $("#sortOrder").val();
 
-    // ✅ 동적 추가 파라미터
-    let area = $("#searchArea").val();
-    let keyword = $("#searchKeyword").val();
-    let startDate = $("#startDate").val();
-    let endDate = $("#endDate").val();
-    let status = $("#searchStatus").val();
-    let minPrice = $("#minPrice").val();
-    let maxPrice = $("#maxPrice").val();
-    let sortOrder = $("#sortOrder").val();
+	    if (keyword) params.push(`search_keyword=${encodeURIComponent(keyword)}`);
 
-    if (keyword) params.push(`search_keyword=${encodeURIComponent(keyword)}`);
+	    // 버튼 선택한 지역을 지역 코드로 변환하여 추가
+	    if (selectedRegion && regionCodes[selectedRegion]) {
+	        params.push(`search_area1=${regionCodes[selectedRegion]}`);
+	    }
+	    
+	    if (startDate) params.push(`sd=${startDate}`);
+	    if (endDate) params.push(`ed=${endDate}`);
+	    if (status) params.push(`search_status=${encodeURIComponent(status)}`);
+	    if (minPrice) params.push(`minPrice=${minPrice}`);
+	    if (maxPrice) params.push(`maxPrice=${maxPrice}`);
+	    if (sortOrder) params.push(`sort=${sortOrder}`);
 
-    // ✅ 지역 선택값을 지역 코드로 변환하여 추가
-    if (area && regionCodes[area]) {
-        params.push(`search_area1=${regionCodes[area]}`);
-    }
+	    let finalUrl = `${baseUrl}?${params.join("&")}`;
+	    console.log("📌 API 요청 URL:", finalUrl);
 
-    if (startDate) params.push(`sd=${startDate}`);
-    if (endDate) params.push(`ed=${endDate}`);
-    if (status) params.push(`search_status=${encodeURIComponent(status)}`);
-    if (minPrice) params.push(`minPrice=${minPrice}`);
-    if (maxPrice) params.push(`maxPrice=${maxPrice}`);
-    if (sortOrder) params.push(`sort=${sortOrder}`);
+	    return finalUrl;
+	}
 
-    let finalUrl = `${baseUrl}?${params.join("&")}`;
-    console.log("📌 API 요청 URL:", finalUrl);
-
-    return finalUrl;
-}
 
 
 </script>
