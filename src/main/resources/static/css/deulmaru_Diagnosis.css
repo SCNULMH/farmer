@@ -191,78 +191,92 @@
 
 
 
-/* ✅ 이삭이 버튼 */
-.button-isac {
-    position: fixed;
-    bottom: 0px;
-    right: 20px;
-    z-index: 1000;
-}
-.image-btn-isac {
-    width: 150px;
-    height: 110px;
-    border-radius: 50%;
-    border: none;
-    background: none;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-}
-.image-btn-isac img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-.image-btn-isac span {
-    font-size: 17px;
-    font-weight: 900;
-    color: #000;
-    font-family: '최애체';
-}
-.image-btn-isac:hover {
-    transform: scale(1.1);
-    transition: all 0.2s ease-in-out;
-}
 
-/* ✅ 챗봇 팝업 */
-.chatbot-container {
-    position: fixed;
-    bottom: 130px; /* 이삭이 버튼 위에 자연스럽게 위치 */
-    right: 20px;
-    width: 370px;
-    height: 500px;
-    display: none;
-    z-index: 1000;
-    overflow: hidden;
-}
-.chatbot-popup {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #ddd;
-    position: relative;
-     overflow: auto;
-}
-.chatbot-popup iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    overflow: hidden; /* iframe 안 스크롤 제거 */
-    display: block;
-}
-.close-chatbot {
-    background: none;
-    border: none;
-    font-size: 26px;
-    color: #000;
-    cursor: pointer;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-}
-.close-chatbot:hover {
-    font-size: 29px;
-    font-weight: bold;
-}
+
+/*  ✅ 이삭이 버튼 (챗봇 토글)  */
+        .button-isac {
+            position: fixed;  /* 화면에 고정 */
+            bottom: 48px;      /* 화면 하단에서 20px 떨어진 위치 */
+            right: 20px;       /* 화면 오른쪽에서 20px 떨어진 위치 */
+            z-index: 1000;     /* 다른 요소 위에 표시되도록 설정 */      
+        }
+        .image-btn-isac {
+            width: 150px;
+            height: 110px;
+            border-radius: 50%;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            
+        }
+        .image-btn-isac img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .image-btn-isac span {
+            font-size: 17px;
+            font-weight: 900;
+            color: #000;
+            font-family: '최애체';
+        }
+
+        .image-btn-isac:hover {
+            transform: scale(1.1);
+            transition: all 0.2s ease-in-out;
+            
+        }
+
+        /* <!-- ✅ 챗봇 팝업 UI --> */
+        /* ✅ 챗봇 팝업 컨테이너 스타일 */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px; /* 화면 하단에서 20px 위 */
+            right: 20px; /* 화면 오른쪽에서 20px 왼쪽 */
+            width: 50%; /* 챗봇 팝업 너비 */
+            height: 80%;
+            display: none;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+        }
+
+        /* ✅ 챗봇 팝업 스타일 */
+        .chatbot-popup {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px; 
+    		position: relative;
+    		box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ddd;
+            overflow: auto; 
+        }
+		
+		.chatbot-popup iframe {
+		    width: 100%;
+		    height: 100%;
+		    border: none;
+		    display: block;
+		    overflow: auto; 
+		}
+		
+        /* ✅ 닫기 버튼 스타일 */
+        .close-chatbot {
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: #000;
+            cursor: pointer;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+        
+        .close-chatbot:hover {
+        	font-size: 29px;
+        	font-weight: bold;
+        }
+

@@ -449,6 +449,8 @@ body {
             overflow: hidden;
         }
 
+
+
         /* ✅ 챗봇 팝업 스타일 */
         .chatbot-popup {
             background: white;
@@ -476,4 +478,7 @@ body {
         	font-size: 29px;
         	font-weight: bold;
         }
+
+
+
 
