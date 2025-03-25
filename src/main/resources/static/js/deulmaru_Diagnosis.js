@@ -19,7 +19,6 @@ function handleFileUpload(files) {
 		return;
 	}
 
-
 	uploadedFile = file;
 	resultText.textContent = "📂 파일이 업로드되었습니다. 작물명을 입력하고 '진단하기' 버튼을 눌러주세요.";
 	diagnosisButton.disabled = false;
@@ -71,7 +70,6 @@ function setUpDragAndDrop() {
 		handleFileUpload(files); // ✅ 여기서 기존 업로드 처리 함수 호출
 	});
 }
-
 
 // 진단 버튼 클릭 시 실행될 함수
 function startDiagnosis() {
@@ -129,7 +127,7 @@ function startDiagnosis() {
 		});
 }
 
-// 진단 이력 저장 버튼 클릭 시 실행될 함수 (추후 추가 구현)
+// 진단 이력 저장 버튼 클릭 시 실행될 함수
 async function saveDiagnosisHistory() {
 	const userId = sessionStorage.getItem("userId");
 	const resultText = document.getElementById("result-text").innerText.trim();
@@ -142,10 +140,18 @@ async function saveDiagnosisHistory() {
 	}
 
 	try {
-		// ✅ JSON 형태로 저장된 결과에서 '예상 병명'과 '정확도' 분리
-		const parsedResult = JSON.parse(resultText);
-		const diseaseName = parsedResult["병해충 진단 결과"]; // 이거 텍스트 정확하게 일치시켜야함
-		const confidenceScore = parseFloat(parsedResult["정확도"].replace("%", "")); // "99.8%" -> 99.8 숫자로 변환
+		const resultText = document.getElementById("result-text").innerText.trim();
+
+		// 예시 결과 텍스트: "병해충 진단 결과: 정상, 정확도: 98.5%"
+		const match = resultText.match(/병해충 진단 결과:\s*(.+?),\s*정확도:\s*([\d.]+)%/);
+
+		if (!match) {
+			alert("❌ 결과를 파싱할 수 없습니다. 형식이 올바르지 않습니다.");
+			return;
+		}
+
+		const diseaseName = match[1]; // "정상" 등
+		const confidenceScore = parseFloat(match[2]); // 98.5 등
 
 		const formData = new FormData();
 		formData.append("userId", userId);
@@ -161,7 +167,8 @@ async function saveDiagnosisHistory() {
 		});
 
 		if (response.ok) {
-			console.log("✅ 진단 이력이 성공적으로 저장되었습니다.");
+			console.log("진단 이력이 성공적으로 저장되었습니다.");
+			alert("진단 이력이 성공적으로 저장되었습니다!")
 		} else {
 			const result = await response.json();
 			document.getElementById("result-text").textContent = "❌ 진단 이력 저장 실패: " + result.error;
@@ -187,11 +194,10 @@ function toggleGuide() {
 	}
 }
 
-
 // 이삭이
 function toggleChatbot() {
-    const chatbot = document.getElementById("chatbot");
-    chatbot.style.display = (chatbot.style.display === "none" || chatbot.style.display === "") ? "block" : "none";
+	const chatbot = document.getElementById("chatbot");
+	chatbot.style.display = (chatbot.style.display === "none" || chatbot.style.display === "") ? "block" : "none";
 }
 
 // 이벤트 리스너 등록
@@ -202,4 +208,3 @@ document.getElementById("chooseFile").addEventListener("change", function(event)
 document.getElementById("diagnosis-button").addEventListener("click", startDiagnosis);
 document.getElementById("save-history-button").addEventListener("click", saveDiagnosisHistory);
 document.addEventListener("DOMContentLoaded", setUpDragAndDrop);
-
