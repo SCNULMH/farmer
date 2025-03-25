@@ -125,12 +125,36 @@
 
 
 
+/* 지역 필터 버튼 그룹 */
+#regionFilter {
+	margin-left: 10px;
+	
+}
+#regionFilter .region-btn {
+	border: transparent !important;
+	border-radius: 0px;
+	font-family: 'Paperlogy-8ExtraBold';
+	font-size : 20px;
+	font-weight: bold;
+	color:  #497c60;
+}
+#regionFilter .region-btn:hover {
+	background-color: transparent;
+	transform: scale(1.1);
+}
+
+
+
+
+
+
+
 
 /* ✅ 지원금 섹션 스타일 */
 /* ✅ 카드 리스트 스타일 */
 .benefit-list {
     display: flex !important;
-    flex-wrap: wrap;
+    flex-wrap: wrap !important;
     gap: 30px;
     justify-content: center !important;
     padding: 0;
