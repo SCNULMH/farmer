@@ -33,10 +33,10 @@
 
 /* 배너 영역 */
 .banner-content {
-    background: #c6e1be37; /* 반투명 배경 */
+    background: #badfa337; /* 반투명 배경 */
     padding: 4%;
     border-radius: 0 0 40px 40px;
-    color: #11512e;
+    color: #115114;
 }
 
 .banner-content h2 {
@@ -77,7 +77,7 @@
 
 
 .tab-button.active {
-    background-color: #11512e;
+    background-color: #115114;
     color: white;
 }
 

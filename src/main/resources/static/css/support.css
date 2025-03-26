@@ -26,10 +26,10 @@
 
 /* 배너 영역 */
 .banner-content {
-    background: #c6e1be37; /* 반투명 배경 */
+    background: #badfa337; /* 반투명 배경 */
     padding: 4%;
     border-radius: 0 0 40px 40px;
-    color: #11512e;
+    color: #115114;
 }
 
 .banner-content h2 {
@@ -53,14 +53,14 @@
     max-width: 50%;        /* 원하는 최대 너비 */
     margin: 10px auto;
     margin-top: 4%;
-    margin-bottom: 3%;
+    margin-bottom: 6%;
 }
 
 
 .search-input {
     flex: 1; /* 남은 공간 모두 차지 */
     min-width: 0; /* flex 항목 줄어들 수 있도록 */
-    border: 4px solid #11512e;
+    border: 4px solid #115114;
     border-top-left-radius: 50px !important;
     border-bottom-left-radius: 50px !important;
     border-right: none;
@@ -72,7 +72,7 @@
 }
 
 .search-input-btn {
-    border: 4px solid #11512e;
+    border: 4px solid #115114;
     border-left: none !important;
     padding: 10px 15px;
     border-top-right-radius: 50px;
@@ -106,13 +106,13 @@
     }
 
     .search-input {
-        border-right: 4px solid #11512e;
+        border-right: 4px solid #115114;
         margin-bottom: 8px;
     }
 
     .search-input-btn {
         width: 100%;
-        border-left: 4px solid #11512e !important;
+        border-left: 4px solid #115114 !important;
     }
 }
 
@@ -125,7 +125,7 @@
 
 /* 지역 필터 버튼 그룹 */
 #regionFilter {
-	margin-left: 11px;
+	margin-left: 4%;
 	
 }
 #regionFilter .region-btn {
@@ -157,6 +157,7 @@
 	margin-top: 12px;
 	margin-bottom:3%;
 	font-family: 'Pretendard', sans-serif;
+	
 }
 
 /* "기간 선택" 텍스트 */
@@ -174,6 +175,7 @@
 	align-items: center;
 	gap: 10px;
 }
+
 
 /* 날짜 입력 필드 공통 스타일 */
 #startDate,
