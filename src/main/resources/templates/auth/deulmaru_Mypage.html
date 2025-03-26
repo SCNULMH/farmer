@@ -170,12 +170,7 @@
 	<!-- 나의 작물 재배 일정 -->
 	<div class="tab-content hidden" id="CalendarTab">
 	  <div class="container-sm text-left" id="cropScheduleArea">
-	    <!-- 재배작물 선택 영역 -->
-	    <div class="input-group mb-3">
-	      <span class="input-group-text">재배작물</span>
-	      <input type="text" id="cropInput" class="form-control" placeholder="작물명을 입력하세요" th:value="${session.user.userCrop}">
-	      <input type="hidden" name="userCrop" id="userCrop" th:value="${session.user.userCrop}">
-	    </div>
+	    
 	    
 	    <div class="agri-calendar">
 	      <h3>📆 나의 농작업 일정 📆</h3>
@@ -184,6 +179,14 @@
 	        <p>재배작물을 선택하면 일정이 표시됩니다.</p>
 	      </div>
 	    </div>
+
+	    <!-- 재배작물 선택 영역 -->
+	    <div class="input-group mt-5 mb-3">
+	      <span class="input-group-text">재배작물</span>
+	      <input type="text" id="cropInput" class="form-control" placeholder="작물명을 입력하세요" th:value="${session.user.userCrop}">
+	      <input type="hidden" name="userCrop" id="userCrop" th:value="${session.user.userCrop}">
+	    </div>
+	    
 	  </div>
 	</div>
     </div>

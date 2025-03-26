@@ -11,7 +11,7 @@
     <div th:replace="layout/header :: header"></div>
    
     <!-- AI 활용 안내 -->
-    <div class="container-sm text-left mt-5">
+    <div class="container-sm text-left mt-5 mb-5">
         <div class="box-part p-4">
             <h3>🔍 AI 농작물 병해충 판별이란?</h3>
             <p class="mt-4">농작물에 발생한 병의 피해 및 해충의 사진을 AI가 판독하여 병해충 진단을 제공하는 서비스입니다.</p>
@@ -30,7 +30,7 @@
     </div>
 
     <!-- 파일 업로드 영역 -->
-    <div class="container mt-4">
+    <div class="container mt-5">
         <div class="row">
             <h2 class="title">AI 병해충 진단하기</h2>
             <hr>
@@ -48,7 +48,7 @@
                                 <label class="file-label" for="chooseFile">📂 파일 선택</label>
                                 <input class="file" id="chooseFile" type="file" accept=".jpg, .png">
                             </div>
-                            <div id="file-list" class="mt-2"></div> <!-- 파일 이름 표시 -->
+                            <div id="file-list"></div> <!-- 파일 이름 표시 -->
                         </div>
                     </div>
                 </div>
@@ -56,11 +56,11 @@
 
             <!-- 판별 결과 및 작물명 입력 영역 (오른쪽 50%) -->
             <div class="col-md-6">
-                <div class="container-sm mt-4">
-                    <h4>판별 결과</h4>
+                <div class="container-sm mt-5 pt-3">
+                    <h4 class="show-diag">작물 선택하여 진단하기</h4>
                     <!-- 작물명 입력 필드 (분석 전에 반드시 입력) -->
 					<!-- 작물명 선택 필드 (분석 전에 반드시 선택) -->
-					<select id="cropNameInput" class="form-control mb-3">
+					<select id="cropNameInput" class="form-control mb-3 p-2">
 					  <option value="" disabled selected>작물명을 선택하세요</option>
 					  <option value="고추">고추</option>
 					  <option value="딸기">딸기</option>
@@ -70,14 +70,14 @@
 					</select>
 
                     <!-- 진단하기 버튼 -->
-                    <button id="diagnosis-button" class="btn btn-warning mt-3" disabled>🦠 진단하기</button>
+                    <button id="diagnosis-button" disabled>➤ 진단하기</button>
                     
                     <p id="result-text">이미지를 업로드하면 결과가 표시됩니다.</p>
                     <img id="result-image" alt="업로드된 이미지" class="img-fluid" style="display: none;">
                     
                     <!-- 진단 이력 저장 영역 (진단 완료 후 보이도록 설정) -->
                     <div id="save-history-container" style="margin-top: 20px; display: none;">
-                        <button id="save-history-button" class="btn btn-primary mt-2">진단 이력 저장하기</button>
+                        <button id="save-history-button" class="btn mt-2">진단 이력 저장하기</button>
                     </div>
                 </div>
             </div>
