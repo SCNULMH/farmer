@@ -298,6 +298,10 @@
     text-decoration: underline; /* 밑줄 효과 */
 }
 
+#benefitTab .benefit-list p {
+	font-size : 19px;
+	color: #373737c4;
+}
 
 
 
@@ -306,7 +310,6 @@
 
 /* 나의 작물 재배 일정 컨테이너 영역 */
 #cropScheduleArea {
-	margin-top: 5%;
 	margin-bottom: 15%;
 }
 
@@ -317,7 +320,7 @@
 }
 
 #cropScheduleArea .input-group-text {
-	background-color: #497c60;
+	background-color: #115114;
 	color: #fff;
 	font-weight: bold;
 	border: none;
@@ -327,18 +330,18 @@
 }
 
 #cropInput {
-	border: 2px solid #497c6077;
+	border: 2px solid #115114;
 	border-left: none;
 	font-size: 16px;
 	border-top-right-radius: 8px;
 	border-bottom-right-radius: 8px;
+	padding: 10px;
 }
 
 #cropScheduleContent p {
 	margin-top: 3%;
-	font-size: 17px;
-	font-weight: bold;
-	color: #666;
+	font-size: 19px;
+	color: 292929c4;
 }
 
 /* "나의 작물 재배 일정" 텍스트 */
