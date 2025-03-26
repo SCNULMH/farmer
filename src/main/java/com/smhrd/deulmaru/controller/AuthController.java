@@ -34,14 +34,6 @@ public class AuthController {
         return "auth/deulmaru_Login";
     }
 
-    // 마이페이지
-    @GetMapping("/mypage")
-    public String mypage(HttpSession session) {
-    	 if (session.getAttribute("user") == null) {
-             return "redirect:/auth/login";
-         }
-        return "auth/deulmaru_Mypage";
-    }
 
 
     // 로그인 처리 (일반 로그인)
@@ -49,7 +41,6 @@ public class AuthController {
     public String login(@RequestParam String userId, @RequestParam String userPw, HttpSession session, Model model) {
         Optional<UserEntity> user = userService.loginUser(userId, userPw, session);
         if (user.isPresent()) {
-            session.setAttribute("user", user.get());
             model.addAttribute("user", user.get());
             return "redirect:/";
         } else {

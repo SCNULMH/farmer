@@ -21,7 +21,7 @@
                 
                     <!-- 로그인 여부에 따라 표시 -->
                     <li class="nav-item" th:if="${session.user != null}">
-                        <a class="nav-link" th:href="@{/auth/mypage}" th:text="${session.user.userNickname}"></a>
+                        <a class="nav-link" th:href="@{/mypage}" th:text="${session.user.userNickname}"></a>
                     </li>
                     <!-- 알림 아이콘 추가 (로그인한 사용자에 한해 노출) -->
                     <li class="nav-item" th:if="${session.user != null}">
@@ -32,7 +32,7 @@
 					</a>
                     </li>
                     <li class="nav-item" th:if="${session.user != null}">
-                        <a class="nav-link btn btn-secondary" href="/auth/mypage">마이페이지</a>
+                        <a class="nav-link btn btn-secondary" href="/mypage">마이페이지</a>
                     </li>
                     <li class="nav-item" th:if="${session.user != null}">
                         <a class="nav-link btn btn-danger" href="/auth/logout">로그아웃</a>

@@ -2,6 +2,7 @@ package com.smhrd.deulmaru.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,8 +13,12 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class SupportService {
 
-    private final String API_KEY = "lwFN+9DgtdnDkUuQpxCaemhEBXNKBw/EIeII2WsOlInuroAHa9InabfXhyR365jieyuEEzrb2QYAHP3b3AlrFA==";
-    private final String BASE_URL = "https://apis.data.go.kr/1390000/youngV2";
+    @Value("${api.baseurl}")
+    private String BASE_URL;
+
+    @Value("${api.serviceKey2}")
+    private String API_KEY;
+    
 
     public JsonNode getSupportList() {
         try {
