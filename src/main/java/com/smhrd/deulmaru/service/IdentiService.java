@@ -89,11 +89,5 @@ public class IdentiService {
     
     
     
-    
-    public String getRelatedInfo(String diseaseName) {
-        Map<String, String> infoMap = new HashMap<>();
-        infoMap.put("병명1", "병명1 관련 정보");
-        infoMap.put("병명2", "병명2 관련 정보");
-        return infoMap.getOrDefault(diseaseName, "해당 병해충 정보가 없습니다.");
-    }
+
 }
