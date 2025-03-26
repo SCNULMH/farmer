@@ -1,10 +1,19 @@
 package com.smhrd.deulmaru.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+
 @Table(name = "TB_USER")
 public class UserEntity {
 
@@ -58,37 +67,7 @@ public class UserEntity {
         this.userCrop = userCrop;
     }
 
-    //  Getter & Setter
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
-
-    public String getUserPw() { return userPw; }
-    public void setUserPw(String userPw) { this.userPw = userPw; }
-
-    public String getUserEmail() { return userEmail; }
-    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
-
-    public String getUserNickname() { return userNickname; }
-    public void setUserNickname(String userNickname) { this.userNickname = userNickname; }
-
-    public LocalDate getUserBirth() { return userBirth; }
-    public void setUserBirth(LocalDate userBirth) { this.userBirth = userBirth; }
-
-    public Gender getUserGender() { return userGender; }
-    public void setUserGender(Gender userGender) { this.userGender = userGender; }
-
-    public String getUserLocate() { return userLocate; }
-    public void setUserLocate(String userLocate) { this.userLocate = userLocate; }
-
-    public Long getKakaoId() { return kakaoId; }
-    public void setKakaoId(Long kakaoId) { this.kakaoId = kakaoId; }
-
-    public String getUserCrop() { return userCrop; }
-    public void setUserCrop(String userCrop) { this.userCrop = userCrop; }
-
-    public LocalDateTime getJoinedAt() { return joinedAt; }
-    public void setJoinedAt(LocalDateTime joinedAt) { this.joinedAt = joinedAt; }
-
+  
     //  성별 ENUM 클래스 정의
     public enum Gender {
         M, F

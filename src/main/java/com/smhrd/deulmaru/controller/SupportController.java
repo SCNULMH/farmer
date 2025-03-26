@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller // @RestController → @Controller로 변경
+@Controller
 @RequestMapping("/supportApi")
 public class SupportController {
 

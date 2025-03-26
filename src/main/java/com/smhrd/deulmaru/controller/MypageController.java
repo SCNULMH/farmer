@@ -25,7 +25,7 @@ public class MypageController {
         this.userRepository = userRepository;
     }
 
-    // ✅ 마이페이지 이동
+    //  마이페이지 이동
     @GetMapping("")
     public String myPage(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("user");
@@ -36,7 +36,7 @@ public class MypageController {
         return "/auth/deulmaru_Mypage";
     }
 
-    // ✅ 회원정보 수정 (기존 업데이트)
+    //  회원정보 수정 (기존 업데이트)
     @PostMapping("/update-profile")
     public String updateProfile(@RequestParam String userNickname,
                                 @RequestParam(required = false) String userPw,
@@ -69,7 +69,7 @@ public class MypageController {
         return "redirect:/auth/mypage";
     }
 
-    // ✅ 재배작물만 업데이트하는 새 엔드포인트 (AJAX 호출용)
+    //  재배작물만 업데이트하는 새 엔드포인트 (AJAX 호출용)
     @PostMapping("/update-crop")
     @ResponseBody
     public ResponseEntity<String> updateCrop(@RequestParam String userCrop, HttpSession session) {
