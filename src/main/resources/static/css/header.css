@@ -158,4 +158,13 @@
 
 
 
+	@media screen and (max-width: 768px) {
+		.menu-list {
+			gap: 8px;
+		}
+		
+		.menu-list a {
+			font-size: 15px;
+		}
+	}
 
