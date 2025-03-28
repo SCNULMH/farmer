@@ -8,26 +8,46 @@ from PIL import Image
 
 sys.stdout.reconfigure(encoding='utf-8')
 
+# 🔹 프로젝트 경로 설정
 project_root = os.path.abspath(os.path.dirname(__file__))
-model_path = os.path.join(project_root, "model.pth")
+model_dir = os.path.join(project_root, "models")  # 학습된 모델 저장 폴더
+os.makedirs(model_dir, exist_ok=True)
 
-if not os.path.exists(model_path):
-    print(json.dumps({"error": "❌ 모델 파일을 찾을 수 없습니다."}, ensure_ascii=False))
+# 🔹 최신 모델 가져오기
+def get_latest_model():
+    model_files = [f for f in os.listdir(model_dir) if f.startswith("model_epoch_") and f.endswith(".pth")]
+    if not model_files:
+        return None  # 저장된 모델이 없음
+    model_files.sort(key=lambda x: int(x.split("_")[-1].split(".")[0]))  # 최신 순 정렬
+    return os.path.join(model_dir, model_files[-1])
+
+latest_model_path = get_latest_model()
+
+if not latest_model_path:
+    print(json.dumps({"error": "❌ 최신 모델을 찾을 수 없습니다."}, ensure_ascii=False))
     sys.exit(1)
 
 try:
+    # 🔹 ResNet50 모델 로드
     model = models.resnet50(weights=None)
-    model.fc = torch.nn.Linear(model.fc.in_features, 10)
-    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+    model.fc = torch.nn.Sequential(
+        torch.nn.Linear(model.fc.in_features, 512),
+        torch.nn.ReLU(),
+        torch.nn.Dropout(0.3),
+        torch.nn.Linear(512, 10)  # 학습한 클래스 수 (10개)
+    )
+
+    model.load_state_dict(torch.load(latest_model_path, map_location=torch.device('cpu')))
     model.eval()
 except Exception as e:
     print(json.dumps({"error": f"❌ 모델 로드 실패: {str(e)}"}, ensure_ascii=False))
     sys.exit(1)
 
+# 🔹 병해 코드 매핑
 disease_mapping = {
     0: "정상",
-    1: "고추점무늬병",
-    2: "고추마일드모틀바이러스병",
+    1: "고추마일드모틀바이러스병",
+    2: "고추점무늬병",
     3: "딸기잿빛곰팡이병",
     4: "딸기흰가루병",
     5: "참외노균병",
@@ -82,7 +102,6 @@ def predict(crop_name, image_path):
 
     except Exception as e:
         return f"❌ 예측 오류: {str(e)}"
-
 
 if __name__ == "__main__":
     if len(sys.argv) > 2:
