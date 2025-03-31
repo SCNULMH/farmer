@@ -8,12 +8,12 @@ from PIL import Image
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-# 🔹 프로젝트 경로 설정
+#  프로젝트 경로 설정
 project_root = os.path.abspath(os.path.dirname(__file__))
 model_dir = os.path.join(project_root, "models")  # 학습된 모델 저장 폴더
 os.makedirs(model_dir, exist_ok=True)
 
-# 🔹 최신 모델 가져오기
+#  최신 모델 가져오기
 def get_latest_model():
     model_files = [f for f in os.listdir(model_dir) if f.startswith("model_epoch_") and f.endswith(".pth")]
     if not model_files:
@@ -24,11 +24,11 @@ def get_latest_model():
 latest_model_path = get_latest_model()
 
 if not latest_model_path:
-    print(json.dumps({"error": "❌ 최신 모델을 찾을 수 없습니다."}, ensure_ascii=False))
+    print(json.dumps({"error": " 최신 모델을 찾을 수 없습니다."}, ensure_ascii=False))
     sys.exit(1)
 
 try:
-    # 🔹 ResNet50 모델 로드
+    #  ResNet50 모델 로드
     model = models.resnet50(weights=None)
     model.fc = torch.nn.Sequential(
         torch.nn.Linear(model.fc.in_features, 512),
@@ -40,10 +40,10 @@ try:
     model.load_state_dict(torch.load(latest_model_path, map_location=torch.device('cpu')))
     model.eval()
 except Exception as e:
-    print(json.dumps({"error": f"❌ 모델 로드 실패: {str(e)}"}, ensure_ascii=False))
+    print(json.dumps({"error": f" 모델 로드 실패: {str(e)}"}, ensure_ascii=False))
     sys.exit(1)
 
-# 🔹 병해 코드 매핑
+#  병해 코드 매핑
 disease_mapping = {
     0: "정상",
     1: "고추마일드모틀바이러스병",
@@ -60,7 +60,7 @@ disease_mapping = {
 def predict(crop_name, image_path):
     try:
         if not os.path.exists(image_path):
-            return "❌ 이미지 파일을 찾을 수 없습니다."
+            return " 이미지 파일을 찾을 수 없습니다."
 
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
@@ -85,8 +85,6 @@ def predict(crop_name, image_path):
             "포도": [0, 9]
         }
 
-        if crop_name not in crop_valid_indices:
-            return "❌ 올바른 작물명이 아닙니다. (고추, 딸기, 참외, 토마토, 포도 중 하나를 입력하세요.)"
 
         valid_indices = crop_valid_indices[crop_name]
         valid_probs = {i: probs[i] for i in valid_indices}
@@ -101,7 +99,7 @@ def predict(crop_name, image_path):
         return f"병해충 진단 결과: {result}, 정확도: {confidence_percent:.1f}%"
 
     except Exception as e:
-        return f"❌ 예측 오류: {str(e)}"
+        return f" 예측 오류: {str(e)}"
 
 if __name__ == "__main__":
     if len(sys.argv) > 2:
@@ -109,4 +107,4 @@ if __name__ == "__main__":
         image_path = sys.argv[2]
         print(predict(crop_name, image_path))
     else:
-        print(json.dumps({"error": "❌ 사용법: python predict.py [작물명] [이미지파일경로]"}, ensure_ascii=False))
+        print(json.dumps({"error": " 사용법: python predict.py [작물명] [이미지파일경로]"}, ensure_ascii=False))
